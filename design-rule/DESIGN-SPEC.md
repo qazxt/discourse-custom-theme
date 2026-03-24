@@ -32,17 +32,17 @@
 
 | 序号 | 名称 | 类型 | 背景色 | 内部素材 | 背景素材 | Hover 旋转 |
 |------|------|------|--------|----------|----------|------------|
-| 1 | User Guide & Perks | A | `#f6ebe3` | `1-in.png` (书本指南) | `1-back.png` | ✅ 5° |
-| 2 | Crafting Tips & Ideas | B | `#ffdcb4` | —（暂缺） | — | ✅ 5° |
-| 3 | Ongoing Events | A | `#f6ebe3` | `3-in.png` (礼物盒) | — | ❌ |
-| 4 | Say Hi To Everyone | B | `#fef7e7` | `4-in.png` (HELLO) | — | ❌ |
-| 5 | Spin & WIN | B | `#ffb93e` | `5-in.png` (转盘) | `5-back.png` | ✅ 5° |
-| 6 | Showcase & Story | B | `#f6ebe3` | `6-in.png` (奖杯) | — | ❌ |
-| 7 | DIY & Crafting Club | **C** | `#f6ebe3` | `7-in.png` (手工照片) | — | ❌ |
-| 8 | Nanci's Dairy | A | `#f6ebe3` | `8-in.png` (兔子) | — | ✅ 5° |
-| 9 | New Arrivals | B | `#f6ebe3` | `9-in.png` (小屋) | — | ❌ |
-| 10 | Exclusive Deals | B | `#f6ebe3` | `10-in.png` (SALE) | — | ❌ |
-| 11 | Instruction Manual | **C** | `#f6ebe3` | `11-in.png` (人物照片) | — | ❌ |
+| 1 | User Guide & Perks | A | `#f6ebe3` 暖米 | `1-in.png` (书本指南) | `1-back.png` | ✅ 5° | 黑字 |
+| 2 | Crafting Tips & Ideas | B | `#ffdb04` 亮黄 | —（暂缺） | — | ✅ 5° | 黑字 |
+| 3 | Ongoing Events | A | `#e65e2a` 橙红 | `3-in.png` (礼物盒) | — | ❌ | **白字** |
+| 4 | Say Hi To Everyone | B | `#fef7e7` 浅黄 | `4-in.png` (HELLO) | — | ❌ | 黑字 |
+| 5 | Spin & WIN | B | `#ffb93e` 橙色 | `5-in.png` (转盘) | `5-back.png` | ✅ 5° | 黑字 |
+| 6 | Showcase & Story | B | `#582f78` 深紫 | `6-in.png` (奖杯) | — | ❌ | **白字** |
+| 7 | DIY & Crafting Club | **C** | `#fef7e7` 浅黄 | `7-in.png` (手工照片) | — | ❌ | 白字(渐变) |
+| 8 | Nanci's Dairy | A | `#bdb1ff` 淡紫 | `8-in.png` (兔子) | — | ✅ 5° | 黑字 |
+| 9 | New Arrivals | B | `#028be3` 蓝色 | `9-in.png` (小屋) | — | ❌ | **白字** |
+| 10 | Exclusive Deals | B | `#d7c8a2` 米金 | `10-in.png` (SALE) | — | ❌ | 黑字 |
+| 11 | Instruction Manual | **C** | `#fef7e7` 浅黄 | `11-in.png` (人物照片) | — | ❌ | 白字(渐变) |
 
 > 注：序号 2 (Crafting Tips & Ideas) 的素材暂未提供（无 `2-in.png`），当前使用 emoji 💡 占位。
 

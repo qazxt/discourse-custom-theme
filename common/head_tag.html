@@ -1,16 +1,16 @@
 <script type="text/discourse-plugin" version="1.0">
 const CAROUSEL_CARDS = [
-  { name: "User Guide & Perks", bg: "#f6ebe3", type: "a", img: "Icon/carousel/1-in.png", rotate: true, link: "/c/user-guide-perks" },
-  { name: "Crafting Tips & Ideas", bg: "#ffdcb4", type: "b", img: null, fallback: "💡", rotate: true, link: "/c/crafting-tips-ideas" },
-  { name: "Ongoing Events", bg: "#f6ebe3", type: "a", img: "Icon/carousel/3-in.png", rotate: false, link: "/c/ongoing-events" },
-  { name: "Say Hi To Everyone", bg: "#fef7e7", type: "b", img: "Icon/carousel/4-in.png", rotate: false, link: "/c/say-hi" },
-  { name: "Spin & WIN", bg: "#ffb93e", type: "b", img: "Icon/carousel/5-in.png", backImg: "Icon/carousel/5-back.png", rotate: true, link: "/c/spin-and-win" },
-  { name: "Showcase & Story", bg: "#f6ebe3", type: "b", img: "Icon/carousel/6-in.png", rotate: false, link: "/c/showcase-story" },
-  { name: "DIY & Crafting Club", bg: "#f6ebe3", type: "c", img: "Icon/carousel/7-in.png", rotate: false, link: "/c/diy-crafting-club" },
-  { name: "Nanci's Dairy", bg: "#f6ebe3", type: "a", img: "Icon/carousel/8-in.png", rotate: true, link: "/c/nancis-dairy" },
-  { name: "New Arrivals", bg: "#f6ebe3", type: "b", img: "Icon/carousel/9-in.png", rotate: false, link: "/c/new-arrivals" },
-  { name: "Exclusive Deals", bg: "#f6ebe3", type: "b", img: "Icon/carousel/10-in.png", rotate: false, link: "/c/exclusive-deals" },
-  { name: "Instruction Manual", bg: "#f6ebe3", type: "c", img: "Icon/carousel/11-in.png", rotate: false, link: "/c/instruction-manual" }
+  { name: "User Guide & Perks", bg: "#f6ebe3", type: "a", img: "Icon/carousel/1-in.png", rotate: true, dark: false, link: "/c/user-guide-perks" },
+  { name: "Crafting Tips & Ideas", bg: "#ffdb04", type: "b", img: null, fallback: "💡", rotate: true, dark: false, link: "/c/crafting-tips-ideas" },
+  { name: "Ongoing Events", bg: "#e65e2a", type: "a", img: "Icon/carousel/3-in.png", rotate: false, dark: true, link: "/c/ongoing-events" },
+  { name: "Say Hi To Everyone", bg: "#fef7e7", type: "b", img: "Icon/carousel/4-in.png", rotate: false, dark: false, link: "/c/say-hi" },
+  { name: "Spin & WIN", bg: "#ffb93e", type: "b", img: "Icon/carousel/5-in.png", backImg: "Icon/carousel/5-back.png", rotate: true, dark: false, link: "/c/spin-and-win" },
+  { name: "Showcase & Story", bg: "#582f78", type: "b", img: "Icon/carousel/6-in.png", rotate: false, dark: true, link: "/c/showcase-story" },
+  { name: "DIY & Crafting Club", bg: "#fef7e7", type: "c", img: "Icon/carousel/7-in.png", rotate: false, dark: false, link: "/c/diy-crafting-club" },
+  { name: "Nanci's Dairy", bg: "#bdb1ff", type: "a", img: "Icon/carousel/8-in.png", rotate: true, dark: false, link: "/c/nancis-dairy" },
+  { name: "New Arrivals", bg: "#028be3", type: "b", img: "Icon/carousel/9-in.png", rotate: false, dark: true, link: "/c/new-arrivals" },
+  { name: "Exclusive Deals", bg: "#d7c8a2", type: "b", img: "Icon/carousel/10-in.png", rotate: false, dark: false, link: "/c/exclusive-deals" },
+  { name: "Instruction Manual", bg: "#fef7e7", type: "c", img: "Icon/carousel/11-in.png", rotate: false, dark: false, link: "/c/instruction-manual" }
 ];
 
 function initCarousel() {
@@ -28,6 +28,7 @@ function initCarousel() {
 
     let bodyStyle = '';
     let bodyContent = '';
+    const labelStyle = card.dark ? ' style="color:#fff"' : '';
 
     if (card.type === 'a') {
       bodyStyle = `background: ${card.bg}`;
@@ -35,7 +36,7 @@ function initCarousel() {
         <div class="robotime-carousel__card-icon-overflow">
           <img src="${card.img}" alt="${card.name}">
         </div>
-        <div class="robotime-carousel__card-label">${card.name}</div>`;
+        <div class="robotime-carousel__card-label"${labelStyle}>${card.name}</div>`;
     } else if (card.type === 'b') {
       bodyStyle = card.backImg
         ? `background: url('${card.backImg}') center/cover no-repeat, ${card.bg}`
@@ -45,7 +46,7 @@ function initCarousel() {
         : `<span class="card-icon">${card.fallback || ''}</span>`;
       bodyContent = `
         <div class="robotime-carousel__card-icon-center">${iconHtml}</div>
-        <div class="robotime-carousel__card-label">${card.name}</div>`;
+        <div class="robotime-carousel__card-label"${labelStyle}>${card.name}</div>`;
     } else if (card.type === 'c') {
       bodyStyle = `background: url('${card.img}') center/cover no-repeat`;
       bodyContent = `<div class="robotime-carousel__card-label">${card.name}</div>`;
