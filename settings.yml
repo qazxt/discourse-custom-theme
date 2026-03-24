@@ -1,0 +1,27 @@
+robotime_logo_url:
+  default: ""
+  type: string
+  description:
+    en: "URL for the Robotime logo image in the header"
+    zh_CN: "顶部导航栏 Robotime Logo 图片 URL"
+
+robotime_nav_links:
+  default: "Help|/help,Community Perks|/community-perks,Win Prize|/win-prize,How To|/how-to,About|/about,Buy|https://www.robotime.com"
+  type: string
+  description:
+    en: "Navigation links in format: Label|URL, separated by commas"
+    zh_CN: "导航链接，格式: 标签|URL，逗号分隔"
+
+robotime_carousel_enabled:
+  default: true
+  type: bool
+  description:
+    en: "Enable the category carousel below the header"
+    zh_CN: "启用顶部导航栏下方的分类卡片轮播区"
+
+robotime_official_events_category:
+  default: ""
+  type: string
+  description:
+    en: "Category slug for Official Events in the sidebar"
+    zh_CN: "侧栏中 Official Events 对应的分类 slug"

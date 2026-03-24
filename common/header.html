@@ -1,0 +1,25 @@
+<script type="text/x-handlebars" data-template-name="custom-header">
+  <div class="robotime-header">
+    <div class="robotime-header__logo">
+      <a href="/">ROBOTIME</a>
+    </div>
+    <nav class="robotime-header__nav">
+      {{#each (theme-setting "robotime_nav_links")}}
+      {{/each}}
+      <a href="/help" class="robotime-header__nav-link">Help</a>
+      <a href="/community-perks" class="robotime-header__nav-link">Community Perks</a>
+      <a href="/win-prize" class="robotime-header__nav-link">Win Prize</a>
+      <a href="/how-to" class="robotime-header__nav-link">How To</a>
+      <a href="/about" class="robotime-header__nav-link">About</a>
+      <a href="https://www.robotime.com" class="robotime-header__nav-link" target="_blank" rel="noopener">Buy</a>
+    </nav>
+    <div class="robotime-header__user">
+      <button class="robotime-header__icon-btn" title="Notifications">
+        <svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
+      </button>
+      <button class="robotime-header__icon-btn" title="Gifts">
+        <svg viewBox="0 0 24 24"><path d="M20 6h-2.18c.11-.31.18-.65.18-1 0-1.66-1.34-3-3-3-1.05 0-1.96.54-2.5 1.35l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-5-2c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM9 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm11 15H4v-2h16v2zm0-5H4V8h5.08L7 10.83 8.62 12 12 7.4l3.38 4.6L17 10.83 14.92 8H20v6z"/></svg>
+      </button>
+    </div>
+  </div>
+</script>

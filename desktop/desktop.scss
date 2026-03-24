@@ -1,0 +1,115 @@
+// ============================================================
+// Robotime Community Theme - Desktop Styles (≥1200px)
+// ============================================================
+
+// --- Layout ---
+.wrap {
+  max-width: 1400px;
+}
+
+// --- Header adjustments for desktop ---
+.robotime-header {
+  &__nav-link {
+    font-size: 16px;
+  }
+}
+
+// --- Carousel desktop sizing ---
+.robotime-carousel {
+  &__card {
+    width: 160px;
+  }
+
+  &__card-image {
+    height: 109px;
+  }
+}
+
+// --- Content area with sidebar ---
+#main-outlet {
+  display: flex;
+  gap: 24px;
+  padding-top: 16px;
+}
+
+.robotime-page-layout {
+  display: flex;
+  gap: 24px;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+// --- Sidebar desktop ---
+.sidebar-wrapper {
+  width: 270px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 76px;
+  align-self: flex-start;
+  max-height: calc(100vh - 76px);
+  overflow-y: auto;
+}
+
+// --- Main content ---
+.list-container,
+#list-area {
+  flex: 1;
+  min-width: 0;
+}
+
+// --- Topic cards grid (desktop: 2 columns) ---
+.topic-list tbody {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+// --- Topic card sizing ---
+.robotime-topic-card {
+  &__thumbnail {
+    min-height: 200px;
+  }
+}
+
+// --- Filter bar desktop ---
+.robotime-filter-bar {
+  &__tabs {
+    gap: 30px;
+  }
+
+  &__tab {
+    font-size: 18px;
+  }
+}
+
+// --- Tablet adjustments ---
+@media (min-width: 768px) and (max-width: 1199px) {
+  .robotime-header {
+    padding: 0 16px;
+
+    &__nav {
+      gap: 16px;
+    }
+
+    &__nav-link {
+      font-size: 14px;
+    }
+  }
+
+  .robotime-carousel {
+    &__card {
+      width: 140px;
+    }
+
+    &__card-image {
+      height: 90px;
+    }
+  }
+
+  .sidebar-wrapper {
+    width: 220px;
+  }
+
+  .topic-list tbody {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

@@ -1,0 +1,190 @@
+// ============================================================
+// Robotime Community Theme - Mobile Styles (<768px)
+// ============================================================
+
+// --- Mobile header ---
+.robotime-header {
+  padding: 0 12px;
+  height: 52px;
+
+  &__logo a {
+    font-size: 12px;
+    padding: 6px 14px;
+  }
+
+  &__nav {
+    display: none;
+  }
+
+  &__user {
+    padding: 4px 10px;
+    gap: 8px;
+  }
+
+  &__mobile-menu-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+
+    svg {
+      width: 24px;
+      height: 24px;
+      fill: currentColor;
+    }
+  }
+}
+
+// Mobile navigation overlay
+.robotime-mobile-nav {
+  display: none;
+  position: fixed;
+  top: 52px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.95);
+  z-index: 1100;
+  flex-direction: column;
+  padding: 20px;
+  overflow-y: auto;
+
+  &--open {
+    display: flex;
+  }
+
+  &__link {
+    font-family: "Google Sans Flex", "Google Sans", sans-serif;
+    font-size: 20px;
+    color: #fff;
+    text-decoration: none;
+    padding: 16px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: #cccccc;
+    }
+  }
+}
+
+// --- Mobile carousel ---
+.robotime-carousel {
+  padding: 10px 0;
+
+  &__card {
+    width: 120px;
+  }
+
+  &__card-image {
+    height: 80px;
+  }
+
+  &__card-text .card-title {
+    font-size: 11px;
+  }
+
+  &__arrow {
+    width: 28px;
+    height: 28px;
+
+    svg {
+      width: 12px;
+      height: 12px;
+    }
+  }
+}
+
+// --- Mobile sidebar hidden ---
+.sidebar-wrapper {
+  display: none;
+}
+
+// --- Mobile content full width ---
+#main-outlet {
+  flex-direction: column;
+  padding: 8px;
+}
+
+.list-container,
+#list-area {
+  width: 100%;
+}
+
+// --- Mobile topic cards (single column) ---
+.topic-list tbody {
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.robotime-topic-card {
+  &__thumbnail {
+    min-height: 160px;
+  }
+
+  &__content {
+    padding: 10px 12px;
+  }
+
+  &__title {
+    font-size: 15px;
+  }
+
+  &__stat {
+    font-size: 12px;
+  }
+
+  &__avatar {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+// --- Mobile filter bar ---
+.robotime-filter-bar {
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-start;
+
+  &__tabs {
+    gap: 16px;
+    overflow-x: auto;
+    width: 100%;
+    padding-bottom: 4px;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  &__tab {
+    font-size: 15px;
+    white-space: nowrap;
+  }
+
+  &__new-topic {
+    align-self: flex-end;
+  }
+}
+
+// --- Navigation pills mobile ---
+.navigation-container .nav-pills {
+  overflow-x: auto;
+  flex-wrap: nowrap;
+  gap: 0;
+  padding-bottom: 4px;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  > li > a {
+    font-size: 15px;
+    white-space: nowrap;
+    padding: 6px 12px;
+  }
+}

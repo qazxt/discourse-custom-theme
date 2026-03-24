@@ -1,0 +1,96 @@
+<script type="text/discourse-plugin" version="1.0">
+const CAROUSEL_CARDS = [
+  { name: "User Guide & Perks", bg: "#f6ebe3", icon: "📖", rotate: true, link: "/c/user-guide-perks" },
+  { name: "Crafting Tips & Ideas", bg: "#ffdcb4", icon: "💡", rotate: true, link: "/c/crafting-tips-ideas" },
+  { name: "Ongoing Events", bg: "#f6ebe3", icon: "🎉", rotate: false, link: "/c/ongoing-events" },
+  { name: "Say Hi To Everyone", bg: "#fef7e7", icon: "👋", rotate: false, link: "/c/say-hi" },
+  { name: "Spin & WIN", bg: "#ffb93e", icon: "🎰", rotate: true, link: "/c/spin-and-win" },
+  { name: "Showcase & Story", bg: "#f6ebe3", icon: "🏆", rotate: false, link: "/c/showcase-story" },
+  { name: "DIY & Crafting Club", bg: "#f6ebe3", icon: "✂️", rotate: false, link: "/c/diy-crafting-club" },
+  { name: "Nanci's Dairy", bg: "#f6ebe3", icon: "🐰", rotate: true, link: "/c/nancis-dairy" },
+  { name: "New Arrivals", bg: "#f6ebe3", icon: "🆕", rotate: false, link: "/c/new-arrivals" },
+  { name: "Exclusive Deals", bg: "#f6ebe3", icon: "🏷️", rotate: false, link: "/c/exclusive-deals" },
+  { name: "Instruction Manual", bg: "#f6ebe3", icon: "📋", rotate: false, link: "/c/instruction-manual" }
+];
+
+function initCarousel() {
+  const track = document.getElementById("carousel-track");
+  const prevBtn = document.getElementById("carousel-prev");
+  const nextBtn = document.getElementById("carousel-next");
+
+  if (!track) return;
+  if (track.children.length > 0) return;
+
+  CAROUSEL_CARDS.forEach((card) => {
+    const el = document.createElement("a");
+    el.href = card.link;
+    el.className = `robotime-carousel__card ${card.rotate ? "robotime-carousel__card--rotate" : "robotime-carousel__card--no-rotate"}`;
+
+    el.innerHTML = `
+      <div class="robotime-carousel__card-image" style="background-color: ${card.bg}">
+        <span class="card-icon">${card.icon}</span>
+      </div>
+      <div class="robotime-carousel__card-text">
+        <span class="card-title">${card.name}</span>
+      </div>
+    `;
+
+    track.appendChild(el);
+  });
+
+  let scrollPos = 0;
+  const cardWidth = 170;
+  const visibleCards = Math.floor(track.parentElement.offsetWidth / cardWidth);
+  const maxScroll = (CAROUSEL_CARDS.length - visibleCards) * cardWidth;
+
+  function updatePosition() {
+    track.style.transform = `translateX(-${scrollPos}px)`;
+  }
+
+  if (prevBtn) {
+    prevBtn.addEventListener("click", () => {
+      scrollPos = Math.max(0, scrollPos - cardWidth * 2);
+      updatePosition();
+    });
+  }
+
+  if (nextBtn) {
+    nextBtn.addEventListener("click", () => {
+      scrollPos = Math.min(maxScroll, scrollPos + cardWidth * 2);
+      updatePosition();
+    });
+  }
+}
+
+function initMobileMenu() {
+  const menuBtn = document.querySelector(".robotime-header__mobile-menu-btn");
+  const mobileNav = document.querySelector(".robotime-mobile-nav");
+  if (!menuBtn || !mobileNav) return;
+
+  menuBtn.addEventListener("click", () => {
+    mobileNav.classList.toggle("robotime-mobile-nav--open");
+    const isOpen = mobileNav.classList.contains("robotime-mobile-nav--open");
+    menuBtn.setAttribute("aria-expanded", isOpen);
+  });
+
+  mobileNav.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", () => {
+      mobileNav.classList.remove("robotime-mobile-nav--open");
+      menuBtn.setAttribute("aria-expanded", "false");
+    });
+  });
+}
+
+function determineImageRatio(width, height) {
+  if (!width || !height) return "square";
+  const ratio = width / height;
+  return ratio > 0.85 ? "square" : "portrait";
+}
+
+api.onPageChange(() => {
+  requestAnimationFrame(() => {
+    initCarousel();
+    initMobileMenu();
+  });
+});
+</script>

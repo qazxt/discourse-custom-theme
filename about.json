@@ -1,0 +1,23 @@
+{
+  "name": "Robotime Community Theme",
+  "about_url": "https://github.com/qazxt/discourse-custom-theme",
+  "license_url": "https://github.com/qazxt/discourse-custom-theme/blob/main/LICENSE",
+  "component": false,
+  "minimum_discourse_version": "3.0.0",
+  "maximum_discourse_version": null,
+  "assets": {},
+  "color_schemes": {
+    "Robotime": {
+      "primary": "000000",
+      "secondary": "ffffff",
+      "tertiary": "66cbff",
+      "quaternary": "ffb93e",
+      "header_background": "000000",
+      "header_primary": "ffffff",
+      "highlight": "fef7e7",
+      "danger": "e45735",
+      "success": "4EB279",
+      "love": "FA6C8D"
+    }
+  }
+}
