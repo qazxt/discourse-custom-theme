@@ -1,16 +1,16 @@
 <script type="text/discourse-plugin" version="1.0">
 const CAROUSEL_CARDS = [
-  { name: "User Guide & Perks", bg: "#f6ebe3", icon: "📖", rotate: true, link: "/c/user-guide-perks" },
-  { name: "Crafting Tips & Ideas", bg: "#ffdcb4", icon: "💡", rotate: true, link: "/c/crafting-tips-ideas" },
-  { name: "Ongoing Events", bg: "#f6ebe3", icon: "🎉", rotate: false, link: "/c/ongoing-events" },
-  { name: "Say Hi To Everyone", bg: "#fef7e7", icon: "👋", rotate: false, link: "/c/say-hi" },
-  { name: "Spin & WIN", bg: "#ffb93e", icon: "🎰", rotate: true, link: "/c/spin-and-win" },
-  { name: "Showcase & Story", bg: "#f6ebe3", icon: "🏆", rotate: false, link: "/c/showcase-story" },
-  { name: "DIY & Crafting Club", bg: "#f6ebe3", icon: "✂️", rotate: false, link: "/c/diy-crafting-club" },
-  { name: "Nanci's Dairy", bg: "#f6ebe3", icon: "🐰", rotate: true, link: "/c/nancis-dairy" },
-  { name: "New Arrivals", bg: "#f6ebe3", icon: "🆕", rotate: false, link: "/c/new-arrivals" },
-  { name: "Exclusive Deals", bg: "#f6ebe3", icon: "🏷️", rotate: false, link: "/c/exclusive-deals" },
-  { name: "Instruction Manual", bg: "#f6ebe3", icon: "📋", rotate: false, link: "/c/instruction-manual" }
+  { name: "User Guide & Perks", bg: "#f6ebe3", icon: "📖", decoColor: "#e8c9b0", rotate: true, link: "/c/user-guide-perks" },
+  { name: "Crafting Tips & Ideas", bg: "#ffdcb4", icon: "💡", decoColor: "#f0b86e", rotate: true, link: "/c/crafting-tips-ideas" },
+  { name: "Ongoing Events", bg: "#f6ebe3", icon: "🎉", decoColor: "#e8c9b0", rotate: false, link: "/c/ongoing-events" },
+  { name: "Say Hi To Everyone", bg: "#fef7e7", icon: "👋", decoColor: "#f5e5a0", rotate: false, link: "/c/say-hi" },
+  { name: "Spin & WIN", bg: "#ffb93e", icon: "🎰", decoColor: "#e09520", rotate: true, link: "/c/spin-and-win" },
+  { name: "Showcase & Story", bg: "#f6ebe3", icon: "🏆", decoColor: "#e8c9b0", rotate: false, link: "/c/showcase-story" },
+  { name: "DIY & Crafting Club", bg: "#f6ebe3", icon: "✂️", decoColor: "#e8c9b0", rotate: false, link: "/c/diy-crafting-club" },
+  { name: "Nanci's Dairy", bg: "#f6ebe3", icon: "🐰", decoColor: "#e8c9b0", rotate: true, link: "/c/nancis-dairy" },
+  { name: "New Arrivals", bg: "#f6ebe3", icon: "🆕", decoColor: "#e8c9b0", rotate: false, link: "/c/new-arrivals" },
+  { name: "Exclusive Deals", bg: "#f6ebe3", icon: "🏷️", decoColor: "#e8c9b0", rotate: false, link: "/c/exclusive-deals" },
+  { name: "Instruction Manual", bg: "#f6ebe3", icon: "📋", decoColor: "#e8c9b0", rotate: false, link: "/c/instruction-manual" }
 ];
 
 function initCarousel() {
@@ -28,6 +28,8 @@ function initCarousel() {
 
     el.innerHTML = `
       <div class="robotime-carousel__card-image" style="background-color: ${card.bg}">
+        <div class="card-deco" style="width:50px;height:50px;top:-8px;right:-8px;background:${card.decoColor}"></div>
+        <div class="card-deco" style="width:30px;height:30px;bottom:4px;left:-4px;background:${card.decoColor}"></div>
         <span class="card-icon">${card.icon}</span>
       </div>
       <div class="robotime-carousel__card-text">
@@ -39,7 +41,7 @@ function initCarousel() {
   });
 
   let scrollPos = 0;
-  const cardWidth = 170;
+  const cardWidth = 158;
   const visibleCards = Math.floor(track.parentElement.offsetWidth / cardWidth);
   const maxScroll = (CAROUSEL_CARDS.length - visibleCards) * cardWidth;
 
