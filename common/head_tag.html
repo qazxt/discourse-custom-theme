@@ -1,16 +1,16 @@
 <script type="text/discourse-plugin" version="1.0">
 const CAROUSEL_CARDS = [
-  { name: "User Guide & Perks", bg: "#f6ebe3", img: "Icon/carousel/1-in.png", backImg: "Icon/carousel/1-back.png", rotate: true, link: "/c/user-guide-perks" },
-  { name: "Crafting Tips & Ideas", bg: "#ffdcb4", img: null, fallback: "💡", rotate: true, link: "/c/crafting-tips-ideas" },
-  { name: "Ongoing Events", bg: "#f6ebe3", img: "Icon/carousel/3-in.png", rotate: false, link: "/c/ongoing-events" },
-  { name: "Say Hi To Everyone", bg: "#fef7e7", img: "Icon/carousel/4-in.png", rotate: false, link: "/c/say-hi" },
-  { name: "Spin & WIN", bg: "#ffb93e", img: "Icon/carousel/5-in.png", backImg: "Icon/carousel/5-back.png", rotate: true, link: "/c/spin-and-win" },
-  { name: "Showcase & Story", bg: "#f6ebe3", img: "Icon/carousel/6-in.png", rotate: false, link: "/c/showcase-story" },
-  { name: "DIY & Crafting Club", bg: "#f6ebe3", img: "Icon/carousel/7-in.png", rotate: false, link: "/c/diy-crafting-club" },
-  { name: "Nanci's Dairy", bg: "#f6ebe3", img: "Icon/carousel/8-in.png", rotate: true, link: "/c/nancis-dairy" },
-  { name: "New Arrivals", bg: "#f6ebe3", img: "Icon/carousel/9-in.png", rotate: false, link: "/c/new-arrivals" },
-  { name: "Exclusive Deals", bg: "#f6ebe3", img: "Icon/carousel/10-in.png", rotate: false, link: "/c/exclusive-deals" },
-  { name: "Instruction Manual", bg: "#f6ebe3", img: "Icon/carousel/11-in.png", rotate: false, link: "/c/instruction-manual" }
+  { name: "User Guide & Perks", bg: "#f6ebe3", type: "a", img: "Icon/carousel/1-in.png", rotate: true, link: "/c/user-guide-perks" },
+  { name: "Crafting Tips & Ideas", bg: "#ffdcb4", type: "b", img: null, fallback: "💡", rotate: true, link: "/c/crafting-tips-ideas" },
+  { name: "Ongoing Events", bg: "#f6ebe3", type: "a", img: "Icon/carousel/3-in.png", rotate: false, link: "/c/ongoing-events" },
+  { name: "Say Hi To Everyone", bg: "#fef7e7", type: "b", img: "Icon/carousel/4-in.png", rotate: false, link: "/c/say-hi" },
+  { name: "Spin & WIN", bg: "#ffb93e", type: "b", img: "Icon/carousel/5-in.png", backImg: "Icon/carousel/5-back.png", rotate: true, link: "/c/spin-and-win" },
+  { name: "Showcase & Story", bg: "#f6ebe3", type: "b", img: "Icon/carousel/6-in.png", rotate: false, link: "/c/showcase-story" },
+  { name: "DIY & Crafting Club", bg: "#f6ebe3", type: "c", img: "Icon/carousel/7-in.png", rotate: false, link: "/c/diy-crafting-club" },
+  { name: "Nanci's Dairy", bg: "#f6ebe3", type: "a", img: "Icon/carousel/8-in.png", rotate: true, link: "/c/nancis-dairy" },
+  { name: "New Arrivals", bg: "#f6ebe3", type: "b", img: "Icon/carousel/9-in.png", rotate: false, link: "/c/new-arrivals" },
+  { name: "Exclusive Deals", bg: "#f6ebe3", type: "b", img: "Icon/carousel/10-in.png", rotate: false, link: "/c/exclusive-deals" },
+  { name: "Instruction Manual", bg: "#f6ebe3", type: "c", img: "Icon/carousel/11-in.png", rotate: false, link: "/c/instruction-manual" }
 ];
 
 function initCarousel() {
@@ -26,21 +26,32 @@ function initCarousel() {
     el.href = card.link;
     el.className = `robotime-carousel__card ${card.rotate ? "robotime-carousel__card--rotate" : "robotime-carousel__card--no-rotate"}`;
 
-    const bgStyle = card.backImg
-      ? `background: url('${card.backImg}') center/cover no-repeat, ${card.bg}`
-      : `background-color: ${card.bg}`;
-    const inner = card.img
-      ? `<img src="${card.img}" alt="${card.name}" style="max-width:90%;max-height:90%;object-fit:contain;position:relative;z-index:1">`
-      : `<span class="card-icon">${card.fallback || ''}</span>`;
+    let bodyStyle = '';
+    let bodyContent = '';
 
-    el.innerHTML = `
-      <div class="robotime-carousel__card-image" style="${bgStyle}">
-        ${inner}
-      </div>
-      <div class="robotime-carousel__card-text">
-        <span class="card-title">${card.name}</span>
-      </div>
-    `;
+    if (card.type === 'a') {
+      bodyStyle = `background: ${card.bg}`;
+      bodyContent = `
+        <div class="robotime-carousel__card-icon-overflow">
+          <img src="${card.img}" alt="${card.name}">
+        </div>
+        <div class="robotime-carousel__card-label">${card.name}</div>`;
+    } else if (card.type === 'b') {
+      bodyStyle = card.backImg
+        ? `background: url('${card.backImg}') center/cover no-repeat, ${card.bg}`
+        : `background: ${card.bg}`;
+      const iconHtml = card.img
+        ? `<img src="${card.img}" alt="${card.name}">`
+        : `<span class="card-icon">${card.fallback || ''}</span>`;
+      bodyContent = `
+        <div class="robotime-carousel__card-icon-center">${iconHtml}</div>
+        <div class="robotime-carousel__card-label">${card.name}</div>`;
+    } else if (card.type === 'c') {
+      bodyStyle = `background: url('${card.img}') center/cover no-repeat`;
+      bodyContent = `<div class="robotime-carousel__card-label">${card.name}</div>`;
+    }
+
+    el.innerHTML = `<div class="robotime-carousel__card-body type-${card.type}" style="${bodyStyle}">${bodyContent}</div>`;
 
     track.appendChild(el);
   });
