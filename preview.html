@@ -542,10 +542,10 @@
       </nav>
       <div class="header-user">
         <button class="icon-btn" title="Notifications">
-          <img src="Icon/其他/资源 33-9.png" alt="notifications">
+          <img src="Icon/misc/notification.png" alt="notifications">
         </button>
         <button class="icon-btn" title="Gifts">
-          <img src="Icon/其他/资源 34-9.png" alt="gifts">
+          <img src="Icon/misc/gift.png" alt="gifts">
         </button>
         <div class="user-avatar">
           <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32'%3E%3Crect width='32' height='32' rx='16' fill='%2366cbff'/%3E%3Ctext x='50%25' y='55%25' text-anchor='middle' dominant-baseline='middle' fill='white' font-size='14' font-family='sans-serif'%3EL%3C/text%3E%3C/svg%3E" alt="Avatar">
@@ -587,23 +587,23 @@
     <aside class="sidebar">
       <ul class="sidebar-menu">
         <li><a href="#" class="active">
-          <img class="menu-icon" src="Icon/左侧图标/白色/资源 22-9.png" alt="">
+          <img class="menu-icon" src="Icon/sidebar/white/topics.png" alt="">
           Topics
         </a></li>
         <li><a href="#">
-          <img class="menu-icon" src="Icon/左侧图标/黑色/资源 27-9.png" alt="">
+          <img class="menu-icon" src="Icon/sidebar/black/my-posts.png" alt="">
           My posts
         </a></li>
         <li><a href="#">
-          <img class="menu-icon" src="Icon/左侧图标/黑色/资源 28-9.png" alt="">
+          <img class="menu-icon" src="Icon/sidebar/black/my-messages.png" alt="">
           My messages
         </a></li>
         <li><a href="#">
-          <img class="menu-icon" src="Icon/左侧图标/黑色/资源 29-9.png" alt="">
+          <img class="menu-icon" src="Icon/sidebar/black/invite-friends.png" alt="">
           Invite Friends
         </a></li>
         <li><a href="#">
-          <img class="menu-icon" src="Icon/其他/资源 35-9.png" alt="">
+          <img class="menu-icon" src="Icon/misc/more.png" alt="">
           More
         </a></li>
       </ul>
@@ -645,28 +645,32 @@
        CAROUSEL DATA + RENDER
        =========================================== */
     const CARDS = [
-      { name: "User Guide & Perks",    bg: "#f6ebe3", icon: "📖", decoColor: "#e8c9b0", rotate: true },
-      { name: "Crafting Tips & Ideas",  bg: "#ffdcb4", icon: "💡", decoColor: "#f0b86e", rotate: true },
-      { name: "Ongoing Events",         bg: "#f6ebe3", icon: "🎉", decoColor: "#e8c9b0", rotate: false },
-      { name: "Say Hi To Everyone",     bg: "#fef7e7", icon: "👋", decoColor: "#f5e5a0", rotate: false },
-      { name: "Spin & WIN",            bg: "#ffb93e", icon: "🎰", decoColor: "#e09520", rotate: true },
-      { name: "Showcase & Story",       bg: "#f6ebe3", icon: "🏆", decoColor: "#e8c9b0", rotate: false },
-      { name: "DIY & Crafting Club",    bg: "#f6ebe3", icon: "✂️", decoColor: "#e8c9b0", rotate: false },
-      { name: "Nanci's Dairy",          bg: "#f6ebe3", icon: "🐰", decoColor: "#e8c9b0", rotate: true },
-      { name: "New Arrivals",           bg: "#f6ebe3", icon: "🆕", decoColor: "#e8c9b0", rotate: false },
-      { name: "Exclusive Deals",        bg: "#f6ebe3", icon: "🏷️", decoColor: "#e8c9b0", rotate: false },
-      { name: "Instruction Manual",     bg: "#f6ebe3", icon: "📋", decoColor: "#e8c9b0", rotate: false }
+      { name: "User Guide & Perks",    bg: "#f6ebe3", img: "Icon/carousel/1-in.png", backImg: "Icon/carousel/1-back.png", rotate: true },
+      { name: "Crafting Tips & Ideas",  bg: "#ffdcb4", img: null, fallback: "💡", rotate: true },
+      { name: "Ongoing Events",         bg: "#f6ebe3", img: "Icon/carousel/3-in.png", rotate: false },
+      { name: "Say Hi To Everyone",     bg: "#fef7e7", img: "Icon/carousel/4-in.png", rotate: false },
+      { name: "Spin & WIN",            bg: "#ffb93e", img: "Icon/carousel/5-in.png", backImg: "Icon/carousel/5-back.png", rotate: true },
+      { name: "Showcase & Story",       bg: "#f6ebe3", img: "Icon/carousel/6-in.png", rotate: false },
+      { name: "DIY & Crafting Club",    bg: "#f6ebe3", img: "Icon/carousel/7-in.png", rotate: false },
+      { name: "Nanci's Dairy",          bg: "#f6ebe3", img: "Icon/carousel/8-in.png", rotate: true },
+      { name: "New Arrivals",           bg: "#f6ebe3", img: "Icon/carousel/9-in.png", rotate: false },
+      { name: "Exclusive Deals",        bg: "#f6ebe3", img: "Icon/carousel/10-in.png", rotate: false },
+      { name: "Instruction Manual",     bg: "#f6ebe3", img: "Icon/carousel/11-in.png", rotate: false }
     ];
 
     const track = document.getElementById("carouselTrack");
     CARDS.forEach(c => {
       const el = document.createElement("div");
       el.className = `carousel-card ${c.rotate ? "rotate" : "no-rotate"}`;
+      const bgStyle = c.backImg
+        ? `background: url('${c.backImg}') center/cover no-repeat, ${c.bg}`
+        : `background: ${c.bg}`;
+      const inner = c.img
+        ? `<img src="${c.img}" alt="${c.name}" style="max-width:90%;max-height:90%;object-fit:contain;position:relative;z-index:1">`
+        : `<span class="card-illustration">${c.fallback || ''}</span>`;
       el.innerHTML = `
-        <div class="card-image-area" style="background:${c.bg}">
-          <div class="card-deco" style="width:50px;height:50px;top:-8px;right:-8px;background:${c.decoColor}"></div>
-          <div class="card-deco" style="width:30px;height:30px;bottom:4px;left:-4px;background:${c.decoColor}"></div>
-          <span class="card-illustration">${c.icon}</span>
+        <div class="card-image-area" style="${bgStyle}">
+          ${inner}
         </div>
         <div class="card-text-area">
           <span class="card-title">${c.name}</span>
@@ -739,15 +743,15 @@
           <div class="topic-meta">
             <div class="topic-stats">
               <span class="topic-stat">
-                <img src="Icon/点赞评论观看/资源 30-9.png" alt="views">
+                <img src="Icon/topic-stats/views.png" alt="views">
                 ${t.views}
               </span>
               <span class="topic-stat">
-                <img src="Icon/点赞评论观看/资源 31-9.png" alt="likes">
+                <img src="Icon/topic-stats/likes.png" alt="likes">
                 ${t.likes}
               </span>
               <span class="topic-stat">
-                <img src="Icon/点赞评论观看/资源 32-9.png" alt="comments">
+                <img src="Icon/topic-stats/comments.png" alt="comments">
                 ${t.comments}
               </span>
             </div>

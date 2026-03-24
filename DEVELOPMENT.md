@@ -34,17 +34,26 @@
 ├── mobile/
 │   └── mobile.scss             # 移动端 <768px 响应式（汉堡菜单、单列卡片）
 ├── preview.html                # 独立预览页（无需 Discourse 实例，直接浏览器打开）
-├── Icon/                       # PNG 图标素材
-│   ├── 其他/                   # 资源 33（通知铃铛）、34（礼物）、35（搜索/更多）
-│   ├── 左侧图标/
-│   │   ├── 白色/               # 资源 22–25（侧栏激活态白色图标）
-│   │   └── 黑色/               # 资源 26–29（侧栏未激活黑色图标）
-│   └── 点赞评论观看/           # 资源 30（观看）、31（评论）、32（点赞）
+├── Icon/                       # PNG 图标素材（全英文命名）
+│   ├── carousel/               # 轮播卡片素材 ({序号}-in.png=内部插画, {序号}-back.png=背景)
+│   │   ├── 1-in.png, 1-back.png   (User Guide & Perks)
+│   │   ├── 3-in.png               (Ongoing Events)
+│   │   ├── 4-in.png               (Say Hi To Everyone)
+│   │   ├── 5-in.png, 5-back.png   (Spin & WIN)
+│   │   ├── 6-in.png ~ 11-in.png   (Showcase ~ Instruction Manual)
+│   │   └── 注: 2-in.png 暂缺 (Crafting Tips & Ideas)
+│   ├── sidebar/
+│   │   ├── white/              # 侧栏激活态白色图标 (topics, my-posts, my-messages, invite-friends)
+│   │   └── black/              # 侧栏未激活黑色图标 (同上)
+│   ├── topic-stats/            # 话题统计图标 (views, comments, likes)
+│   └── misc/                   # 杂项 (notification, gift, more)
 ├── design-rule/                # 设计标注图
-│   ├── 主页.jpg
-│   ├── 主题页面总览.jpg
-│   ├── 导航栏.jpg
-│   └── 导航栏动效.jpg
+│   ├── homepage.jpg            # 主页标注
+│   ├── theme-overview.jpg      # 主题页面总览
+│   ├── navbar.jpg              # 导航栏尺寸标注
+│   ├── navbar-animation.jpg    # 导航栏 hover 动效标注
+│   ├── navbar-bg-colors.jpg    # 导航栏卡片背景色号（最新更新）
+│   └── DESIGN-SPEC.md          # 设计规范文档（从标注图整理）
 ├── 针对顶部板块导航栏参考样式.html  # Principle 导出的 WebGL 交互原型（需 GPU 加速）
 ├── README.md                   # 原始产品需求文档
 ├── AGENTS.md                   # AI 开发环境说明
@@ -149,22 +158,53 @@ quaternary (橙):  #ffb93e    danger:            #e45735
 
 ## 五、图标素材对照表
 
-| 文件名 | 位置 | 内容 | 使用位置 |
-|--------|------|------|----------|
-| `资源 22-9.png` | `Icon/左侧图标/白色/` | Topics 图标 (白) | 侧栏激活态 |
-| `资源 23-9.png` | `Icon/左侧图标/白色/` | My posts 图标 (白) | 侧栏激活态 |
-| `资源 24-9.png` | `Icon/左侧图标/白色/` | My messages 图标 (白) | 侧栏激活态 |
-| `资源 25-9.png` | `Icon/左侧图标/白色/` | Invite Friends 图标 (白) | 侧栏激活态 |
-| `资源 26-9.png` | `Icon/左侧图标/黑色/` | Topics 图标 (黑) | 侧栏未激活态 |
-| `资源 27-9.png` | `Icon/左侧图标/黑色/` | My posts 图标 (黑) | 侧栏未激活态 |
-| `资源 28-9.png` | `Icon/左侧图标/黑色/` | My messages 图标 (黑) | 侧栏未激活态 |
-| `资源 29-9.png` | `Icon/左侧图标/黑色/` | Invite Friends 图标 (黑) | 侧栏未激活态 |
-| `资源 30-9.png` | `Icon/点赞评论观看/` | 浏览/观看图标 | 话题卡片统计 |
-| `资源 31-9.png` | `Icon/点赞评论观看/` | 评论图标 | 话题卡片统计 |
-| `资源 32-9.png` | `Icon/点赞评论观看/` | 点赞图标 | 话题卡片统计 |
-| `资源 33-9.png` | `Icon/其他/` | 通知铃铛 | Header 右侧 |
-| `资源 34-9.png` | `Icon/其他/` | 礼物盒 | Header 右侧 |
-| `资源 35-9.png` | `Icon/其他/` | 搜索/更多 | 侧栏 More |
+### 轮播卡片素材 (`Icon/carousel/`)
+
+| 文件名 | 对应卡片 | 类型 |
+|--------|----------|------|
+| `1-in.png` | User Guide & Perks | 内部插画 (书本指南) |
+| `1-back.png` | User Guide & Perks | 背景底纹 |
+| `3-in.png` | Ongoing Events | 内部插画 (彩旗庆祝) |
+| `4-in.png` | Say Hi To Everyone | 内部插画 (HELLO 文字) |
+| `5-in.png` | Spin & WIN | 内部插画 (转盘) |
+| `5-back.png` | Spin & WIN | 背景底纹 |
+| `6-in.png` | Showcase & Story | 内部插画 (奖杯+放大镜) |
+| `7-in.png` | DIY & Crafting Club | 内部插画 (剪刀/工具) |
+| `8-in.png` | Nanci's Dairy | 内部插画 (兔子角色) |
+| `9-in.png` | New Arrivals | 内部插画 (NEW 徽章) |
+| `10-in.png` | Exclusive Deals | 内部插画 (SALE 标签) |
+| `11-in.png` | Instruction Manual | 内部插画 (剪贴板文档) |
+
+> 注: `2-in.png` (Crafting Tips & Ideas) 暂缺，当前使用 💡 emoji 占位。
+
+### 侧栏图标 (`Icon/sidebar/`)
+
+| 文件名 | 内容 | 使用位置 |
+|--------|------|----------|
+| `white/topics.png` | Topics 图标 (白) | 侧栏激活态 |
+| `white/my-posts.png` | My posts 图标 (白) | 侧栏激活态 |
+| `white/my-messages.png` | My messages 图标 (白) | 侧栏激活态 |
+| `white/invite-friends.png` | Invite Friends 图标 (白) | 侧栏激活态 |
+| `black/topics.png` | Topics 图标 (黑) | 侧栏未激活态 |
+| `black/my-posts.png` | My posts 图标 (黑) | 侧栏未激活态 |
+| `black/my-messages.png` | My messages 图标 (黑) | 侧栏未激活态 |
+| `black/invite-friends.png` | Invite Friends 图标 (黑) | 侧栏未激活态 |
+
+### 话题统计图标 (`Icon/topic-stats/`)
+
+| 文件名 | 内容 |
+|--------|------|
+| `views.png` | 浏览/观看图标 |
+| `comments.png` | 评论图标 |
+| `likes.png` | 点赞图标 |
+
+### 杂项图标 (`Icon/misc/`)
+
+| 文件名 | 内容 | 使用位置 |
+|--------|------|----------|
+| `notification.png` | 通知铃铛 | Header 右侧 |
+| `gift.png` | 礼物盒 | Header 右侧 |
+| `more.png` | 搜索/更多 | 侧栏 More |
 
 ---
 
