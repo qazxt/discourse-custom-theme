@@ -155,17 +155,17 @@
       display: flex;
       gap: 10px;
       transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-      padding: 12px 4px;
+      padding: 50px 4px 10px;
+      align-items: flex-end;
     }
 
     .carousel-card {
       flex-shrink: 0;
       width: 148px;
-      height: 127px;
-      border-radius: 14px;
+      height: 66px;
+      border-radius: 10px;
       overflow: visible;
       cursor: pointer;
-      text-align: center;
       transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
       will-change: transform;
       position: relative;
@@ -183,7 +183,7 @@
     .card-body {
       width: 100%;
       height: 100%;
-      border-radius: 14px;
+      border-radius: 10px;
       position: relative;
       overflow: hidden;
       display: flex;
@@ -191,40 +191,41 @@
       justify-content: flex-end;
     }
 
-    /* Type A: icon overflows top */
+    /* Type A: icon overflows top, text at bottom-left */
     .card-body.type-a {
       overflow: visible;
     }
     .card-body.type-a .card-icon-overflow {
       position: absolute;
-      bottom: 28px;
       left: 50%;
       transform: translateX(-50%);
-      width: 85%;
+      bottom: 22px;
+      width: 90%;
       z-index: 2;
+      pointer-events: none;
     }
     .card-body.type-a .card-icon-overflow img {
       width: 100%;
       height: auto;
       display: block;
-      filter: drop-shadow(0 2px 6px rgba(0,0,0,0.1));
+      filter: drop-shadow(0 3px 8px rgba(0,0,0,0.12));
     }
 
-    /* Type B: centered icon inside */
+    /* Type B: icon centered inside */
     .card-body.type-b .card-icon-center {
       flex: 1;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 8px;
+      padding: 4px 8px 0;
     }
     .card-body.type-b .card-icon-center img {
-      max-width: 85%;
-      max-height: 80%;
+      max-width: 88%;
+      max-height: 85%;
       object-fit: contain;
     }
     .card-body.type-b .card-icon-center .emoji-fallback {
-      font-size: 48px;
+      font-size: 36px;
     }
 
     /* Type C: full-bleed photo background */
@@ -236,28 +237,28 @@
       content: '';
       position: absolute;
       left: 0; right: 0; bottom: 0;
-      height: 50%;
-      background: linear-gradient(to top, rgba(0,0,0,0.45), transparent);
-      border-radius: 0 0 14px 14px;
+      height: 55%;
+      background: linear-gradient(to top, rgba(0,0,0,0.5), transparent);
+      border-radius: 0 0 10px 10px;
       z-index: 1;
     }
     .card-body.type-c .card-label {
       color: #fff;
     }
 
-    /* Card label (text inside at bottom) */
+    /* Card label: inside card, bottom-left, prominent */
     .card-label {
       position: relative;
       z-index: 2;
-      padding: 6px 8px 8px;
-      font-size: 11px;
-      font-weight: 600;
+      padding: 0 8px 6px;
+      font-size: 14px;
+      font-weight: 700;
       color: var(--black);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      line-height: 1.3;
-      text-align: center;
+      line-height: 1.2;
+      text-align: left;
     }
 
     .carousel-arrow {
@@ -697,7 +698,7 @@
       { name: "Showcase & Story",       bg: "#582f78", type: "b", img: "Icon/carousel/6-in.png", rotate: false, dark: true },
       { name: "DIY & Crafting Club",    bg: "#fef7e7", type: "c", img: "Icon/carousel/7-in.png", rotate: false, dark: false },
       { name: "Nanci's Dairy",          bg: "#bdb1ff", type: "a", img: "Icon/carousel/8-in.png", rotate: true, dark: false },
-      { name: "New Arrivals",           bg: "#028be3", type: "b", img: "Icon/carousel/9-in.png", rotate: false, dark: true },
+      { name: "New Arrivals",           bg: "#028be3", type: "a", img: "Icon/carousel/9-in.png", rotate: false, dark: true },
       { name: "Exclusive Deals",        bg: "#d7c8a2", type: "b", img: "Icon/carousel/10-in.png", rotate: false, dark: false },
       { name: "Instruction Manual",     bg: "#fef7e7", type: "c", img: "Icon/carousel/11-in.png", rotate: false, dark: false }
     ];
