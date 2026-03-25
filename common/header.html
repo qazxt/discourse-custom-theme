@@ -3,21 +3,17 @@
     <div class="robotime-header__logo">
       <a href="/">ROBOTIME</a>
     </div>
+    <button class="robotime-header__mobile-menu-btn" aria-label="Menu">
+      <svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+    </button>
     <nav class="robotime-header__nav">
-      <a href="/help" class="robotime-header__nav-link">Help</a>
-      <a href="/community-perks" class="robotime-header__nav-link">Community Perks</a>
-      <a href="/win-prize" class="robotime-header__nav-link">Win Prize</a>
-      <a href="/how-to" class="robotime-header__nav-link">How To</a>
-      <a href="/about" class="robotime-header__nav-link">About</a>
-      <a href="https://www.robotime.com" class="robotime-header__nav-link" target="_blank" rel="noopener">Buy</a>
+      <!-- Populated dynamically by plugin via /hub-config.json → nav_items -->
     </nav>
     <div class="robotime-header__user">
-      <button class="robotime-header__icon-btn" title="Notifications">
-        <img src="{{theme-setting 'robotime_logo_url'}}/../Icon/其他/资源 33-9.png" alt="notifications" class="robotime-header__icon-img">
-      </button>
-      <button class="robotime-header__icon-btn" title="Gifts">
-        <img src="{{theme-setting 'robotime_logo_url'}}/../Icon/其他/资源 34-9.png" alt="gifts" class="robotime-header__icon-img">
-      </button>
+      <!-- Discourse native search/user controls will be appended here -->
     </div>
+  </div>
+  <div class="robotime-mobile-nav">
+    <!-- Populated dynamically by plugin via /hub-config.json → nav_items -->
   </div>
 </script>
