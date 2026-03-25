@@ -166,18 +166,17 @@ body {
 
   &__track {
     display: flex;
-    gap: 10px;
+    gap: 45px;
     transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     will-change: transform;
     padding: 6px 4px;
     align-items: stretch;
   }
 
-  // --- Unified card style (full-bleed photo, Type C) ---
   &__card {
     flex-shrink: 0;
-    width: 148px;
-    height: 66px;
+    width: 245px;
+    height: 140px;
     border-radius: 10px;
     overflow: hidden;
     cursor: pointer;
@@ -190,11 +189,10 @@ body {
 
     &:hover {
       z-index: 5;
-      transform: scale(1.12);
+      transform: scale(1.1);
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
     }
 
-    // Click press-down feedback
     &.is-pressed,
     &:active {
       transform: scale(0.96);
@@ -222,7 +220,7 @@ body {
       right: 0;
       bottom: 0;
       height: 60%;
-      background: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent);
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.45), transparent);
       border-radius: 0 0 10px 10px;
       z-index: 1;
     }
@@ -231,16 +229,20 @@ body {
   &__card-label {
     position: relative;
     z-index: 2;
-    padding: 0 8px 6px;
+    height: 19.5px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 0 10px 5px;
     font-family: $font-primary;
-    font-size: 14px;
-    font-weight: 700;
+    font-size: 24px;
+    font-weight: 400;
     color: $robotime-white;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     line-height: 1.2;
-    text-align: left;
+    text-align: center;
     text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
   }
 

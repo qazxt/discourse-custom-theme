@@ -41,20 +41,20 @@
     .hamburger-btn { display:none; color:#fff; background:none; border:none; cursor:pointer; padding:4px; }
     .hamburger-btn svg { width:24px; height:24px; fill:currentColor; }
 
-    /* === CAROUSEL — unified full-bleed photo style === */
-    .carousel { background:var(--white); padding:14px 0 18px; overflow:hidden; }
+    /* === CAROUSEL — unified full-bleed card (spec: 245×140, gap 45) === */
+    .carousel { background:var(--white); padding:10px 0 14px; overflow:hidden; }
     .carousel-container { max-width:1400px; margin:0 auto; padding:0 24px; position:relative; }
-    .carousel-track-wrapper { overflow:hidden; border-radius:8px; }
-    .carousel-track { display:flex; gap:10px; transition:transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94); padding:6px 4px; align-items:stretch; }
+    .carousel-track-wrapper { overflow:hidden; }
+    .carousel-track { display:flex; gap:45px; transition:transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94); padding:6px 4px; align-items:stretch; }
 
     .carousel-card {
-      flex-shrink:0; width:148px; height:66px; border-radius:10px;
+      flex-shrink:0; width:245px; height:140px; border-radius:10px;
       overflow:hidden; cursor:pointer; position:relative;
       text-decoration:none; color:inherit;
       transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s ease;
       will-change:transform;
     }
-    .carousel-card:hover { z-index:5; transform:scale(1.12); box-shadow:0 8px 24px rgba(0,0,0,0.18); }
+    .carousel-card:hover { z-index:5; transform:scale(1.1); box-shadow:0 8px 24px rgba(0,0,0,0.18); }
     .carousel-card.is-pressed, .carousel-card:active {
       transform:scale(0.96) !important;
       box-shadow:0 2px 8px rgba(0,0,0,0.1) !important;
@@ -70,14 +70,17 @@
     .card-body::after {
       content:''; position:absolute; left:0; right:0; bottom:0;
       height:60%;
-      background:linear-gradient(to top, rgba(0,0,0,0.5), transparent);
+      background:linear-gradient(to top, rgba(0,0,0,0.45), transparent);
       border-radius:0 0 10px 10px; z-index:1;
     }
     .card-label {
       position:relative; z-index:2;
-      padding:0 8px 6px; font-size:14px; font-weight:700;
+      height:19.5px;
+      display:flex; align-items:flex-end; justify-content:center;
+      padding:0 10px 5px;
+      font-size:16px; font-weight:400;
       color:var(--white); white-space:nowrap; overflow:hidden;
-      text-overflow:ellipsis; line-height:1.2; text-align:left;
+      text-overflow:ellipsis; line-height:1.2; text-align:center;
       text-shadow:0 1px 3px rgba(0,0,0,0.4);
     }
 
@@ -154,7 +157,9 @@
       .header-nav { display:none; }
       .hamburger-btn { display:flex; }
       .header-inner { height:52px; padding:0 12px; }
-      .carousel-card { width:120px; height:54px; }
+      .carousel-card { width:160px; height:92px; }
+      .carousel-track { gap:16px; }
+      .card-label { font-size:12px; height:16px; padding-bottom:3px; }
       .main-layout { flex-direction:column; padding:12px; }
       .sidebar { display:none; }
       .topic-grid { grid-template-columns:1fr; }
@@ -166,7 +171,9 @@
       .header-nav { gap:18px; }
       .header-nav a { font-size:14px; }
       .sidebar { width:220px; }
-      .carousel-card { width:130px; height:58px; }
+      .carousel-card { width:190px; height:108px; }
+      .carousel-track { gap:24px; }
+      .card-label { font-size:14px; }
     }
 
     /* === MOCK API BADGE === */
@@ -306,7 +313,7 @@
       });
 
       let scrollPos = 0;
-      const cw = 158;
+      const cw = 290;
       const getMax = () => Math.max(0, (banners.length - Math.floor(track.parentElement.offsetWidth / cw)) * cw);
       const update = () => { track.style.transform = `translateX(-${scrollPos}px)`; };
 
