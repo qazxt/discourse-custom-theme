@@ -3,389 +3,410 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Robotime Community Theme - Plugin-Driven Preview</title>
+  <title>Robotime Community Theme - Smart Nav</title>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --black: #000;
-      --white: #fff;
-      --blue: #66cbff;
-      --gray: #777;
-      --light-gray: #f7f7f7;
-      --border-gray: #ddd;
-      --hover-white: #ccc;
-      --header-user-bg: rgba(255,255,255,0.1);
-      --font: 'Noto Sans', 'Helvetica Neue', Arial, sans-serif;
+      --black:#000; --white:#fff; --blue:#66cbff; --gray:#777;
+      --light-gray:#f7f7f7; --border-gray:#ddd; --hover-white:#ccc;
+      --header-user-bg:rgba(255,255,255,0.1);
+      --font:'Noto Sans','Helvetica Neue',Arial,sans-serif;
+      --topbar-h:60px;
+      --hero-expanded-h:160px;
+      --hero-collapsed-h:170px; /* 45+80+45 */
+      --transition:0.35s ease-in-out;
     }
-    * { margin:0; padding:0; box-sizing:border-box; }
-    body { font-family:var(--font); background:#f5f5f5; color:var(--black); }
-    a { text-decoration:none; color:inherit; }
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{font-family:var(--font);background:#f5f5f5;color:var(--black);}
+    a{text-decoration:none;color:inherit;}
 
-    /* === HEADER === */
-    .header { background:var(--black); position:sticky; top:0; z-index:1000; }
-    .header-inner { display:flex; align-items:center; justify-content:space-between; max-width:1400px; margin:0 auto; padding:0 24px; height:60px; }
-    .header-logo a { display:inline-flex; align-items:center; background:var(--blue); color:var(--white); font-weight:700; font-size:13px; letter-spacing:1.5px; padding:8px 22px; border-radius:20px; transition:opacity 0.2s; }
-    .header-logo a:hover { opacity:0.9; }
-    .header-nav { display:flex; align-items:center; gap:32px; flex:1; justify-content:center; }
-    .header-nav a { font-size:16px; color:var(--white); position:relative; padding-bottom:4px; transition:color 0.3s; }
-    .header-nav a::after { content:''; position:absolute; left:0; bottom:0; width:0; height:2px; background:var(--white); transition:width 0.3s; }
-    .header-nav a:hover { color:var(--hover-white); }
-    .header-nav a:hover::after { width:100%; }
-    .header-user { display:flex; align-items:center; gap:14px; background:var(--header-user-bg); border-radius:20px; padding:6px 16px; flex-shrink:0; }
-    .icon-btn { display:flex; align-items:center; cursor:pointer; background:none; border:none; padding:4px; transition:opacity 0.2s; }
-    .icon-btn:hover { opacity:0.7; }
-    .icon-btn img { width:20px; height:20px; filter:brightness(0) invert(1); }
-    .user-avatar { display:flex; align-items:center; gap:8px; cursor:pointer; color:var(--white); }
-    .user-avatar img { width:32px; height:32px; border-radius:50%; }
-    .user-avatar span { font-size:14px; }
-    .hamburger-btn { display:none; color:#fff; background:none; border:none; cursor:pointer; padding:4px; }
-    .hamburger-btn svg { width:24px; height:24px; fill:currentColor; }
+    /* ============================
+       #global-hub-header (fixed)
+       ============================ */
+    #global-hub-header{position:fixed;top:0;left:0;right:0;z-index:9999;}
 
-    /* === CAROUSEL — unified full-bleed card (spec: 245×140, gap 45) === */
-    .carousel { background:var(--white); padding:10px 0 14px; overflow:hidden; }
-    .carousel-container { max-width:1400px; margin:0 auto; padding:0 24px; position:relative; }
-    .carousel-track-wrapper { overflow:hidden; }
-    .carousel-track { display:flex; gap:45px; transition:transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94); padding:6px 4px; align-items:stretch; }
+    /* Layer A — Top Bar */
+    .layer-a{background:var(--black);height:var(--topbar-h);position:relative;z-index:2;}
+    .layer-a-inner{display:flex;align-items:center;justify-content:space-between;max-width:1400px;margin:0 auto;padding:0 24px;height:100%;}
+    .logo a{display:inline-flex;align-items:center;background:var(--blue);color:var(--white);font-weight:700;font-size:13px;letter-spacing:1.5px;padding:8px 22px;border-radius:20px;transition:opacity 0.2s;}
+    .logo a:hover{opacity:0.9;}
+    .top-nav{display:flex;align-items:center;gap:32px;flex:1;justify-content:center;}
+    .top-nav a{font-size:16px;color:var(--white);position:relative;padding-bottom:4px;transition:color 0.3s;}
+    .top-nav a::after{content:'';position:absolute;left:0;bottom:0;width:0;height:2px;background:var(--white);transition:width 0.3s;}
+    .top-nav a:hover{color:var(--hover-white);}
+    .top-nav a:hover::after{width:100%;}
+    .user-tools{display:flex;align-items:center;gap:14px;background:var(--header-user-bg);border-radius:20px;padding:6px 16px;flex-shrink:0;}
+    .icon-btn{display:flex;align-items:center;cursor:pointer;background:none;border:none;padding:4px;transition:opacity 0.2s;}
+    .icon-btn:hover{opacity:0.7;}
+    .icon-btn img{width:20px;height:20px;filter:brightness(0) invert(1);}
+    .user-avatar{display:flex;align-items:center;gap:8px;cursor:pointer;color:var(--white);}
+    .user-avatar img{width:32px;height:32px;border-radius:50%;}
+    .user-avatar span{font-size:14px;}
+    .hamburger{display:none;color:#fff;background:none;border:none;cursor:pointer;padding:4px;}
+    .hamburger svg{width:24px;height:24px;fill:currentColor;}
 
-    .carousel-card {
-      flex-shrink:0; width:245px; height:140px; border-radius:10px;
-      overflow:hidden; cursor:pointer; position:relative;
-      text-decoration:none; color:inherit;
-      transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s ease;
+    /* Layer B — Hero Carousel Nav */
+    .layer-b{
+      position:relative;z-index:1;overflow:hidden;
+      height:var(--hero-expanded-h);
+      background:var(--white);
+      transition:height var(--transition), background-color var(--transition);
+    }
+    .layer-b.collapsed{height:var(--hero-collapsed-h);background:var(--black);}
+    .layer-b.collapsed:hover{box-shadow:0 4px 20px rgba(0,0,0,0.3);}
+
+    .layer-b-inner{
+      max-width:1400px;margin:0 auto;padding:0 24px;
+      height:100%;display:flex;align-items:center;position:relative;
+    }
+
+    /* Carousel track */
+    .hero-track-wrap{width:100%;overflow:hidden;position:relative;}
+    .hero-track{
+      display:flex;gap:45px;padding:6px 4px;
+      transition:transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94), gap var(--transition);
+      align-items:stretch;
+    }
+    .layer-b.collapsed .hero-track{gap:20px;}
+
+    /* --- Cards: Expanded --- */
+    .hero-card{
+      flex-shrink:0;width:245px;height:140px;border-radius:10px;
+      overflow:hidden;cursor:pointer;position:relative;
+      text-decoration:none;color:inherit;
+      transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1),
+                 box-shadow 0.3s ease,
+                 width var(--transition),height var(--transition),border-radius var(--transition);
       will-change:transform;
     }
-    .carousel-card:hover { z-index:5; transform:scale(1.1); box-shadow:0 8px 24px rgba(0,0,0,0.18); }
-    .carousel-card.is-pressed, .carousel-card:active {
-      transform:scale(0.96) !important;
-      box-shadow:0 2px 8px rgba(0,0,0,0.1) !important;
-      transition-duration:0.1s;
+    .hero-card:hover{z-index:5;transform:scale(1.1);box-shadow:0 10px 28px rgba(0,0,0,0.22);}
+    .hero-card.is-pressed,.hero-card:active{
+      transform:scale(0.96)!important;box-shadow:0 2px 8px rgba(0,0,0,0.1)!important;transition-duration:0.1s;
     }
 
-    .card-body {
-      width:100%; height:100%; border-radius:10px;
-      position:relative; overflow:hidden;
-      display:flex; flex-direction:column; justify-content:flex-end;
-      background-size:cover; background-position:center;
+    .hero-card-body{
+      width:100%;height:100%;border-radius:10px;
+      position:relative;overflow:hidden;
+      display:flex;flex-direction:column;justify-content:flex-end;
+      background-size:cover;background-position:center;
     }
-    .card-body::after {
-      content:''; position:absolute; left:0; right:0; bottom:0;
-      height:60%;
-      background:linear-gradient(to top, rgba(0,0,0,0.45), transparent);
-      border-radius:0 0 10px 10px; z-index:1;
+    /* Image layer (fades to 0 in collapsed) */
+    .hero-card-img{
+      position:absolute;inset:0;z-index:0;
+      background-size:cover;background-position:center;
+      border-radius:10px;
+      opacity:1;transition:opacity var(--transition);
     }
-    .card-label {
-      position:relative; z-index:2;
-      height:19.5px;
-      display:flex; align-items:flex-end; justify-content:center;
+    .layer-b.collapsed .hero-card-img{opacity:0;}
+
+    /* Gradient overlay */
+    .hero-card-body::after{
+      content:'';position:absolute;inset:0;
+      background:linear-gradient(to top,rgba(0,0,0,0.45) 0%,transparent 60%);
+      border-radius:10px;z-index:1;
+      transition:opacity var(--transition);
+    }
+    .layer-b.collapsed .hero-card-body::after{opacity:0;}
+
+    /* Label */
+    .hero-card-label{
+      position:relative;z-index:2;
+      height:19.5px;display:flex;align-items:flex-end;justify-content:center;
       padding:0 10px 5px;
-      font-size:16px; font-weight:400;
-      color:var(--white); white-space:nowrap; overflow:hidden;
-      text-overflow:ellipsis; line-height:1.2; text-align:center;
-      text-shadow:0 1px 3px rgba(0,0,0,0.4);
+      font-size:16px;font-weight:400;color:var(--white);
+      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+      text-shadow:0 1px 4px rgba(0,0,0,0.5);
+      transition:color var(--transition),font-size var(--transition),text-shadow var(--transition);
     }
 
-    .carousel-arrow {
-      position:absolute; top:50%; transform:translateY(-50%);
-      width:38px; height:38px; border-radius:50%; background:var(--white);
-      border:1px solid #e0e0e0; display:flex; align-items:center; justify-content:center;
-      cursor:pointer; z-index:10; box-shadow:0 2px 10px rgba(0,0,0,0.1);
-      transition:background 0.2s, box-shadow 0.2s, transform 0.2s;
+    /* --- Cards: Collapsed --- */
+    .layer-b.collapsed .hero-card{width:140px;height:60px;border-radius:8px;}
+    .layer-b.collapsed .hero-card:hover{transform:scale(1.05);box-shadow:0 4px 16px rgba(0,0,0,0.2);}
+    .layer-b.collapsed .hero-card-label{
+      font-size:11px;height:auto;padding:0 6px 4px;
+      color:var(--white);text-shadow:none;
     }
-    .carousel-arrow:hover { background:var(--light-gray); box-shadow:0 3px 14px rgba(0,0,0,0.15); transform:translateY(-50%) scale(1.05); }
-    .carousel-arrow svg { width:18px; height:18px; fill:var(--black); }
-    .carousel-arrow.left { left:6px; }
-    .carousel-arrow.right { right:6px; }
+    .layer-b.collapsed .hero-card-body{border-radius:8px;}
 
-    /* === MAIN LAYOUT === */
-    .main-layout { max-width:1400px; margin:0 auto; padding:24px; display:flex; gap:24px; }
-
-    /* === SIDEBAR === */
-    .sidebar { width:270px; flex-shrink:0; position:sticky; top:76px; align-self:flex-start; }
-    .sidebar-menu { list-style:none; margin-bottom:20px; }
-    .sidebar-menu li { margin-bottom:6px; }
-    .sidebar-menu a { display:flex; align-items:center; gap:12px; padding:12px 20px; border-radius:12px; font-size:16px; background:var(--light-gray); transition:background 0.2s, color 0.2s; }
-    .sidebar-menu a:hover { background:#eee; }
-    .sidebar-menu a.active { background:var(--black); color:var(--white); }
-    .sidebar-menu .menu-icon { width:20px; height:20px; object-fit:contain; }
-    .sidebar-menu a.active .menu-icon { filter:brightness(0) invert(1); }
-
-    /* Sidebar widget slot (plugin-driven) */
-    .sidebar-widget-slot { margin-top:16px; }
-    .sw-card { display:block; border:1px solid #eee; border-radius:12px; overflow:hidden; text-decoration:none; color:inherit; transition:box-shadow 0.2s; }
-    .sw-card:hover { box-shadow:0 4px 12px rgba(0,0,0,0.08); }
-    .sw-card img { width:100%; max-height:160px; object-fit:cover; display:block; }
-    .sw-title { padding:10px 12px; font-size:14px; font-weight:500; color:var(--gray); }
-    .sw-dots { display:flex; justify-content:center; gap:6px; padding:8px 0; }
-    .sw-dot { width:6px; height:6px; border-radius:50%; background:var(--border-gray); }
-    .sw-dot.active { background:var(--blue); }
-
-    .new-topic-btn { display:flex; align-items:center; justify-content:center; gap:8px; width:100%; height:44px; background:var(--blue); color:var(--white); border:none; border-radius:22px; font-size:16px; font-weight:500; cursor:pointer; margin-top:12px; transition:opacity 0.2s; }
-    .new-topic-btn:hover { opacity:0.9; }
-    .new-topic-btn svg { width:18px; height:18px; fill:currentColor; }
-
-    /* === CONTENT === */
-    .content { flex:1; min-width:0; }
-    .filter-bar { display:flex; align-items:center; justify-content:space-between; padding-bottom:16px; border-bottom:1px solid #eee; margin-bottom:20px; }
-    .filter-tabs { display:flex; gap:30px; }
-    .filter-tab { font-size:18px; color:var(--gray); cursor:pointer; padding-bottom:6px; position:relative; background:none; border:none; font-family:var(--font); transition:color 0.2s; }
-    .filter-tab::after { content:''; position:absolute; left:0; bottom:0; width:0; height:2px; background:var(--black); transition:width 0.3s; }
-    .filter-tab:hover { color:var(--black); }
-    .filter-tab.active { color:var(--black); font-weight:600; }
-    .filter-tab.active::after { width:100%; }
-
-    .topic-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:20px; }
-    .topic-card { border-radius:20px; overflow:hidden; background:var(--white); box-shadow:0 1px 4px rgba(0,0,0,0.06); transition:box-shadow 0.25s, transform 0.25s; cursor:pointer; }
-    .topic-card:hover { box-shadow:0 6px 24px rgba(0,0,0,0.12); transform:translateY(-3px); }
-    .topic-thumb { width:100%; aspect-ratio:1/1; overflow:hidden; background:var(--border-gray); position:relative; }
-    .topic-thumb.portrait { aspect-ratio:3/4; }
-    .topic-thumb img { width:100%; height:100%; object-fit:cover; }
-    .topic-badge { position:absolute; top:12px; left:12px; background:linear-gradient(135deg,var(--blue),#4ba3d9); color:var(--white); font-size:12px; font-weight:500; padding:4px 12px; border-radius:12px; }
-    .topic-content { padding:14px 16px; display:flex; flex-direction:column; gap:10px; }
-    .topic-title { font-size:17px; font-weight:500; line-height:1.4; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
-    .topic-meta { display:flex; align-items:center; justify-content:space-between; }
-    .topic-stats { display:flex; align-items:center; gap:16px; }
-    .topic-stat { display:flex; align-items:center; gap:4px; font-size:14px; color:var(--gray); }
-    .topic-stat img { width:16px; height:16px; opacity:0.65; }
-    .topic-avatar-img { width:40px; height:40px; border-radius:50%; border:2px solid var(--light-gray); background:#ddd; }
-
-    .mobile-nav { display:none; position:fixed; top:52px; left:0; right:0; bottom:0; background:rgba(0,0,0,0.95); z-index:1100; flex-direction:column; padding:20px; }
-    .mobile-nav.open { display:flex; }
-    .mobile-nav a { font-size:20px; color:#fff; padding:16px 0; border-bottom:1px solid rgba(255,255,255,0.1); }
-
-    /* === RESPONSIVE === */
-    @media (max-width:767px) {
-      .header-nav { display:none; }
-      .hamburger-btn { display:flex; }
-      .header-inner { height:52px; padding:0 12px; }
-      .carousel-card { width:160px; height:92px; }
-      .carousel-track { gap:16px; }
-      .card-label { font-size:12px; height:16px; padding-bottom:3px; }
-      .main-layout { flex-direction:column; padding:12px; }
-      .sidebar { display:none; }
-      .topic-grid { grid-template-columns:1fr; }
-      .filter-bar { flex-direction:column; gap:10px; align-items:flex-start; }
-      .filter-tabs { gap:16px; overflow-x:auto; width:100%; }
-      .filter-tab { font-size:15px; white-space:nowrap; }
+    /* Arrows */
+    .hero-arrow{
+      position:absolute;top:50%;transform:translateY(-50%);
+      width:38px;height:38px;border-radius:50%;
+      background:rgba(255,255,255,0.9);border:1px solid #e0e0e0;
+      display:flex;align-items:center;justify-content:center;
+      cursor:pointer;z-index:10;box-shadow:0 2px 10px rgba(0,0,0,0.1);
+      transition:background 0.2s,transform 0.2s,width var(--transition),height var(--transition);
     }
-    @media (min-width:768px) and (max-width:1199px) {
-      .header-nav { gap:18px; }
-      .header-nav a { font-size:14px; }
-      .sidebar { width:220px; }
-      .carousel-card { width:190px; height:108px; }
-      .carousel-track { gap:24px; }
-      .card-label { font-size:14px; }
-    }
+    .hero-arrow:hover{background:var(--light-gray);transform:translateY(-50%) scale(1.08);}
+    .hero-arrow svg{width:18px;height:18px;fill:var(--black);transition:width var(--transition),height var(--transition);}
+    .hero-arrow.left{left:4px;}
+    .hero-arrow.right{right:4px;}
+    .layer-b.collapsed .hero-arrow{width:30px;height:30px;background:rgba(255,255,255,0.15);border-color:rgba(255,255,255,0.2);}
+    .layer-b.collapsed .hero-arrow svg{width:14px;height:14px;fill:var(--white);}
+    .layer-b.collapsed .hero-arrow:hover{background:rgba(255,255,255,0.3);}
 
-    /* === MOCK API BADGE === */
-    .mock-badge { position:fixed; bottom:12px; right:12px; background:#e65e2a; color:#fff; font-size:11px; font-weight:600; padding:6px 14px; border-radius:20px; z-index:9999; box-shadow:0 2px 10px rgba(0,0,0,0.2); }
+    /* ============================
+       Content spacer
+       ============================ */
+    #content-spacer{
+      height:calc(var(--topbar-h) + var(--hero-expanded-h));
+      transition:height var(--transition);
+    }
+    #content-spacer.collapsed{height:calc(var(--topbar-h) + var(--hero-collapsed-h));}
+
+    /* ============================
+       Mobile nav
+       ============================ */
+    .mobile-nav{display:none;position:fixed;top:52px;left:0;right:0;bottom:0;background:rgba(0,0,0,0.95);z-index:10000;flex-direction:column;padding:20px;}
+    .mobile-nav.open{display:flex;}
+    .mobile-nav a{font-size:20px;color:#fff;padding:16px 0;border-bottom:1px solid rgba(255,255,255,0.1);}
+
+    /* ============================
+       Main layout (unchanged)
+       ============================ */
+    .main-layout{max-width:1400px;margin:0 auto;padding:24px;display:flex;gap:24px;}
+    .sidebar{width:270px;flex-shrink:0;position:sticky;top:calc(var(--topbar-h) + var(--hero-collapsed-h) + 16px);align-self:flex-start;}
+    .sidebar-menu{list-style:none;margin-bottom:20px;}
+    .sidebar-menu li{margin-bottom:6px;}
+    .sidebar-menu a{display:flex;align-items:center;gap:12px;padding:12px 20px;border-radius:12px;font-size:16px;background:var(--light-gray);transition:background 0.2s,color 0.2s;}
+    .sidebar-menu a:hover{background:#eee;}
+    .sidebar-menu a.active{background:var(--black);color:var(--white);}
+    .sidebar-menu .menu-icon{width:20px;height:20px;object-fit:contain;}
+    .sidebar-menu a.active .menu-icon{filter:brightness(0) invert(1);}
+    .sw-card{display:block;border:1px solid #eee;border-radius:12px;overflow:hidden;transition:box-shadow 0.2s;}
+    .sw-card:hover{box-shadow:0 4px 12px rgba(0,0,0,0.08);}
+    .sw-card img{width:100%;max-height:160px;object-fit:cover;display:block;}
+    .sw-title{padding:10px 12px;font-size:14px;font-weight:500;color:var(--gray);}
+    .sw-dots{display:flex;justify-content:center;gap:6px;padding:8px 0;}
+    .sw-dot{width:6px;height:6px;border-radius:50%;background:var(--border-gray);}
+    .sw-dot.active{background:var(--blue);}
+    .new-topic-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;height:44px;background:var(--blue);color:var(--white);border:none;border-radius:22px;font-size:16px;font-weight:500;cursor:pointer;margin-top:12px;transition:opacity 0.2s;}
+    .new-topic-btn:hover{opacity:0.9;}
+    .new-topic-btn svg{width:18px;height:18px;fill:currentColor;}
+    .content{flex:1;min-width:0;}
+    .filter-bar{display:flex;align-items:center;justify-content:space-between;padding-bottom:16px;border-bottom:1px solid #eee;margin-bottom:20px;}
+    .filter-tabs{display:flex;gap:30px;}
+    .filter-tab{font-size:18px;color:var(--gray);cursor:pointer;padding-bottom:6px;position:relative;background:none;border:none;font-family:var(--font);transition:color 0.2s;}
+    .filter-tab::after{content:'';position:absolute;left:0;bottom:0;width:0;height:2px;background:var(--black);transition:width 0.3s;}
+    .filter-tab:hover{color:var(--black);}
+    .filter-tab.active{color:var(--black);font-weight:600;}
+    .filter-tab.active::after{width:100%;}
+    .topic-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;}
+    .topic-card{border-radius:20px;overflow:hidden;background:var(--white);box-shadow:0 1px 4px rgba(0,0,0,0.06);transition:box-shadow 0.25s,transform 0.25s;cursor:pointer;}
+    .topic-card:hover{box-shadow:0 6px 24px rgba(0,0,0,0.12);transform:translateY(-3px);}
+    .topic-thumb{width:100%;aspect-ratio:1/1;overflow:hidden;background:var(--border-gray);position:relative;}
+    .topic-thumb.portrait{aspect-ratio:3/4;}
+    .topic-thumb img{width:100%;height:100%;object-fit:cover;}
+    .topic-badge{position:absolute;top:12px;left:12px;background:linear-gradient(135deg,var(--blue),#4ba3d9);color:var(--white);font-size:12px;font-weight:500;padding:4px 12px;border-radius:12px;}
+    .topic-content{padding:14px 16px;display:flex;flex-direction:column;gap:10px;}
+    .topic-title{font-size:17px;font-weight:500;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+    .topic-meta{display:flex;align-items:center;justify-content:space-between;}
+    .topic-stats{display:flex;align-items:center;gap:16px;}
+    .topic-stat{display:flex;align-items:center;gap:4px;font-size:14px;color:var(--gray);}
+    .topic-stat img{width:16px;height:16px;opacity:0.65;}
+    .topic-avatar-img{width:40px;height:40px;border-radius:50%;border:2px solid var(--light-gray);background:#ddd;}
+    .mock-badge{position:fixed;bottom:12px;right:12px;background:#e65e2a;color:#fff;font-size:11px;font-weight:600;padding:6px 14px;border-radius:20px;z-index:99999;box-shadow:0 2px 10px rgba(0,0,0,0.2);}
+
+    /* Responsive */
+    @media(max-width:767px){
+      .top-nav{display:none;}.hamburger{display:flex;}
+      :root{--topbar-h:52px;--hero-expanded-h:120px;--hero-collapsed-h:100px;}
+      .hero-card{width:160px;height:92px;}
+      .hero-track{gap:16px;}
+      .hero-card-label{font-size:12px;}
+      .layer-b.collapsed .hero-card{width:100px;height:40px;}
+      .layer-b.collapsed .hero-track{gap:10px;}
+      .layer-b.collapsed .hero-card-label{font-size:9px;}
+      .main-layout{flex-direction:column;padding:12px;}.sidebar{display:none;}
+      .topic-grid{grid-template-columns:1fr;}
+    }
+    @media(min-width:768px) and (max-width:1199px){
+      .top-nav{gap:18px;}.top-nav a{font-size:14px;}.sidebar{width:220px;}
+      .hero-card{width:190px;height:108px;}.hero-track{gap:24px;}.hero-card-label{font-size:14px;}
+      .layer-b.collapsed .hero-card{width:120px;height:50px;}.layer-b.collapsed .hero-track{gap:14px;}
+    }
   </style>
 </head>
 <body>
 
-  <!-- HEADER -->
-  <header class="header">
-    <div class="header-inner">
-      <div class="header-logo"><a href="/">ROBOTIME</a></div>
-      <button class="hamburger-btn" id="hamburgerBtn" aria-label="Menu">
-        <svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
-      </button>
-      <nav class="header-nav" id="headerNav"><!-- plugin: nav_items --></nav>
-      <div class="header-user">
-        <button class="icon-btn" title="Notifications"><img src="Icon/misc/notification.png" alt=""></button>
-        <button class="icon-btn" title="Gifts"><img src="Icon/misc/gift.png" alt=""></button>
+<!-- #global-hub-header -->
+<div id="global-hub-header">
+  <div class="layer-a">
+    <div class="layer-a-inner">
+      <div class="logo"><a href="/">ROBOTIME</a></div>
+      <button class="hamburger" id="hamburgerBtn" aria-label="Menu"><svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg></button>
+      <nav class="top-nav" id="topNav"></nav>
+      <div class="user-tools">
+        <button class="icon-btn"><img src="Icon/misc/notification.png" alt=""></button>
+        <button class="icon-btn"><img src="Icon/misc/gift.png" alt=""></button>
         <div class="user-avatar">
           <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32'%3E%3Crect width='32' height='32' rx='16' fill='%2366cbff'/%3E%3Ctext x='50%25' y='55%25' text-anchor='middle' dominant-baseline='middle' fill='white' font-size='14'%3EL%3C/text%3E%3C/svg%3E" alt="">
           <span>Lance.li</span>
         </div>
       </div>
     </div>
-  </header>
-  <div class="mobile-nav" id="mobileNav"><!-- plugin: nav_items --></div>
-
-  <!-- CAROUSEL -->
-  <section class="carousel">
-    <div class="carousel-container">
-      <button class="carousel-arrow left" id="carouselPrev"><svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg></button>
-      <div class="carousel-track-wrapper">
-        <div class="carousel-track" id="carouselTrack"><!-- plugin: hero_banners --></div>
-      </div>
-      <button class="carousel-arrow right" id="carouselNext"><svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></button>
-    </div>
-  </section>
-
-  <!-- MAIN LAYOUT -->
-  <div class="main-layout">
-    <aside class="sidebar">
-      <ul class="sidebar-menu">
-        <li><a href="#" class="active"><img class="menu-icon" src="Icon/sidebar/white/topics.png" alt="">Topics</a></li>
-        <li><a href="#"><img class="menu-icon" src="Icon/sidebar/black/my-posts.png" alt="">My posts</a></li>
-        <li><a href="#"><img class="menu-icon" src="Icon/sidebar/black/my-messages.png" alt="">My messages</a></li>
-        <li><a href="#"><img class="menu-icon" src="Icon/sidebar/black/invite-friends.png" alt="">Invite Friends</a></li>
-        <li><a href="#"><img class="menu-icon" src="Icon/misc/more.png" alt="">More</a></li>
-      </ul>
-      <div class="sidebar-widget-slot" id="sidebarWidgetSlot"><!-- plugin: sidebar_widgets --></div>
-      <button class="new-topic-btn"><svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>New topic</button>
-    </aside>
-
-    <main class="content">
-      <div class="filter-bar">
-        <div class="filter-tabs">
-          <button class="filter-tab">Categories</button>
-          <button class="filter-tab">Tags ▸</button>
-          <button class="filter-tab active">Latest</button>
-          <button class="filter-tab">New <span style="font-size:14px;color:var(--gray)">(34)</span></button>
-          <button class="filter-tab">Top</button>
-          <button class="filter-tab">Bookmarks</button>
-        </div>
-      </div>
-      <div class="topic-grid" id="topicGrid"></div>
-    </main>
   </div>
+  <div class="layer-b" id="layerB">
+    <div class="layer-b-inner">
+      <div class="hero-track-wrap">
+        <button class="hero-arrow left" id="heroPrev"><svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg></button>
+        <div class="hero-track" id="heroTrack"></div>
+        <button class="hero-arrow right" id="heroNext"><svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="mobile-nav" id="mobileNav"></div>
+<div id="content-spacer"></div>
 
-  <div class="mock-badge">MOCK /hub-config.json</div>
+<!-- Main layout -->
+<div class="main-layout">
+  <aside class="sidebar">
+    <ul class="sidebar-menu">
+      <li><a href="#" class="active"><img class="menu-icon" src="Icon/sidebar/white/topics.png" alt="">Topics</a></li>
+      <li><a href="#"><img class="menu-icon" src="Icon/sidebar/black/my-posts.png" alt="">My posts</a></li>
+      <li><a href="#"><img class="menu-icon" src="Icon/sidebar/black/my-messages.png" alt="">My messages</a></li>
+      <li><a href="#"><img class="menu-icon" src="Icon/sidebar/black/invite-friends.png" alt="">Invite Friends</a></li>
+      <li><a href="#"><img class="menu-icon" src="Icon/misc/more.png" alt="">More</a></li>
+    </ul>
+    <div id="sidebarWidgetSlot"></div>
+    <button class="new-topic-btn"><svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>New topic</button>
+  </aside>
+  <main class="content">
+    <div class="filter-bar">
+      <div class="filter-tabs">
+        <button class="filter-tab">Categories</button>
+        <button class="filter-tab">Tags ▸</button>
+        <button class="filter-tab active">Latest</button>
+        <button class="filter-tab">New <span style="font-size:14px;color:var(--gray)">(34)</span></button>
+        <button class="filter-tab">Top</button>
+        <button class="filter-tab">Bookmarks</button>
+      </div>
+    </div>
+    <div class="topic-grid" id="topicGrid"></div>
+  </main>
+</div>
+<div class="mock-badge">MOCK API</div>
 
-  <script>
-    // =============================================
-    // MOCK /hub-config.json — simulates plugin API
-    // In production, this comes from the Discourse plugin
-    // =============================================
-    const MOCK_HUB_CONFIG = {
-      nav_items: [
-        { label: "Help", url: "/help", is_external: false },
-        { label: "Community Perks", url: "/community-perks", is_external: false },
-        { label: "Win Prize", url: "/win-prize", is_external: false },
-        { label: "How To", url: "/how-to", is_external: false },
-        { label: "About", url: "/about", is_external: false },
-        { label: "Buy", url: "https://www.robotime.com", is_external: true }
-      ],
+<script>
+const CONFIG = {
+  nav_items: [
+    {label:"Help",url:"/help",is_external:false},
+    {label:"Community Perks",url:"/community-perks",is_external:false},
+    {label:"Win Prize",url:"/win-prize",is_external:false},
+    {label:"How To",url:"/how-to",is_external:false},
+    {label:"About",url:"/about",is_external:false},
+    {label:"Buy",url:"https://www.robotime.com",is_external:true}
+  ],
+  hero_banners: [
+    {title:"User Guide & Perks",  image_url:"Icon/carousel/1-in.png", bg_color:"#f6ebe3",link_url:"/c/user-guide-perks"},
+    {title:"Crafting Tips & Ideas",image_url:"Icon/carousel/3-in.png", bg_color:"#ffdb04",link_url:"/c/crafting-tips"},
+    {title:"Ongoing Events",      image_url:"Icon/carousel/3-in.png", bg_color:"#e65e2a",link_url:"/c/ongoing-events"},
+    {title:"Say Hi To Everyone",  image_url:"Icon/carousel/4-in.png", bg_color:"#fef7e7",link_url:"/c/say-hi"},
+    {title:"Spin & WIN",         image_url:"Icon/carousel/5-in.png", bg_color:"#ffb93e",link_url:"/c/spin-and-win"},
+    {title:"Showcase & Story",    image_url:"Icon/carousel/6-in.png", bg_color:"#582f78",link_url:"/c/showcase-story"},
+    {title:"DIY & Crafting Club", image_url:"Icon/carousel/7-in.png", bg_color:"#fef7e7",link_url:"/c/diy-crafting"},
+    {title:"Nanci's Dairy",       image_url:"Icon/carousel/8-in.png", bg_color:"#bdb1ff",link_url:"/c/nancis-dairy"},
+    {title:"New Arrivals",        image_url:"Icon/carousel/9-in.png", bg_color:"#028be3",link_url:"/c/new-arrivals"},
+    {title:"Exclusive Deals",     image_url:"Icon/carousel/10-in.png",bg_color:"#d7c8a2",link_url:"/c/exclusive-deals"},
+    {title:"Instruction Manual",  image_url:"Icon/carousel/11-in.png",bg_color:"#fef7e7",link_url:"/c/instruction"}
+  ],
+  sidebar_widgets: [
+    {title:"Sweet Shack",image_url:"Icon/carousel/9-in.png",link_url:"/t/sweet-shack"},
+    {title:"Winter Campaign",image_url:"Icon/carousel/8-in.png",link_url:"/t/winter"}
+  ]
+};
 
-      hero_banners: [
-        { title: "User Guide & Perks",    image_url: "Icon/carousel/1-in.png",  bg_color: "#f6ebe3", link_url: "/c/user-guide-perks" },
-        { title: "Crafting Tips & Ideas",  image_url: "Icon/carousel/3-in.png",  bg_color: "#ffdb04", link_url: "/c/crafting-tips-ideas" },
-        { title: "Ongoing Events",         image_url: "Icon/carousel/3-in.png",  bg_color: "#e65e2a", link_url: "/c/ongoing-events" },
-        { title: "Say Hi To Everyone",     image_url: "Icon/carousel/4-in.png",  bg_color: "#fef7e7", link_url: "/c/say-hi" },
-        { title: "Spin & WIN",            image_url: "Icon/carousel/5-in.png",  bg_color: "#ffb93e", link_url: "/c/spin-and-win" },
-        { title: "Showcase & Story",       image_url: "Icon/carousel/6-in.png",  bg_color: "#582f78", link_url: "/c/showcase-story" },
-        { title: "DIY & Crafting Club",    image_url: "Icon/carousel/7-in.png",  bg_color: "#fef7e7", link_url: "/c/diy-crafting-club" },
-        { title: "Nanci's Dairy",          image_url: "Icon/carousel/8-in.png",  bg_color: "#bdb1ff", link_url: "/c/nancis-dairy" },
-        { title: "New Arrivals",           image_url: "Icon/carousel/9-in.png",  bg_color: "#028be3", link_url: "/c/new-arrivals" },
-        { title: "Exclusive Deals",        image_url: "Icon/carousel/10-in.png", bg_color: "#d7c8a2", link_url: "/c/exclusive-deals" },
-        { title: "Instruction Manual",     image_url: "Icon/carousel/11-in.png", bg_color: "#fef7e7", link_url: "/c/instruction-manual" }
-      ],
+// Nav links
+const topNav=document.getElementById('topNav'), mobileNav=document.getElementById('mobileNav');
+CONFIG.nav_items.forEach(item=>{
+  const a=document.createElement('a');a.href=item.url;a.textContent=item.label;
+  if(item.is_external){a.target='_blank';a.rel='noopener';}
+  topNav.appendChild(a); mobileNav.appendChild(a.cloneNode(true));
+});
 
-      sidebar_widgets: [
-        { title: "Sweet Shack", image_url: "Icon/carousel/9-in.png", link_url: "/t/sweet-shack" },
-        { title: "Winter Campaign", image_url: "Icon/carousel/8-in.png", link_url: "/t/winter-campaign" }
-      ]
-    };
+// Carousel cards — separate image layer from bg_color for independent opacity control
+const heroTrack=document.getElementById('heroTrack');
+CONFIG.hero_banners.forEach(card=>{
+  const el=document.createElement('a');
+  el.href=card.link_url||'#';
+  el.className='hero-card';
+  el.innerHTML=`
+    <div class="hero-card-body" style="background-color:${card.bg_color||'#f6ebe3'}">
+      <div class="hero-card-img" style="background-image:url('${card.image_url}')"></div>
+      <div class="hero-card-label">${card.title}</div>
+    </div>`;
+  el.addEventListener('mousedown',()=>el.classList.add('is-pressed'));
+  el.addEventListener('mouseup',()=>el.classList.remove('is-pressed'));
+  el.addEventListener('mouseleave',()=>el.classList.remove('is-pressed'));
+  heroTrack.appendChild(el);
+});
 
-    // =============================================
-    // RENDER FUNCTIONS (same logic as head_tag.html)
-    // =============================================
-    function renderNavLinks(container, mobileContainer, items) {
-      container.innerHTML = '';
-      mobileContainer.innerHTML = '';
-      items.forEach(item => {
-        const a = document.createElement('a');
-        a.href = item.url;
-        a.textContent = item.label;
-        if (item.is_external) { a.target = '_blank'; a.rel = 'noopener'; }
+// Carousel scroll
+let scrollPos=0;
+const getStep=()=>document.getElementById('layerB').classList.contains('collapsed')?160:290;
+const getMax=()=>{const s=getStep();return Math.max(0,(heroTrack.children.length-Math.floor(heroTrack.parentElement.offsetWidth/s))*s);};
+const updateScroll=()=>{heroTrack.style.transform=`translateX(-${scrollPos}px)`;};
+document.getElementById('heroPrev').addEventListener('click',e=>{e.stopPropagation();scrollPos=Math.max(0,scrollPos-getStep()*2);updateScroll();});
+document.getElementById('heroNext').addEventListener('click',e=>{e.stopPropagation();scrollPos=Math.min(getMax(),scrollPos+getStep()*2);updateScroll();});
 
-        container.appendChild(a);
+// Touch swipe
+let touchX=0;
+heroTrack.addEventListener('touchstart',e=>{touchX=e.touches[0].clientX;},{passive:true});
+heroTrack.addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].clientX-touchX;
+  if(Math.abs(dx)>40){
+    if(dx>0)scrollPos=Math.max(0,scrollPos-getStep());
+    else scrollPos=Math.min(getMax(),scrollPos+getStep());
+    updateScroll();
+  }
+},{passive:true});
 
-        const ma = a.cloneNode(true);
-        mobileContainer.appendChild(ma);
-      });
-    }
+// Scroll state: expanded ↔ collapsed
+const layerB=document.getElementById('layerB'),spacer=document.getElementById('content-spacer');
+let collapsed=false,debounce;
+function checkScroll(){
+  const should=window.scrollY>50;
+  if(should===collapsed)return;
+  collapsed=should;
+  layerB.classList.toggle('collapsed',collapsed);
+  spacer.classList.toggle('collapsed',collapsed);
+  scrollPos=0;updateScroll();
+}
+window.addEventListener('scroll',()=>{clearTimeout(debounce);debounce=setTimeout(checkScroll,15);},{passive:true});
 
-    function renderCarousel(track, banners) {
-      track.innerHTML = '';
-      banners.forEach(card => {
-        const el = document.createElement('a');
-        el.href = card.link_url || '#';
-        el.className = 'carousel-card';
-        el.innerHTML = `<div class="card-body" style="background:url('${card.image_url}') center/cover no-repeat, ${card.bg_color || '#f6ebe3'}"><div class="card-label">${card.title}</div></div>`;
+// Hamburger
+document.getElementById('hamburgerBtn').addEventListener('click',()=>mobileNav.classList.toggle('open'));
 
-        el.addEventListener('mousedown', () => el.classList.add('is-pressed'));
-        el.addEventListener('mouseup',   () => el.classList.remove('is-pressed'));
-        el.addEventListener('mouseleave',() => el.classList.remove('is-pressed'));
-        track.appendChild(el);
-      });
+// Sidebar widget
+const swSlot=document.getElementById('sidebarWidgetSlot');
+let swIdx=0;
+function buildSW(){
+  const w=CONFIG.sidebar_widgets[swIdx];
+  const dots=CONFIG.sidebar_widgets.length>1?`<div class="sw-dots">${CONFIG.sidebar_widgets.map((_,i)=>`<span class="sw-dot${i===swIdx?' active':''}"></span>`).join('')}</div>`:'';
+  swSlot.innerHTML=`<a href="${w.link_url||'#'}" class="sw-card"><img src="${w.image_url}" alt="${w.title}"><div class="sw-title">${w.title}</div></a>${dots}`;
+}
+buildSW();
+if(CONFIG.sidebar_widgets.length>1)setInterval(()=>{swIdx=(swIdx+1)%CONFIG.sidebar_widgets.length;buildSW();},5000);
 
-      let scrollPos = 0;
-      const cw = 290;
-      const getMax = () => Math.max(0, (banners.length - Math.floor(track.parentElement.offsetWidth / cw)) * cw);
-      const update = () => { track.style.transform = `translateX(-${scrollPos}px)`; };
+// Filter tabs
+document.querySelectorAll('.filter-tab').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('.filter-tab').forEach(x=>x.classList.remove('active'));t.classList.add('active');
+}));
 
-      document.getElementById('carouselPrev').addEventListener('click', () => { scrollPos = Math.max(0, scrollPos - cw*2); update(); });
-      document.getElementById('carouselNext').addEventListener('click', () => { scrollPos = Math.min(getMax(), scrollPos + cw*2); update(); });
-    }
-
-    function renderSidebarWidgets(slot, widgets) {
-      slot.innerHTML = '';
-      if (!widgets || !widgets.length) return;
-      let idx = 0;
-      function build() {
-        const w = widgets[idx];
-        const dots = widgets.length > 1 ? `<div class="sw-dots">${widgets.map((_,i)=>`<span class="sw-dot${i===idx?' active':''}"></span>`).join('')}</div>` : '';
-        slot.innerHTML = `<a href="${w.link_url||'#'}" class="sw-card"><img src="${w.image_url}" alt="${w.title}"><div class="sw-title">${w.title}</div></a>${dots}`;
-      }
-      build();
-      if (widgets.length > 1) setInterval(() => { idx = (idx+1) % widgets.length; build(); }, 5000);
-    }
-
-    // =============================================
-    // INIT — simulate plugin API call
-    // =============================================
-    const config = MOCK_HUB_CONFIG;
-    renderNavLinks(document.getElementById('headerNav'), document.getElementById('mobileNav'), config.nav_items);
-    renderCarousel(document.getElementById('carouselTrack'), config.hero_banners);
-    renderSidebarWidgets(document.getElementById('sidebarWidgetSlot'), config.sidebar_widgets);
-
-    document.getElementById('hamburgerBtn').addEventListener('click', () => {
-      document.getElementById('mobileNav').classList.toggle('open');
-    });
-
-    document.querySelectorAll('.filter-tab').forEach(tab => {
-      tab.addEventListener('click', () => {
-        document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
-        tab.classList.add('active');
-      });
-    });
-
-    // Topic cards (static demo)
-    const TOPICS = [
-      { title:"Unicorn W / Rose", badge:"Official Events", views:120, likes:99, comments:100, color:"#4ba3d9" },
-      { title:"Mechanical Music Box Guide", badge:null, views:85, likes:45, comments:23, color:"#e8a87c", portrait:true },
-      { title:"DIY Miniature House", badge:"Featured", views:230, likes:178, comments:56, color:"#85c88a" },
-      { title:"Spin & Win Lucky Draw", badge:"Official Events", views:340, likes:210, comments:89, color:"#66cbff" },
-      { title:"My First 3D Puzzle", badge:null, views:67, likes:32, comments:15, color:"#c9b1ff", portrait:true },
-      { title:"Vintage Camera Model", badge:"New", views:156, likes:92, comments:41, color:"#ffb93e" }
-    ];
-    const grid = document.getElementById('topicGrid');
-    TOPICS.forEach(t => {
-      const h = t.portrait ? 533 : 400;
-      const init = t.title.split(' ').map(w=>w[0]).join('').slice(0,2);
-      const card = document.createElement('div');
-      card.className = 'topic-card';
-      card.innerHTML = `
-        <div class="topic-thumb${t.portrait?' portrait':''}">
-          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='${h}'%3E%3Crect width='400' height='${h}' fill='${encodeURIComponent(t.color)}'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dominant-baseline='middle' fill='white' font-size='36'%3E${encodeURIComponent(t.title.split(' ').slice(0,2).join(' '))}%3C/text%3E%3C/svg%3E" alt="">
-          ${t.badge?`<span class="topic-badge">${t.badge}</span>`:''}
-        </div>
-        <div class="topic-content">
-          <div class="topic-title">${t.title}</div>
-          <div class="topic-meta">
-            <div class="topic-stats">
-              <span class="topic-stat"><img src="Icon/topic-stats/views.png" alt="">${t.views}</span>
-              <span class="topic-stat"><img src="Icon/topic-stats/likes.png" alt="">${t.likes}</span>
-              <span class="topic-stat"><img src="Icon/topic-stats/comments.png" alt="">${t.comments}</span>
-            </div>
-            <img class="topic-avatar-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Crect width='40' height='40' rx='20' fill='${encodeURIComponent(t.color)}'/%3E%3Ctext x='50%25' y='55%25' text-anchor='middle' dominant-baseline='middle' fill='white' font-size='14'%3E${encodeURIComponent(init)}%3C/text%3E%3C/svg%3E" alt="">
-          </div>
-        </div>`;
-      grid.appendChild(card);
-    });
-  </script>
+// Topic cards
+[{title:"Unicorn W / Rose",badge:"Official Events",views:120,likes:99,comments:100,color:"#4ba3d9"},
+ {title:"Mechanical Music Box Guide",badge:null,views:85,likes:45,comments:23,color:"#e8a87c",portrait:true},
+ {title:"DIY Miniature House",badge:"Featured",views:230,likes:178,comments:56,color:"#85c88a"},
+ {title:"Spin & Win Lucky Draw",badge:"Official Events",views:340,likes:210,comments:89,color:"#66cbff"},
+ {title:"My First 3D Puzzle",badge:null,views:67,likes:32,comments:15,color:"#c9b1ff",portrait:true},
+ {title:"Vintage Camera Model",badge:"New",views:156,likes:92,comments:41,color:"#ffb93e"}
+].forEach(t=>{
+  const h=t.portrait?533:400,init=t.title.split(' ').map(w=>w[0]).join('').slice(0,2);
+  const c=document.createElement('div');c.className='topic-card';
+  c.innerHTML=`<div class="topic-thumb${t.portrait?' portrait':''}"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='${h}'%3E%3Crect width='400' height='${h}' fill='${encodeURIComponent(t.color)}'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dominant-baseline='middle' fill='white' font-size='36'%3E${encodeURIComponent(t.title.split(' ').slice(0,2).join(' '))}%3C/text%3E%3C/svg%3E" alt="">${t.badge?`<span class="topic-badge">${t.badge}</span>`:''}</div><div class="topic-content"><div class="topic-title">${t.title}</div><div class="topic-meta"><div class="topic-stats"><span class="topic-stat"><img src="Icon/topic-stats/views.png" alt="">${t.views}</span><span class="topic-stat"><img src="Icon/topic-stats/likes.png" alt="">${t.likes}</span><span class="topic-stat"><img src="Icon/topic-stats/comments.png" alt="">${t.comments}</span></div><img class="topic-avatar-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Crect width='40' height='40' rx='20' fill='${encodeURIComponent(t.color)}'/%3E%3Ctext x='50%25' y='55%25' text-anchor='middle' dominant-baseline='middle' fill='white' font-size='14'%3E${encodeURIComponent(init)}%3C/text%3E%3C/svg%3E" alt=""></div></div>`;
+  document.getElementById('topicGrid').appendChild(c);
+});
+</script>
 </body>
 </html>
