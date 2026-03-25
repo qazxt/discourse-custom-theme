@@ -210,8 +210,6 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    background-size: cover;
-    background-position: center;
 
     &::after {
       content: "";
@@ -224,6 +222,18 @@ body {
       border-radius: 0 0 10px 10px;
       z-index: 1;
     }
+  }
+
+  &__card-img {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background-size: cover;
+    background-position: center;
+    border-radius: 10px;
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
   }
 
   &__card-label {
@@ -244,6 +254,54 @@ body {
     line-height: 1.2;
     text-align: center;
     text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  }
+
+  // --- Collapsed state (scroll) ---
+  &--collapsed {
+    .robotime-carousel__card {
+      width: 140px;
+      height: 60px;
+      border-radius: 8px;
+
+      &:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+      }
+    }
+
+    .robotime-carousel__card-img {
+      opacity: 0 !important;
+      visibility: hidden;
+    }
+
+    .robotime-carousel__card-body {
+      border-radius: 8px;
+      justify-content: center;
+
+      &::after {
+        opacity: 0 !important;
+      }
+    }
+
+    .robotime-carousel__card-label {
+      height: 80%;
+      padding: 0 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      text-shadow: 0 1px 0 rgba(0, 0, 0, 0.15);
+      line-height: 1.1;
+    }
+
+    .robotime-carousel__card-label.light-bg {
+      color: $robotime-black;
+      text-shadow: none;
+    }
+    .robotime-carousel__card-label.dark-bg {
+      color: $robotime-white;
+    }
   }
 
   &__arrow {
@@ -393,20 +451,17 @@ body {
 }
 
 // ============================================================
-// 5. TOPIC CARDS — grid layout
+// 5. TOPIC CARDS — masonry layout (staggered)
 // ============================================================
 .topic-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 20px;
   padding: 0;
 
   thead { display: none; }
 
+  // Use CSS columns to achieve staggered card heights
   tbody {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
+    column-count: 2;
+    column-gap: 20px;
   }
 
   .topic-list-item {
@@ -417,8 +472,11 @@ body {
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
     transition: box-shadow 0.25s, transform 0.25s;
     cursor: pointer;
-    display: flex;
-    flex-direction: column;
+    display: inline-block;
+    width: 100%;
+    margin: 0 0 20px;
+    break-inside: avoid;
+    page-break-inside: avoid;
 
     &:hover {
       box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);

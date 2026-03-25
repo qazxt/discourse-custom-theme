@@ -47,7 +47,6 @@ Then open `http://localhost:8080/preview.html` for the interactive theme preview
 
 ### Known caveats
 
-- The original `针对顶部板块导航栏参考样式.html` uses WebGL (Principle export); it won't render in environments without GPU acceleration.
 - Fonts rely on Google Fonts CDN (`Noto Sans` in preview, `Google Sans Flex` specified in design). The `Google Sans Flex` font is proprietary and not publicly available on Google Fonts; the preview uses `Noto Sans` as a close substitute.
 - Carousel cards currently use emoji as placeholder icons; real illustrations from the designer are pending.
 - See `DEVELOPMENT.md` for full developer handoff documentation including architecture, icon mapping, animation parameters, and TODO list.

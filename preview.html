@@ -122,9 +122,23 @@
     /* --- Cards: Collapsed --- */
     .layer-b.collapsed .hero-card{width:140px;height:60px;border-radius:8px;}
     .layer-b.collapsed .hero-card:hover{transform:scale(1.05);box-shadow:0 4px 16px rgba(0,0,0,0.2);}
+    .layer-b.collapsed .hero-card-body{
+      justify-content:center;
+    }
     .layer-b.collapsed .hero-card-label{
-      font-size:11px;height:auto;padding:0 6px 4px;
-      text-shadow:none;
+      font-size:12px;
+      height:80%;
+      padding:0 10px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:700;
+      text-shadow:0 1px 0 rgba(0,0,0,0.15);
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      text-align:center;
+      line-height:1.1;
     }
     .layer-b.collapsed .hero-card-label.dark-bg{color:var(--white);}
     .layer-b.collapsed .hero-card-label.light-bg{color:var(--black);}
@@ -193,13 +207,25 @@
     .filter-tab:hover{color:var(--black);}
     .filter-tab.active{color:var(--black);font-weight:600;}
     .filter-tab.active::after{width:100%;}
-    .topic-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;}
-    .topic-card{border-radius:20px;overflow:hidden;background:var(--white);box-shadow:0 1px 4px rgba(0,0,0,0.06);transition:box-shadow 0.25s,transform 0.25s;cursor:pointer;}
+    /* Topic cards: masonry (staggered), avoid stretching short cards */
+    .topic-grid{column-count:3;column-gap:20px;}
+    .topic-card{
+      display:inline-block;width:100%;
+      border-radius:20px;overflow:hidden;background:var(--white);
+      box-shadow:0 1px 4px rgba(0,0,0,0.06);
+      transition:box-shadow 0.25s,transform 0.25s;
+      cursor:pointer;
+      margin:0 0 20px;
+      vertical-align:top;
+      break-inside:avoid;
+      page-break-inside:avoid;
+    }
     .topic-card:hover{box-shadow:0 6px 24px rgba(0,0,0,0.12);transform:translateY(-3px);}
     .topic-thumb{width:100%;aspect-ratio:1/1;overflow:hidden;background:var(--border-gray);position:relative;}
     .topic-thumb.portrait{aspect-ratio:3/4;}
     .topic-thumb img{width:100%;height:100%;object-fit:cover;}
     .topic-badge{position:absolute;top:12px;left:12px;background:linear-gradient(135deg,var(--blue),#4ba3d9);color:var(--white);font-size:12px;font-weight:500;padding:4px 12px;border-radius:12px;}
+    .ratio-pill{position:absolute;top:12px;right:12px;background:rgba(0,0,0,0.65);color:#fff;font-size:11px;font-weight:700;padding:4px 10px;border-radius:999px;letter-spacing:0.5px;}
     .topic-content{padding:14px 16px;display:flex;flex-direction:column;gap:10px;}
     .topic-title{font-size:17px;font-weight:500;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
     .topic-meta{display:flex;align-items:center;justify-content:space-between;}
@@ -220,7 +246,8 @@
       .layer-b.collapsed .hero-track{gap:10px;}
       .layer-b.collapsed .hero-card-label{font-size:9px;}
       .main-layout{flex-direction:column;padding:12px;}.sidebar{display:none;}
-      .topic-grid{grid-template-columns:1fr;}
+      .topic-grid{column-count:1;column-gap:0;}
+      .topic-card{margin:0 0 12px;}
     }
     @media(min-width:768px) and (max-width:1199px){
       .top-nav{gap:18px;}.top-nav a{font-size:14px;}.sidebar{width:220px;}
@@ -403,16 +430,21 @@ document.querySelectorAll('.filter-tab').forEach(t=>t.addEventListener('click',(
 }));
 
 // Topic cards
-[{title:"Unicorn W / Rose",badge:"Official Events",views:120,likes:99,comments:100,color:"#4ba3d9"},
- {title:"Mechanical Music Box Guide",badge:null,views:85,likes:45,comments:23,color:"#e8a87c",portrait:true},
- {title:"DIY Miniature House",badge:"Featured",views:230,likes:178,comments:56,color:"#85c88a"},
- {title:"Spin & Win Lucky Draw",badge:"Official Events",views:340,likes:210,comments:89,color:"#66cbff"},
- {title:"My First 3D Puzzle",badge:null,views:67,likes:32,comments:15,color:"#c9b1ff",portrait:true},
- {title:"Vintage Camera Model",badge:"New",views:156,likes:92,comments:41,color:"#ffb93e"}
+[
+  // 交替方图/竖图，方便肉眼看出长短交错
+  {title:"Mechanical Music Box Guide — Beginner Friendly",badge:null,views:85,likes:45,comments:23,color:"#e8a87c",portrait:true},
+  {title:"Unicorn W / Rose",badge:"Official Events",views:120,likes:99,comments:100,color:"#4ba3d9",portrait:false},
+  {title:"Spin & Win Lucky Draw",badge:"Official Events",views:340,likes:210,comments:89,color:"#66cbff",portrait:true},
+  {title:"DIY Miniature House (Step-by-step)",badge:"Featured",views:230,likes:178,comments:56,color:"#85c88a",portrait:false},
+  {title:"Vintage Camera Model — Limited Edition",badge:"New",views:156,likes:92,comments:41,color:"#ffb93e",portrait:true},
+  {title:"My First 3D Puzzle",badge:null,views:67,likes:32,comments:15,color:"#c9b1ff",portrait:false},
+  {title:"Robotime Showcase: Community Picks",badge:"Featured",views:412,likes:301,comments:104,color:"#8bc34a",portrait:true},
+  {title:"Wooden Marble Run",badge:null,views:91,likes:58,comments:19,color:"#f07ea3",portrait:false}
 ].forEach(t=>{
   const h=t.portrait?533:400,init=t.title.split(' ').map(w=>w[0]).join('').slice(0,2);
   const c=document.createElement('div');c.className='topic-card';
-  c.innerHTML=`<div class="topic-thumb${t.portrait?' portrait':''}"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='${h}'%3E%3Crect width='400' height='${h}' fill='${encodeURIComponent(t.color)}'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dominant-baseline='middle' fill='white' font-size='36'%3E${encodeURIComponent(t.title.split(' ').slice(0,2).join(' '))}%3C/text%3E%3C/svg%3E" alt="">${t.badge?`<span class="topic-badge">${t.badge}</span>`:''}</div><div class="topic-content"><div class="topic-title">${t.title}</div><div class="topic-meta"><div class="topic-stats"><span class="topic-stat"><img src="Icon/topic-stats/views.png" alt="">${t.views}</span><span class="topic-stat"><img src="Icon/topic-stats/likes.png" alt="">${t.likes}</span><span class="topic-stat"><img src="Icon/topic-stats/comments.png" alt="">${t.comments}</span></div><img class="topic-avatar-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Crect width='40' height='40' rx='20' fill='${encodeURIComponent(t.color)}'/%3E%3Ctext x='50%25' y='55%25' text-anchor='middle' dominant-baseline='middle' fill='white' font-size='14'%3E${encodeURIComponent(init)}%3C/text%3E%3C/svg%3E" alt=""></div></div>`;
+  const ratioLabel=t.portrait?'3:4':'1:1';
+  c.innerHTML=`<div class="topic-thumb${t.portrait?' portrait':''}"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='${h}'%3E%3Crect width='400' height='${h}' fill='${encodeURIComponent(t.color)}'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dominant-baseline='middle' fill='white' font-size='36'%3E${encodeURIComponent(t.title.split(' ').slice(0,2).join(' '))}%3C/text%3E%3C/svg%3E" alt=""><span class="ratio-pill">${ratioLabel}</span>${t.badge?`<span class="topic-badge">${t.badge}</span>`:''}</div><div class="topic-content"><div class="topic-title">${t.title}</div><div class="topic-meta"><div class="topic-stats"><span class="topic-stat"><img src="Icon/topic-stats/views.png" alt="">${t.views}</span><span class="topic-stat"><img src="Icon/topic-stats/likes.png" alt="">${t.likes}</span><span class="topic-stat"><img src="Icon/topic-stats/comments.png" alt="">${t.comments}</span></div><img class="topic-avatar-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Crect width='40' height='40' rx='20' fill='${encodeURIComponent(t.color)}'/%3E%3Ctext x='50%25' y='55%25' text-anchor='middle' dominant-baseline='middle' fill='white' font-size='14'%3E${encodeURIComponent(init)}%3C/text%3E%3C/svg%3E" alt=""></div></div>`;
   document.getElementById('topicGrid').appendChild(c);
 });
 </script>

@@ -25,6 +25,14 @@
   }
 }
 
+// Ensure collapsed carousel still shrinks on desktop overrides
+.robotime-carousel--collapsed {
+  .robotime-carousel__card {
+    width: 140px;
+    height: 60px;
+  }
+}
+
 // --- Content area with sidebar ---
 #main-outlet {
   display: flex;
@@ -58,9 +66,9 @@
   min-width: 0;
 }
 
-// --- Topic cards grid (desktop: 2 columns) ---
+// --- Topic cards masonry columns (desktop: 2 columns) ---
 .topic-list tbody {
-  grid-template-columns: repeat(2, 1fr);
+  column-count: 2;
 }
 
 // --- Topic card sizing ---

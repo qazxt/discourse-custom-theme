@@ -97,6 +97,21 @@
       height: 12px;
     }
   }
+
+  &--collapsed {
+    .robotime-carousel__card {
+      width: 100px;
+      height: 40px;
+    }
+
+    .robotime-carousel__track {
+      gap: 10px;
+    }
+
+    .robotime-carousel__card-label {
+      font-size: 10px;
+    }
+  }
 }
 
 // --- Mobile sidebar hidden ---
@@ -117,8 +132,12 @@
 
 // --- Mobile topic cards (single column) ---
 .topic-list tbody {
-  grid-template-columns: 1fr;
-  gap: 12px;
+  column-count: 1;
+  column-gap: 0;
+}
+
+.topic-list .topic-list-item {
+  margin-bottom: 12px;
 }
 
 .robotime-topic-card {

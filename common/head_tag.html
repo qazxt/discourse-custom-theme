@@ -24,14 +24,25 @@ function renderCarousel(track, heroBanners) {
   if (!track || !heroBanners) return;
   track.innerHTML = '';
 
+  function isDark(hex) {
+    const c = String(hex || '').replace('#', '');
+    if (c.length !== 6) return false;
+    const r = parseInt(c.slice(0, 2), 16);
+    const g = parseInt(c.slice(2, 4), 16);
+    const b = parseInt(c.slice(4, 6), 16);
+    return (r * 0.299 + g * 0.587 + b * 0.114) < 160;
+  }
+
   heroBanners.forEach(card => {
     const el = document.createElement('a');
     el.href = card.link_url || '#';
     el.className = 'robotime-carousel__card';
+    const bgClass = isDark(card.bg_color || '#f6ebe3') ? 'dark-bg' : 'light-bg';
 
     el.innerHTML = `
-      <div class="robotime-carousel__card-body" style="background: url('${card.image_url}') center/cover no-repeat, ${card.bg_color || '#f6ebe3'}">
-        <div class="robotime-carousel__card-label">${card.title}</div>
+      <div class="robotime-carousel__card-body" style="background-color: ${card.bg_color || '#f6ebe3'}">
+        <div class="robotime-carousel__card-img" style="background-image: url('${card.image_url}')"></div>
+        <div class="robotime-carousel__card-label ${bgClass}">${card.title}</div>
       </div>`;
 
     el.addEventListener('mousedown', () => el.classList.add('is-pressed'));
@@ -43,13 +54,20 @@ function renderCarousel(track, heroBanners) {
 
   // Carousel scroll logic
   let scrollPos = 0;
-  const cardWidth = 290;
   const prevBtn = document.getElementById('carousel-prev');
   const nextBtn = document.getElementById('carousel-next');
 
+  function getStep() {
+    const card = track.querySelector('.robotime-carousel__card');
+    if (!card) return 290;
+    const styles = window.getComputedStyle(track);
+    const gap = parseFloat(styles.gap || styles.columnGap || '0') || 0;
+    return card.getBoundingClientRect().width + gap;
+  }
   function getMaxScroll() {
-    const visible = Math.floor(track.parentElement.offsetWidth / cardWidth);
-    return Math.max(0, (heroBanners.length - visible) * cardWidth);
+    const step = getStep();
+    const visible = Math.floor(track.parentElement.offsetWidth / step);
+    return Math.max(0, (heroBanners.length - visible) * step);
   }
   function updatePos() {
     track.style.transform = `translateX(-${scrollPos}px)`;
@@ -57,13 +75,13 @@ function renderCarousel(track, heroBanners) {
 
   if (prevBtn) {
     prevBtn.addEventListener('click', () => {
-      scrollPos = Math.max(0, scrollPos - cardWidth * 2);
+      scrollPos = Math.max(0, scrollPos - getStep() * 2);
       updatePos();
     });
   }
   if (nextBtn) {
     nextBtn.addEventListener('click', () => {
-      scrollPos = Math.min(getMaxScroll(), scrollPos + cardWidth * 2);
+      scrollPos = Math.min(getMaxScroll(), scrollPos + getStep() * 2);
       updatePos();
     });
   }
@@ -128,7 +146,30 @@ api.onPageChange(() => {
 
     const navContainer = document.querySelector('.robotime-header__nav');
     const carouselTrack = document.getElementById('carousel-track');
+    const carouselRoot = document.getElementById('robotime-carousel');
     const sidebarSlot = document.querySelector('.robotime-sidebar-widget-slot');
+
+    // Collapsed ↔ expanded state (scroll)
+    if (carouselRoot && !window.__robotimeCarouselCollapseInit) {
+      window.__robotimeCarouselCollapseInit = true;
+      let collapsed = false;
+      let rafId = null;
+
+      const update = () => {
+        rafId = null;
+        const shouldCollapse = window.scrollY > 60;
+        if (shouldCollapse === collapsed) return;
+        collapsed = shouldCollapse;
+        carouselRoot.classList.toggle('robotime-carousel--collapsed', collapsed);
+      };
+
+      window.addEventListener('scroll', () => {
+        if (rafId) return;
+        rafId = window.requestAnimationFrame(update);
+      }, { passive: true });
+
+      update();
+    }
 
     // Fetch plugin config
     fetch('/hub-config.json')
