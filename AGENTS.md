@@ -10,9 +10,10 @@ This is a **Discourse custom theme** repository ("Robotime Community Theme") for
 - `settings.yml` — Configurable theme settings (logo URL, nav links, carousel toggle, events category)
 - `locales/en.yml` — English translations
 - `common/common.scss` — Shared SCSS styles for all viewports (header, carousel, sidebar, topic cards, filter bar)
-- `common/header.html` — Custom Handlebars template for the header navigation bar
-- `common/after_header.html` — Category carousel Handlebars template
-- `common/head_tag.html` — JavaScript: carousel logic, mobile menu, image ratio detection
+- `javascripts/discourse/connectors/custom-header/robotime.hbs` — Custom header markup (Discourse 2026+ connector)
+- `javascripts/discourse/connectors/custom-after-header/robotime.hbs` — Carousel region markup (connector)
+- `javascripts/discourse/api-initializers/robotime-hub.js` — `hub-config.json`, carousel, sidebar widget, quick tags, mobile menu
+- `common/header.html`, `common/after_header.html`, `common/head_tag.html` — Legacy placeholders only (no inline `text/x-handlebars` / `discourse-plugin`)
 - `desktop/desktop.scss` — Desktop and tablet layout overrides
 - `mobile/mobile.scss` — Mobile responsive styles (<768px, hamburger menu, single-column layout)
 - `preview.html` — Standalone preview page for visual testing without a Discourse instance

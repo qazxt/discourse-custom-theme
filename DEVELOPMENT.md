@@ -26,9 +26,18 @@
 │   └── en.yml                  # 英文翻译字符串
 ├── common/
 │   ├── common.scss             # 通用 SCSS（变量、Header、轮播、侧栏、话题卡片、筛选栏）
-│   ├── header.html             # Handlebars 模板：自定义顶部导航栏
-│   ├── after_header.html       # Handlebars 模板：分类卡片轮播区
-│   └── head_tag.html           # JavaScript：轮播逻辑、移动端菜单、图片比例检测
+│   ├── header.html             # 占位（顶栏见 javascripts/.../custom-header/robotime.hbs）
+│   ├── after_header.html       # 占位（轮播见 javascripts/.../custom-after-header/robotime.hbs）
+│   └── head_tag.html           # 占位（逻辑见 javascripts/.../api-initializers/robotime-hub.js）
+├── javascripts/
+│   └── discourse/
+│       ├── api-initializers/
+│       │   └── robotime-hub.js   # hub-config、轮播、侧栏小部件、quick tags
+│       └── connectors/
+│           ├── custom-header/
+│           │   └── robotime.hbs
+│           └── custom-after-header/
+│               └── robotime.hbs
 ├── desktop/
 │   └── desktop.scss            # 桌面端 ≥1200px + 平板 768–1199px 布局
 ├── mobile/
@@ -68,9 +77,9 @@
 
 | 层面 | 技术 | 说明 |
 |------|------|------|
-| 模板 | Handlebars (`.html` 内 `<script type="text/x-handlebars">`) | Discourse 标准主题模板机制 |
+| 模板 | `.hbs` 连接器（`javascripts/discourse/connectors/...`） | Discourse 2026+ 推荐，替代内联 `text/x-handlebars` |
 | 样式 | SCSS (Sass) | Discourse 自动编译，无需本地构建 |
-| 脚本 | JavaScript (`<script type="text/discourse-plugin">`) | 使用 Discourse Plugin API |
+| 脚本 | `api-initializers`（`javascripts/discourse/api-initializers/*.js`） | 使用 `apiInitializer` + Plugin API |
 | 配置 | `about.json` + `settings.yml` + `locales/*.yml` | Discourse 标准主题配置格式 |
 | 预览 | 纯 HTML/CSS/JS（`preview.html`） | 独立于 Discourse，用于开发阶段快速查看效果 |
 
@@ -119,7 +128,7 @@ quaternary (橙):  #ffb93e    danger:            #e45735
 
 ### 4.2 分类卡片轮播（Carousel）
 
-- **文件**: `common/after_header.html`, `common/head_tag.html`, `common/common.scss` (`.robotime-carousel` 区块)
+- **文件**: `javascripts/discourse/connectors/custom-after-header/robotime.hbs`, `javascripts/discourse/api-initializers/robotime-hub.js`, `common/common.scss` (`.robotime-carousel` 区块)
 - **卡片数据**: 由插件接口 `/hub-config.json` 下发（字段 `hero_banners[]`），主题在 `common/head_tag.html` 中 `fetch('/hub-config.json')` 后渲染
 - **收缩模式纯色**: 轮播收缩时图片层隐藏，仅保留卡片背景色；颜色使用该卡片的 `bg_color`（不返回则默认 `#f6ebe3`）
 - **动效**:
