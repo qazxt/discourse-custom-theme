@@ -78,14 +78,20 @@
   }
 }
 
-// --- Filter bar desktop ---
+// --- List controls (design: 24px tabs + dropdowns) ---
+.list-controls .navigation-container .select-kit .select-kit-header {
+  font-size: 24px;
+  min-height: 48px;
+}
+
+// --- Filter bar desktop (preview / optional custom markup) ---
 .robotime-filter-bar {
   &__tabs {
     gap: 30px;
   }
 
   &__tab {
-    font-size: 18px;
+    font-size: 24px;
   }
 }
 
@@ -119,5 +125,14 @@
 
   .topic-list tbody {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .list-controls .navigation-container .select-kit .select-kit-header {
+    font-size: 18px;
+    min-height: 44px;
+  }
+
+  .navigation-container .nav-pills > li > a {
+    font-size: 18px;
   }
 }

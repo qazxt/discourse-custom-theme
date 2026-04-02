@@ -120,7 +120,8 @@ quaternary (橙):  #ffb93e    danger:            #e45735
 ### 4.2 分类卡片轮播（Carousel）
 
 - **文件**: `common/after_header.html`, `common/head_tag.html`, `common/common.scss` (`.robotime-carousel` 区块)
-- **卡片数据**: 在 `head_tag.html` 中的 `CAROUSEL_CARDS` 数组定义，包含名称、背景色、图标、装饰色、旋转标志、链接
+- **卡片数据**: 由插件接口 `/hub-config.json` 下发（字段 `hero_banners[]`），主题在 `common/head_tag.html` 中 `fetch('/hub-config.json')` 后渲染
+- **收缩模式纯色**: 轮播收缩时图片层隐藏，仅保留卡片背景色；颜色使用该卡片的 `bg_color`（不返回则默认 `#f6ebe3`）
 - **动效**:
   - 轨道滑动: `cubic-bezier(0.25, 0.46, 0.45, 0.94)` 0.5s
   - 卡片 Hover: `cubic-bezier(0.34, 1.56, 0.64, 1)` 0.35s（弹性回弹）
@@ -130,18 +131,26 @@ quaternary (橙):  #ffb93e    danger:            #e45735
 
 ### 4.3 左侧边栏（Sidebar）
 
-- **文件**: `common/common.scss` (`.robotime-sidebar` 区块)
+- **文件**: `common/common.scss` (`.robotime-sidebar-widget`、侧栏菜单覆盖等)
 - **图标素材**:
   - 激活态（白色）: `Icon/左侧图标/白色/资源 22-25`
   - 未激活态（黑色）: `Icon/左侧图标/黑色/资源 26-29`
   - 通过 `filter: brightness(0) invert(1)` 切换
-- **Official Events 区块**: 蓝色圆角标题 + 活动卡片 + "View All Events" 链接 + "New topic" 按钮
+- **侧栏底部活动轮播区**（数据来自 `/hub-config.json`，由插件下发）:
+  - **顶部标题**: `sidebar_section_title`（可后台配置；空则不显示）
+  - **轮播幻灯片**: `sidebar_widgets[]`（单张静态或多张 5 秒轮播 + 圆点）
+  - **底部链接**: `sidebar_view_all`（`label` + `url` + 可选 `is_external`；无 `url` 则不显示）
+  - 主题侧样式: 标题为品牌蓝 `#66cbff` 圆角条白字；底部为描边圆角按钮式链接
+- **Discourse 原生**: 侧栏内 "New topic" 等仍由 Discourse 提供（非本主题 mock）
 
 ### 4.4 主内容区
 
-- **筛选栏**: Categories / Tags / Latest (默认选中) / New (34) / Top / Bookmarks
-  - 选中态: 黑色文字 + 底部下划线，动画 `width 0.3s ease`
-- **话题卡片**: 网格布局，桌面端 2 列，平板 2 列，移动端 1 列
+- **筛选栏**（列表页 `.list-controls`，对接 Discourse 原生导航）:
+  - **第一行**: Categories、Tags 为原生下拉；主题样式为 **#777 圆角描边**（`select-kit-header`）；右侧 **Latest**（默认选中）/ **New** / **Top** / **Bookmarks** 为 Tab，**24px**（桌面）、灰字选中黑字 + 下划线；下拉与 Tab 间距见 `common/common.scss`。
+  - **第二行预显标签**: 数据来自 `/hub-config.json` 的 **`filter_quick_tags`**（插件后台配置）；**16px**、`#777`，选中/悬停黑字 + 下划线；显示时自动为 `label` 加 `#` 前缀（若未写）。
+- **筛选栏（预览）**: `preview.html` 内用 `.filter-dd` 模拟下拉框，结构与稿一致。
+- **话题列表 Tab 动效**: 黑色文字 + 底部下划线（与 `common/common.scss` 中 `.nav-pills` 一致）
+- **话题卡片**: 多列瀑布流，桌面/平板 2 列，移动端 1 列
   - 卡片圆角 `20px`，hover 上浮 `translateY(-3px)` + 阴影加深
   - 封面图比例规则: 宽高比 > 0.85 → 1:1 裁剪，< 0.85 → 3:4 裁剪
   - 统计图标使用 `Icon/点赞评论观看/` 下的 PNG 素材
@@ -216,6 +225,10 @@ quaternary (橙):  #ffb93e    danger:            #e45735
 | `robotime_nav_links` | string | `Help\|/help,...` | 导航链接，格式 `标签\|URL` 逗号分隔 |
 | `robotime_carousel_enabled` | bool | `true` | 启用/禁用分类轮播 |
 | `robotime_official_events_category` | string | 空 | Official Events 对应的分类 slug |
+| `robotime_sidebar_section_title` | string | `Official Events` | 侧栏活动轮播上方标题（插件可在 `hub-config.json` 的 `sidebar_section_title` 中覆盖） |
+| `robotime_sidebar_view_all_label` | string | `View All Events` | 侧栏轮播下方链接文案（插件字段 `sidebar_view_all.label`） |
+| `robotime_sidebar_view_all_url` | string | 空 | 侧栏轮播下方链接 URL（插件字段 `sidebar_view_all.url`） |
+| `robotime_filter_quick_tags` | string | 空 | 预显标签 JSON 数组字符串；插件宜合并进 `filter_quick_tags` |
 
 ---
 

@@ -132,3 +132,62 @@
 | Card 9 (New Arrivals) | `#f6ebe3` | 暖米色 |
 | Card 10 (Exclusive Deals) | `#f6ebe3` | 暖米色 |
 | Card 11 (Instruction Manual) | `#f6ebe3` | 暖米色 |
+
+---
+
+## 七、侧栏底部活动轮播区（Official Events）
+
+> 对应首页左侧栏菜单下方的推广/活动轮播模块（数据由插件 `/hub-config.json` 提供，后台可配置）。
+
+### 7.1 纵向结构（自上而下）
+
+| 区块 | 配置字段 | 说明 |
+|------|----------|------|
+| 区块标题 | `sidebar_section_title` | 显示在轮播图**上方**；品牌蓝底、白字、圆角 `12px`、水平居中 |
+| 轮播内容 | `sidebar_widgets[]` | 一张时为静态卡片；多张时约 **5s** 自动切换，卡片下方 **圆点**指示当前张 |
+| 单张卡片内标题 | `sidebar_widgets[].title` | 显示在**图片下方**（灰字说明性标题，非顶部区块标题） |
+| 底部操作 | `sidebar_view_all` | **轮播整体下方**的「查看全部」链接：`label` + `url`，可选外链 `is_external` |
+
+### 7.2 样式要点
+
+| 元素 | 样式要点 |
+|------|----------|
+| 区块标题条 | 背景 `#66cbff`，文字白色，字重约 `600`，内边距约 `8px 12px`，圆角 `12px` |
+| 轮播卡片 | `border: 1px solid #eee`，圆角 `12px`，图片区 `max-height: 160px`、`object-fit: cover` |
+| 圆点指示器 | 未选中 `#dddddd`，选中 `#66cbff`，间距约 `6px` |
+| View all 链接 | 全宽居中、圆角 `12px`、浅灰描边，Hover 时浅灰底、文字接近黑色 |
+
+### 7.3 交互
+
+- 多张轮播时仅**中间卡片+圆点**切换；**顶部区块标题与底部 View all 固定**，不随幻灯片变化。
+
+---
+
+## 八、内容区上方筛选条（Categories / Tags / Tabs / 预显标签）
+
+> 对应主页主内容区顶部的筛选与快捷标签（列表页 `.list-controls`）。**Categories、Tags、Latest 等**由 Discourse 原生提供；**预显标签**由 `/hub-config.json` 的 `filter_quick_tags` 提供。
+
+### 8.1 第一行
+
+| 元素 | 视觉 | 字号 / 颜色（设计稿） |
+|------|------|------------------------|
+| Categories、Tags | **圆角框 + 下拉三角**，框线与文字、三角均为 `#777777` | **24px**（桌面）；点击前后同色 |
+| Latest、New、Top、Bookmarks | 纯文字 Tab；未选中灰 `#777777`，选中 **黑 `#000000` + 下划线** | **24px** |
+| 间距 | 左侧距容器约 **51px**（由主题与 Discourse 容器共同决定）；下拉内文字距左边框 **15px**；文字与三角约 **20px**；两下拉间距 **10px**；Tags 与 Latest 间距 **30px**；Tab 之间 **30px** | — |
+
+主题实现要点：`select-kit-header` 加 `1px solid #777`、`border-radius: 12px`；`.nav-pills` 使用 `gap: 30px` 等（见 `common/common.scss`）。
+
+### 8.2 第二行 — 预显标签（`filter_quick_tags`）
+
+| 属性 | 值 |
+|------|-----|
+| 位置 | 紧贴第一行**下方**，纵向间距约 **10px** |
+| 文案 | 以 `#` 开头的标签名（后台可配 `label`，主题可自动补 `#`） |
+| 字号 | **16px** |
+| 颜色 | 默认 `#777777`；**选中 / 点击** ：下划线 + 可视为强调（主题用黑字 `#000000`） |
+| 横向间距 | 标签之间 **30px** |
+| 配置 | 插件在 `hub-config.json` 中返回 `filter_quick_tags: [{ label, url, is_external? }]` |
+
+### 8.3 移动端
+
+- 下拉与 Tab 字号略缩小、可横向滚动；预显标签行可横向滑动（见 `mobile/mobile.scss`）。

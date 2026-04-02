@@ -189,24 +189,39 @@
     .sidebar-menu a.active{background:var(--black);color:var(--white);}
     .sidebar-menu .menu-icon{width:20px;height:20px;object-fit:contain;}
     .sidebar-menu a.active .menu-icon{filter:brightness(0) invert(1);}
-    .sw-card{display:block;border:1px solid #eee;border-radius:12px;overflow:hidden;transition:box-shadow 0.2s;}
-    .sw-card:hover{box-shadow:0 4px 12px rgba(0,0,0,0.08);}
-    .sw-card img{width:100%;max-height:160px;object-fit:cover;display:block;}
-    .sw-title{padding:10px 12px;font-size:14px;font-weight:500;color:var(--gray);}
-    .sw-dots{display:flex;justify-content:center;gap:6px;padding:8px 0;}
-    .sw-dot{width:6px;height:6px;border-radius:50%;background:var(--border-gray);}
-    .sw-dot.active{background:var(--blue);}
+    /* Sidebar event carousel (matches theme .robotime-sidebar-widget) */
+    .robotime-sidebar-widget__section-title{font-size:14px;font-weight:600;color:var(--white);background:var(--blue);border-radius:12px;padding:8px 12px;margin-bottom:10px;text-align:center;line-height:1.3;font-family:var(--font);}
+    .robotime-sidebar-widget__card{display:block;border:1px solid #eee;border-radius:12px;overflow:hidden;text-decoration:none;color:inherit;transition:box-shadow 0.2s;}
+    .robotime-sidebar-widget__card:hover{box-shadow:0 4px 12px rgba(0,0,0,0.08);}
+    .robotime-sidebar-widget__card img{width:100%;max-height:160px;object-fit:cover;display:block;}
+    .robotime-sidebar-widget__title{padding:10px 12px;font-size:14px;font-weight:500;color:var(--gray);}
+    .robotime-sidebar-widget__dots{display:flex;justify-content:center;gap:6px;padding:8px 0;}
+    .robotime-sidebar-widget__dot{width:6px;height:6px;border-radius:50%;background:var(--border-gray);}
+    .robotime-sidebar-widget__dot.active{background:var(--blue);}
+    .robotime-sidebar-widget__view-all{display:flex;align-items:center;justify-content:center;margin-top:12px;padding:10px 14px;font-size:14px;font-weight:500;color:var(--gray);border:1px solid var(--border-gray);border-radius:12px;text-decoration:none;text-align:center;font-family:var(--font);transition:background 0.2s,color 0.2s;}
+    .robotime-sidebar-widget__view-all:hover{background:var(--light-gray);color:var(--black);}
     .new-topic-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;height:44px;background:var(--blue);color:var(--white);border:none;border-radius:22px;font-size:16px;font-weight:500;cursor:pointer;margin-top:12px;transition:opacity 0.2s;}
     .new-topic-btn:hover{opacity:0.9;}
     .new-topic-btn svg{width:18px;height:18px;fill:currentColor;}
     .content{flex:1;min-width:0;}
-    .filter-bar{display:flex;align-items:center;justify-content:space-between;padding-bottom:16px;border-bottom:1px solid #eee;margin-bottom:20px;}
-    .filter-tabs{display:flex;gap:30px;}
-    .filter-tab{font-size:18px;color:var(--gray);cursor:pointer;padding-bottom:6px;position:relative;background:none;border:none;font-family:var(--font);transition:color 0.2s;}
+    .filter-bar{padding-bottom:16px;border-bottom:1px solid #eee;margin-bottom:20px;}
+    .filter-bar__row1{display:flex;flex-wrap:wrap;align-items:center;row-gap:10px;column-gap:10px;}
+    .filter-dd{
+      display:inline-flex;align-items:center;justify-content:space-between;gap:20px;
+      padding:10px 15px;min-height:48px;border:1px solid var(--gray);border-radius:12px;
+      background:var(--white);color:var(--gray);font-size:24px;font-family:var(--font);
+      cursor:pointer;box-sizing:border-box;
+    }
+    .filter-dd__caret{font-size:14px;line-height:1;opacity:0.85;}
+    .filter-tabs{display:flex;flex-wrap:wrap;align-items:center;gap:30px;margin-left:20px;}
+    .filter-tab{font-size:24px;color:var(--gray);cursor:pointer;padding-bottom:6px;position:relative;background:none;border:none;font-family:var(--font);transition:color 0.2s;}
     .filter-tab::after{content:'';position:absolute;left:0;bottom:0;width:0;height:2px;background:var(--black);transition:width 0.3s;}
     .filter-tab:hover{color:var(--black);}
     .filter-tab.active{color:var(--black);font-weight:600;}
     .filter-tab.active::after{width:100%;}
+    .robotime-filter-quick-tags{display:flex;flex-wrap:wrap;align-items:center;gap:30px;margin-top:10px;}
+    .robotime-filter-quick-tags__link{font-size:16px;color:var(--gray);text-decoration:none;font-family:var(--font);}
+    .robotime-filter-quick-tags__link:hover,.robotime-filter-quick-tags__link.is-active{color:var(--black);text-decoration:underline;}
     /* Topic cards: masonry (staggered), avoid stretching short cards */
     .topic-grid{column-count:3;column-gap:20px;}
     .topic-card{
@@ -248,6 +263,10 @@
       .main-layout{flex-direction:column;padding:12px;}.sidebar{display:none;}
       .topic-grid{column-count:1;column-gap:0;}
       .topic-card{margin:0 0 12px;}
+      .filter-dd{font-size:16px;min-height:40px;padding:8px 12px;}
+      .filter-tabs{margin-left:0;gap:16px;}
+      .filter-tab{font-size:15px;}
+      .robotime-filter-quick-tags{flex-wrap:nowrap;overflow-x:auto;gap:20px;padding-bottom:4px;-webkit-overflow-scrolling:touch;}
     }
     @media(min-width:768px) and (max-width:1199px){
       .top-nav{gap:18px;}.top-nav a{font-size:14px;}.sidebar{width:220px;}
@@ -303,14 +322,17 @@
   </aside>
   <main class="content">
     <div class="filter-bar">
-      <div class="filter-tabs">
-        <button class="filter-tab">Categories</button>
-        <button class="filter-tab">Tags ▸</button>
-        <button class="filter-tab active">Latest</button>
-        <button class="filter-tab">New <span style="font-size:14px;color:var(--gray)">(34)</span></button>
-        <button class="filter-tab">Top</button>
-        <button class="filter-tab">Bookmarks</button>
+      <div class="filter-bar__row1">
+        <button type="button" class="filter-dd" aria-haspopup="listbox">Categories <span class="filter-dd__caret">▾</span></button>
+        <button type="button" class="filter-dd" aria-haspopup="listbox">Tags <span class="filter-dd__caret">▾</span></button>
+        <div class="filter-tabs">
+          <button type="button" class="filter-tab active">Latest</button>
+          <button type="button" class="filter-tab">New <span style="font-size:14px;color:var(--gray)">(34)</span></button>
+          <button type="button" class="filter-tab">Top</button>
+          <button type="button" class="filter-tab">Bookmarks</button>
+        </div>
       </div>
+      <div class="robotime-filter-quick-tags" id="previewQuickTags"></div>
     </div>
     <div class="topic-grid" id="topicGrid"></div>
   </main>
@@ -328,8 +350,8 @@ const CONFIG = {
     {label:"Buy",url:"https://www.robotime.com",is_external:true}
   ],
   hero_banners: [
-    {title:"User Guide & Perks",  image_url:"Icon/carousel/1-in.png", bg_color:"#f6ebe3",link_url:"/c/user-guide-perks"},
-    {title:"Crafting Tips & Ideas",image_url:"Icon/carousel/3-in.png", bg_color:"#ffdb04",link_url:"/c/crafting-tips"},
+    {title:"User Guide & Perks",  image_url:"Icon/carousel/1-in.png", bg_color:"#f6ebe3", link_url:"/c/user-guide-perks"},
+    {title:"Crafting Tips & Ideas",image_url:"Icon/carousel/3-in.png", bg_color:"#ffdb04", link_url:"/c/crafting-tips"},
     {title:"Ongoing Events",      image_url:"Icon/carousel/3-in.png", bg_color:"#e65e2a",link_url:"/c/ongoing-events"},
     {title:"Say Hi To Everyone",  image_url:"Icon/carousel/4-in.png", bg_color:"#fef7e7",link_url:"/c/say-hi"},
     {title:"Spin & WIN",         image_url:"Icon/carousel/5-in.png", bg_color:"#ffb93e",link_url:"/c/spin-and-win"},
@@ -340,9 +362,21 @@ const CONFIG = {
     {title:"Exclusive Deals",     image_url:"Icon/carousel/10-in.png",bg_color:"#d7c8a2",link_url:"/c/exclusive-deals"},
     {title:"Instruction Manual",  image_url:"Icon/carousel/11-in.png",bg_color:"#fef7e7",link_url:"/c/instruction"}
   ],
+  sidebar_section_title: "Official Events",
+  sidebar_view_all: {
+    label: "View All Events",
+    url: "/c/official-events",
+    is_external: false
+  },
   sidebar_widgets: [
     {title:"Sweet Shack",image_url:"Icon/carousel/9-in.png",link_url:"/t/sweet-shack"},
     {title:"Winter Campaign",image_url:"Icon/carousel/8-in.png",link_url:"/t/winter"}
+  ],
+  filter_quick_tags: [
+    {label:"Diy",url:"#",is_external:false},
+    {label:"Featured",url:"#",is_external:false},
+    {label:"Tutorial",url:"#",is_external:false},
+    {label:"Tips",url:"#",is_external:false}
   ]
 };
 
@@ -413,21 +447,41 @@ window.addEventListener('scroll',()=>{clearTimeout(debounce);debounce=setTimeout
 // Hamburger
 document.getElementById('hamburgerBtn').addEventListener('click',()=>mobileNav.classList.toggle('open'));
 
-// Sidebar widget
+// Sidebar widget (section title + carousel + view all — mirrors hub-config.json)
 const swSlot=document.getElementById('sidebarWidgetSlot');
 let swIdx=0;
 function buildSW(){
   const w=CONFIG.sidebar_widgets[swIdx];
-  const dots=CONFIG.sidebar_widgets.length>1?`<div class="sw-dots">${CONFIG.sidebar_widgets.map((_,i)=>`<span class="sw-dot${i===swIdx?' active':''}"></span>`).join('')}</div>`:'';
-  swSlot.innerHTML=`<a href="${w.link_url||'#'}" class="sw-card"><img src="${w.image_url}" alt="${w.title}"><div class="sw-title">${w.title}</div></a>${dots}`;
+  const head=CONFIG.sidebar_section_title?`<div class="robotime-sidebar-widget__section-title">${CONFIG.sidebar_section_title}</div>`:'';
+  const dots=CONFIG.sidebar_widgets.length>1?`<div class="robotime-sidebar-widget__dots">${CONFIG.sidebar_widgets.map((_,i)=>`<span class="robotime-sidebar-widget__dot${i===swIdx?' active':''}"></span>`).join('')}</div>`:'';
+  const va=CONFIG.sidebar_view_all;
+  const foot=va&&va.url?`<a href="${va.url}" class="robotime-sidebar-widget__view-all"${va.is_external?' target="_blank" rel="noopener"':''}>${va.label||'View All Events'}</a>`:'';
+  swSlot.innerHTML=`${head}<div class="robotime-sidebar-widget__carousel"><a href="${w.link_url||'#'}" class="robotime-sidebar-widget__card"><img src="${w.image_url}" alt=""><div class="robotime-sidebar-widget__title">${w.title}</div></a>${dots}</div>${foot}`;
 }
 buildSW();
 if(CONFIG.sidebar_widgets.length>1)setInterval(()=>{swIdx=(swIdx+1)%CONFIG.sidebar_widgets.length;buildSW();},5000);
 
-// Filter tabs
-document.querySelectorAll('.filter-tab').forEach(t=>t.addEventListener('click',()=>{
-  document.querySelectorAll('.filter-tab').forEach(x=>x.classList.remove('active'));t.classList.add('active');
+// Filter tabs (not dropdowns)
+document.querySelectorAll('.filter-tabs .filter-tab').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('.filter-tabs .filter-tab').forEach(x=>x.classList.remove('active'));t.classList.add('active');
 }));
+
+// Quick tags (same data shape as hub-config filter_quick_tags)
+(function renderPreviewQuickTags(){
+  const host=document.getElementById('previewQuickTags');
+  if(!host||!CONFIG.filter_quick_tags)return;
+  host.innerHTML='';
+  CONFIG.filter_quick_tags.forEach(t=>{
+    const a=document.createElement('a');
+    a.href=t.url||'#';
+    const raw=(t.label||'').trim();
+    a.textContent=raw.startsWith('#')?raw:'#'+raw.replace(/^#/,'');
+    a.className='robotime-filter-quick-tags__link';
+    if(t.label==='Featured')a.classList.add('is-active');
+    if(t.is_external){a.target='_blank';a.rel='noopener';}
+    host.appendChild(a);
+  });
+})();
 
 // Topic cards
 [

@@ -39,8 +39,9 @@ function renderCarousel(track, heroBanners) {
     el.className = 'robotime-carousel__card';
     const bgClass = isDark(card.bg_color || '#f6ebe3') ? 'dark-bg' : 'light-bg';
 
+    const normalBg = card.bg_color || '#f6ebe3';
     el.innerHTML = `
-      <div class="robotime-carousel__card-body" style="background-color: ${card.bg_color || '#f6ebe3'}">
+      <div class="robotime-carousel__card-body" style="background-color: ${normalBg}">
         <div class="robotime-carousel__card-img" style="background-image: url('${card.image_url}')"></div>
         <div class="robotime-carousel__card-label ${bgClass}">${card.title}</div>
       </div>`;
@@ -87,41 +88,154 @@ function renderCarousel(track, heroBanners) {
   }
 }
 
-function renderSidebarWidgets(container, widgets) {
+function renderSidebarWidgets(container, widgets, panel) {
   if (!container || !widgets || widgets.length === 0) return;
+
+  if (window.__robotimeSidebarInterval) {
+    clearInterval(window.__robotimeSidebarInterval);
+    window.__robotimeSidebarInterval = null;
+  }
+
   container.innerHTML = '';
 
   const wrapper = document.createElement('div');
   wrapper.className = 'robotime-sidebar-widget';
 
+  const sectionTitle =
+    panel && panel.section_title ? String(panel.section_title).trim() : '';
+  if (sectionTitle) {
+    const heading = document.createElement('div');
+    heading.className = 'robotime-sidebar-widget__section-title';
+    heading.textContent = sectionTitle;
+    wrapper.appendChild(heading);
+  }
+
+  const carousel = document.createElement('div');
+  carousel.className = 'robotime-sidebar-widget__carousel';
+  wrapper.appendChild(carousel);
+
+  function buildCard(w) {
+    const a = document.createElement('a');
+    a.href = w.link_url || '#';
+    a.className = 'robotime-sidebar-widget__card';
+    const img = document.createElement('img');
+    img.src = w.image_url || '';
+    img.alt = w.title || '';
+    const titleEl = document.createElement('div');
+    titleEl.className = 'robotime-sidebar-widget__title';
+    titleEl.textContent = w.title || '';
+    a.appendChild(img);
+    a.appendChild(titleEl);
+    return a;
+  }
+
+  function buildDots(activeIdx) {
+    const dots = document.createElement('div');
+    dots.className = 'robotime-sidebar-widget__dots';
+    widgets.forEach((_, i) => {
+      const span = document.createElement('span');
+      span.className =
+        'robotime-sidebar-widget__dot' + (i === activeIdx ? ' active' : '');
+      dots.appendChild(span);
+    });
+    return dots;
+  }
+
   if (widgets.length === 1) {
-    const w = widgets[0];
-    wrapper.innerHTML = `
-      <a href="${w.link_url || '#'}" class="robotime-sidebar-widget__card">
-        <img src="${w.image_url}" alt="${w.title}">
-        <div class="robotime-sidebar-widget__title">${w.title}</div>
-      </a>`;
+    carousel.appendChild(buildCard(widgets[0]));
   } else {
     let idx = 0;
-    const buildSlide = () => {
-      const w = widgets[idx];
-      wrapper.innerHTML = `
-        <a href="${w.link_url || '#'}" class="robotime-sidebar-widget__card">
-          <img src="${w.image_url}" alt="${w.title}">
-          <div class="robotime-sidebar-widget__title">${w.title}</div>
-        </a>
-        <div class="robotime-sidebar-widget__dots">
-          ${widgets.map((_, i) => `<span class="robotime-sidebar-widget__dot${i === idx ? ' active' : ''}"></span>`).join('')}
-        </div>`;
+    const renderMulti = () => {
+      carousel.innerHTML = '';
+      carousel.appendChild(buildCard(widgets[idx]));
+      carousel.appendChild(buildDots(idx));
     };
-    buildSlide();
-    setInterval(() => {
+    renderMulti();
+    window.__robotimeSidebarInterval = setInterval(() => {
       idx = (idx + 1) % widgets.length;
-      buildSlide();
+      renderMulti();
     }, 5000);
   }
 
+  const viewAll = panel && panel.view_all;
+  const viewAllUrl = viewAll && viewAll.url ? String(viewAll.url).trim() : '';
+  if (viewAllUrl) {
+    const link = document.createElement('a');
+    link.href = viewAllUrl;
+    link.className = 'robotime-sidebar-widget__view-all';
+    link.textContent =
+      viewAll && viewAll.label && String(viewAll.label).trim()
+        ? String(viewAll.label).trim()
+        : 'View All Events';
+    if (viewAll.is_external) {
+      link.target = '_blank';
+      link.rel = 'noopener';
+    }
+    wrapper.appendChild(link);
+  }
+
   container.appendChild(wrapper);
+}
+
+function renderFilterQuickTags(quickTags) {
+  document.getElementById('robotime-filter-quick-tags')?.remove();
+  if (!quickTags || !quickTags.length) return;
+
+  const nav = document.querySelector('.list-controls .navigation-container');
+  if (!nav || !nav.parentNode) return;
+
+  const row = document.createElement('div');
+  row.id = 'robotime-filter-quick-tags';
+  row.className = 'robotime-filter-quick-tags';
+  row.setAttribute('role', 'navigation');
+  row.setAttribute('aria-label', 'Quick tags');
+
+  const herePath = window.location.pathname.replace(/\/$/, '') || '/';
+  const hereQs = window.location.search || '';
+
+  quickTags.forEach(t => {
+    if (!t || !t.url) return;
+    const a = document.createElement('a');
+    a.href = t.url;
+    const raw = (t.label || '').trim();
+    const display = raw.startsWith('#') ? raw : `#${raw.replace(/^#/, '')}`;
+    a.textContent = display;
+    a.className = 'robotime-filter-quick-tags__link';
+    if (t.is_external) {
+      a.target = '_blank';
+      a.rel = 'noopener';
+    }
+    try {
+      const u = new URL(t.url, window.location.origin);
+      const therePath = u.pathname.replace(/\/$/, '') || '/';
+      const thereQs = u.search || '';
+      if (therePath === herePath && thereQs === hereQs) {
+        a.classList.add('is-active');
+      }
+    } catch (e) {
+      /* ignore */
+    }
+    row.appendChild(a);
+  });
+
+  if (!row.children.length) return;
+  nav.parentNode.insertBefore(row, nav.nextSibling);
+}
+
+function applyHubConfig(config) {
+  const navContainer = document.querySelector('.robotime-header__nav');
+  const carouselTrack = document.getElementById('carousel-track');
+  const sidebarSlot = document.querySelector('.robotime-sidebar-widget-slot');
+
+  if (config.nav_items) renderNavLinks(navContainer, config.nav_items);
+  if (config.hero_banners) renderCarousel(carouselTrack, config.hero_banners);
+  if (config.sidebar_widgets) {
+    renderSidebarWidgets(sidebarSlot, config.sidebar_widgets, {
+      section_title: config.sidebar_section_title,
+      view_all: config.sidebar_view_all
+    });
+  }
+  renderFilterQuickTags(config.filter_quick_tags);
 }
 
 function initMobileMenu() {
@@ -175,12 +289,11 @@ api.onPageChange(() => {
     fetch('/hub-config.json')
       .then(r => r.json())
       .then(config => {
-        if (config.nav_items)       renderNavLinks(navContainer, config.nav_items);
-        if (config.hero_banners)    renderCarousel(carouselTrack, config.hero_banners);
-        if (config.sidebar_widgets) renderSidebarWidgets(sidebarSlot, config.sidebar_widgets);
+        applyHubConfig(config || {});
       })
       .catch(() => {
         console.warn('[Robotime Theme] hub-config.json not available — plugin may be disabled.');
+        renderFilterQuickTags(null);
       });
   });
 });

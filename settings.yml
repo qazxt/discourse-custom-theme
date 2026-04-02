@@ -25,3 +25,31 @@ robotime_official_events_category:
   description:
     en: "Category slug for Official Events in the sidebar"
     zh_CN: "侧栏中 Official Events 对应的分类 slug"
+
+robotime_sidebar_section_title:
+  default: "Official Events"
+  type: string
+  description:
+    en: "Title shown above the sidebar event carousel (plugin should expose the same via hub-config.json sidebar_section_title when using dynamic config)"
+    zh_CN: "侧栏活动轮播图上方标题（使用插件动态配置时应在 hub-config.json 的 sidebar_section_title 中下发）"
+
+robotime_sidebar_view_all_label:
+  default: "View All Events"
+  type: string
+  description:
+    en: "Label for the link below the sidebar event carousel (plugin: sidebar_view_all.label)"
+    zh_CN: "侧栏轮播下方「查看全部」链接文案（插件字段 sidebar_view_all.label）"
+
+robotime_sidebar_view_all_url:
+  default: ""
+  type: string
+  description:
+    en: "URL for View All Events below the carousel (plugin: sidebar_view_all.url); leave empty to hide the link if not set by plugin"
+    zh_CN: "侧栏轮播下方「查看全部」链接地址（插件字段 sidebar_view_all.url）；留空且插件未配置则不显示"
+
+robotime_filter_quick_tags:
+  default: ""
+  type: string
+  description:
+    en: "Optional JSON array for list quick tags, e.g. [{\"label\":\"Diy\",\"url\":\"/tag/diy\"}]. Plugin should merge into hub-config.json \"filter_quick_tags\" (or read this setting server-side when building the response)."
+    zh_CN: "可选。话题列表预显标签 JSON 数组，如 [{\"label\":\"Diy\",\"url\":\"/tag/diy\"}]；插件应合并进 hub-config 的 filter_quick_tags，或在服务端组装 JSON 时读取本项。"

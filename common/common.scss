@@ -350,6 +350,23 @@ body {
 }
 
 .robotime-sidebar-widget {
+  &__section-title {
+    font-family: $font-primary;
+    font-size: 14px;
+    font-weight: 600;
+    color: $robotime-white;
+    background: $robotime-blue;
+    border-radius: 12px;
+    padding: 8px 12px;
+    margin-bottom: 10px;
+    text-align: center;
+    line-height: 1.3;
+  }
+
+  &__carousel {
+    min-height: 0;
+  }
+
   &__card {
     display: block;
     border: 1px solid #eee;
@@ -392,11 +409,122 @@ body {
     background: $robotime-border-gray;
     &.active { background: $robotime-blue; }
   }
+
+  &__view-all {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 12px;
+    padding: 10px 14px;
+    font-family: $font-primary;
+    font-size: 14px;
+    font-weight: 500;
+    color: $robotime-gray;
+    border: 1px solid $robotime-border-gray;
+    border-radius: 12px;
+    text-decoration: none;
+    text-align: center;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+
+    &:hover {
+      background: $robotime-light-gray;
+      color: $robotime-black;
+      border-color: #ccc;
+    }
+  }
 }
 
 // ============================================================
-// 4. DISCOURSE OVERRIDES — sidebar, nav pills, buttons
+// 4. DISCOURSE OVERRIDES — list controls, sidebar, nav pills, buttons
 // ============================================================
+
+// --- Topic list: Categories / Tags dropdowns + tabs + quick tags (design homepage) ---
+.list-controls .container {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.list-controls .navigation-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  row-gap: 10px;
+  column-gap: 10px;
+}
+
+// Bordered “dropdown” look for category / tag select-kits (gray #777, rounded)
+.list-controls .navigation-container .select-kit .select-kit-header {
+  background: $robotime-white !important;
+  border: 1px solid $robotime-gray !important;
+  border-radius: 12px !important;
+  color: $robotime-gray !important;
+  font-family: $font-primary;
+  font-size: 18px;
+  font-weight: 400;
+  min-height: 44px;
+  padding-left: 15px;
+  padding-right: 12px;
+  box-shadow: none !important;
+
+  .caret-icon,
+  .select-kit-header-wrapper .caret-icon {
+    color: $robotime-gray !important;
+    margin-left: 20px;
+  }
+
+  &:hover {
+    border-color: $robotime-gray !important;
+    color: $robotime-gray !important;
+  }
+}
+
+.list-controls .navigation-container .select-kit.is-expanded .select-kit-header {
+  border-color: $robotime-gray !important;
+}
+
+// Extra gap before Latest / New / Top / Bookmarks tabs (design: 30px after Tags)
+.list-controls .navigation-container .nav-pills {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 30px;
+  margin: 0;
+  margin-left: 20px;
+  padding: 0;
+  list-style: none;
+  border: none;
+}
+
+.robotime-filter-quick-tags {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 30px;
+  margin-top: 10px;
+  padding: 0 0 4px;
+  width: 100%;
+  font-family: $font-primary;
+
+  &__link {
+    font-size: 16px;
+    font-weight: 400;
+    color: $robotime-gray;
+    text-decoration: none;
+    line-height: 1.3;
+
+    &:hover {
+      color: $robotime-black;
+      text-decoration: underline;
+    }
+
+    &.is-active {
+      color: $robotime-black;
+      text-decoration: underline;
+    }
+  }
+}
+
 .sidebar-section-link-wrapper .sidebar-section-link {
   border-radius: 12px;
   padding: 10px 16px;
@@ -418,7 +546,7 @@ body {
 .navigation-container .nav-pills > li {
   > a {
     font-family: $font-primary;
-    font-size: 18px;
+    font-size: 24px;
     color: $robotime-gray;
     border-bottom: 2px solid transparent;
     padding-bottom: 6px;

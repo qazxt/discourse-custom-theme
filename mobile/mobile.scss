@@ -190,11 +190,22 @@
   }
 }
 
+// --- List controls + navigation pills mobile ---
+.list-controls .navigation-container .select-kit .select-kit-header {
+  font-size: 16px;
+  min-height: 40px;
+}
+
+.list-controls .navigation-container .nav-pills {
+  margin-left: 0 !important;
+  gap: 16px;
+}
+
 // --- Navigation pills mobile ---
 .navigation-container .nav-pills {
   overflow-x: auto;
   flex-wrap: nowrap;
-  gap: 0;
+  gap: 16px;
   padding-bottom: 4px;
 
   &::-webkit-scrollbar {
@@ -205,5 +216,17 @@
     font-size: 15px;
     white-space: nowrap;
     padding: 6px 12px;
+  }
+}
+
+.robotime-filter-quick-tags {
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  gap: 20px;
+  padding-bottom: 6px;
+  -webkit-overflow-scrolling: touch;
+
+  &::-webkit-scrollbar {
+    display: none;
   }
 }
