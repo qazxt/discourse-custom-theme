@@ -26,13 +26,14 @@
 │   └── en.yml                  # 英文翻译字符串
 ├── common/
 │   ├── common.scss             # 通用 SCSS（变量、Header、轮播、侧栏、话题卡片、筛选栏）
-│   ├── header.html             # 占位（顶栏见 javascripts/.../custom-header/robotime.hbs）
-│   ├── after_header.html       # 占位（轮播见 javascripts/.../custom-after-header/robotime.hbs）
-│   └── head_tag.html           # 占位（逻辑见 javascripts/.../api-initializers/robotime-hub.js）
+│   ├── header.html             # 占位（顶栏见 javascripts/robotime/connectors/...）
+│   ├── after_header.html       # 占位（轮播见 javascripts/robotime/connectors/...）
+│   └── head_tag.html           # 占位（逻辑见 javascripts/discourse/api-initializers/robotime-hub.js）
 ├── javascripts/
-│   └── discourse/
-│       ├── api-initializers/
-│       │   └── robotime-hub.js   # hub-config、轮播、侧栏小部件、quick tags
+│   ├── discourse/
+│   │   └── api-initializers/
+│   │       └── robotime-hub.js   # hub-config、轮播、侧栏小部件、quick tags
+│   └── robotime/
 │       └── connectors/
 │           ├── custom-header/
 │           │   └── robotime.hbs
@@ -77,7 +78,7 @@
 
 | 层面 | 技术 | 说明 |
 |------|------|------|
-| 模板 | `.hbs` 连接器（`javascripts/discourse/connectors/...`） | Discourse 2026+ 推荐，替代内联 `text/x-handlebars` |
+| 模板 | `.hbs` 连接器（`javascripts/<命名空间>/connectors/<outlet>/<name>.hbs`） | 与官方「Multiple JS files」示例一致；**不要**放在 `javascripts/discourse/connectors/`（那是插件式路径，主题里易不生效） |
 | 样式 | SCSS (Sass) | Discourse 自动编译，无需本地构建 |
 | 脚本 | `api-initializers`（`javascripts/discourse/api-initializers/*.js`） | 使用 `apiInitializer` + Plugin API |
 | 配置 | `about.json` + `settings.yml` + `locales/*.yml` | Discourse 标准主题配置格式 |
@@ -128,7 +129,7 @@ quaternary (橙):  #ffb93e    danger:            #e45735
 
 ### 4.2 分类卡片轮播（Carousel）
 
-- **文件**: `javascripts/discourse/connectors/custom-after-header/robotime.hbs`, `javascripts/discourse/api-initializers/robotime-hub.js`, `common/common.scss` (`.robotime-carousel` 区块)
+- **文件**: `javascripts/robotime/connectors/custom-after-header/robotime.hbs`, `javascripts/discourse/api-initializers/robotime-hub.js`, `common/common.scss` (`.robotime-carousel` 区块)
 - **卡片数据**: 由插件接口 `/hub-config.json` 下发（字段 `hero_banners[]`），主题在 `common/head_tag.html` 中 `fetch('/hub-config.json')` 后渲染
 - **收缩模式纯色**: 轮播收缩时图片层隐藏，仅保留卡片背景色；颜色使用该卡片的 `bg_color`（不返回则默认 `#f6ebe3`）
 - **动效**:
