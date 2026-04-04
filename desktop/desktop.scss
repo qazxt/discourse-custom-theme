@@ -33,10 +33,15 @@
   }
 }
 
-// --- Content area with sidebar ---
+// --- Main outlet (discovery / latest) ---
+// Core renders siblings under #main-outlet: welcome-banner, #main-container,
+// .list-controls, .list-container — they must stack vertically. Default flex
+// is row, which squeezed them into columns and hid the topic list.
 #main-outlet {
   display: flex;
-  gap: 24px;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 16px;
   padding-top: 16px;
 }
 
@@ -48,7 +53,7 @@
   margin: 0 auto;
 }
 
-// --- Sidebar desktop ---
+// --- Sidebar desktop (sibling of #main-outlet in #main-outlet-wrapper, not a child) ---
 .sidebar-wrapper {
   width: 270px;
   flex-shrink: 0;
@@ -59,10 +64,10 @@
   overflow-y: auto;
 }
 
-// --- Main content ---
+// --- Topic list area: full width of outlet; min-width avoids grid/flex overflow ---
 .list-container,
 #list-area {
-  flex: 1;
+  width: 100%;
   min-width: 0;
 }
 

@@ -121,13 +121,16 @@
 
 // --- Mobile content full width ---
 #main-outlet {
+  display: flex;
   flex-direction: column;
+  align-items: stretch;
   padding: 8px;
 }
 
 .list-container,
 #list-area {
   width: 100%;
+  min-width: 0;
 }
 
 // --- Mobile topic cards (single column) ---
