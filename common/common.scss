@@ -463,6 +463,46 @@ body {
 // 4. DISCOURSE OVERRIDES — list controls, sidebar, nav pills, buttons
 // ============================================================
 
+// --- Main outlet: fill grid column next to sidebar; min-width avoids flex/grid blowout ---
+#main-outlet {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+// --- Direct children use full column width (align with topic list; no viewport breakout) ---
+#main-outlet > .welcome-banner,
+#main-outlet > #main-container,
+#main-outlet > .list-controls,
+#main-outlet > .container.list-container {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+// --- Welcome / search banner: cancel full-viewport centering from core / banner TC ---
+#main-outlet .welcome-banner {
+  margin-left: 0;
+  margin-right: 0;
+  position: relative;
+  left: auto;
+  right: auto;
+  transform: none;
+}
+
+#main-outlet .welcome-banner .custom-search-banner-wrap,
+#main-outlet .welcome-banner__wrap {
+  max-width: 100%;
+  margin-left: 0;
+  margin-right: 0;
+  box-sizing: border-box;
+}
+
+#main-outlet .welcome-banner__title {
+  text-align: start;
+}
+
 // --- Topic list: Categories / Tags dropdowns + tabs + quick tags (design homepage) ---
 .list-controls .container {
   display: flex;
@@ -604,9 +644,9 @@ body {
 }
 
 // ============================================================
-// 5. TOPIC CARDS — masonry layout (staggered)
-//    Core uses <table class="topic-list"> + <tbody class="topic-list-body">.
-//    column-count on a table tbody is ignored until we break table display.
+// 5. TOPIC CARDS — row-priority grid (aligned with preview.html .topic-grid)
+//    column-count fills one column top-to-bottom first (jagged layout).
+//    CSS Grid places cards left-to-right then next row — stable columns.
 // ============================================================
 .topic-list {
   padding: 0;
@@ -614,25 +654,27 @@ body {
   width: 100%;
   border-collapse: separate;
   border-spacing: 0;
+  table-layout: fixed;
 
   thead {
     display: none;
   }
 
   tbody {
-    display: block;
-    column-count: 2;
-    column-gap: 20px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
   }
 
-  // Full-width rows (separators, plugin outlets)
   tbody > tr:not(.topic-list-item) {
+    grid-column: 1 / -1;
     display: block;
-    width: 100%;
-    column-span: all;
   }
 
   tr.topic-list-item {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
     list-style: none;
     border-radius: 20px;
     overflow: hidden;
@@ -640,13 +682,9 @@ body {
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
     transition: box-shadow 0.25s, transform 0.25s;
     cursor: pointer;
-    display: inline-block;
-    vertical-align: top;
     width: 100%;
-    margin: 0 0 20px;
+    margin: 0;
     box-sizing: border-box;
-    break-inside: avoid;
-    page-break-inside: avoid;
 
     &:hover {
       box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
@@ -657,16 +695,26 @@ body {
       display: block;
       border: none;
       padding: 0;
+      width: 100% !important;
+      max-width: 100%;
+      box-sizing: border-box;
     }
+
     .main-link {
       order: 1;
+      flex: 1 1 auto;
+      padding: 14px 16px 8px;
     }
+
     .posters {
-      order: 3;
+      order: 2;
+      padding: 0 16px 14px;
+      margin-top: auto;
     }
+
     .num,
     .activity {
-      display: none;
+      display: none !important;
     }
   }
 }

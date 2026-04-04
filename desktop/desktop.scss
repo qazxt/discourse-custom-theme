@@ -43,6 +43,9 @@
   align-items: stretch;
   gap: 16px;
   padding-top: 16px;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
 }
 
 .robotime-page-layout {
@@ -69,6 +72,13 @@
 #list-area {
   width: 100%;
   min-width: 0;
+}
+
+// --- Topic grid: 3 columns on wide screens (preview.html uses column-count: 3) ---
+@media (min-width: 1200px) {
+  .topic-list tbody {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
 
 // --- Topic card sizing ---
@@ -124,7 +134,7 @@
   }
 
   .topic-list tbody {
-    column-count: 2;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .list-controls .navigation-container .select-kit .select-kit-header {

@@ -135,12 +135,12 @@
 
 // --- Mobile topic cards (single column) ---
 .topic-list tbody {
-  column-count: 1;
-  column-gap: 0;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px;
 }
 
 .topic-list .topic-list-item {
-  margin-bottom: 12px;
+  margin-bottom: 0;
 }
 
 .robotime-topic-card {
