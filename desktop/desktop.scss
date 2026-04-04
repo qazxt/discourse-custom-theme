@@ -53,9 +53,9 @@
   width: 270px;
   flex-shrink: 0;
   position: sticky;
-  top: 76px;
+  top: calc(var(--header-offset, 120px) + 8px);
   align-self: flex-start;
-  max-height: calc(100vh - 76px);
+  max-height: calc(100vh - var(--header-offset, 120px) - 16px);
   overflow-y: auto;
 }
 
@@ -64,11 +64,6 @@
 #list-area {
   flex: 1;
   min-width: 0;
-}
-
-// --- Topic cards masonry columns (desktop: 2 columns) ---
-.topic-list tbody {
-  column-count: 2;
 }
 
 // --- Topic card sizing ---
@@ -124,7 +119,7 @@
   }
 
   .topic-list tbody {
-    grid-template-columns: repeat(2, 1fr);
+    column-count: 2;
   }
 
   .list-controls .navigation-container .select-kit .select-kit-header {

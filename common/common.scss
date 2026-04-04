@@ -26,11 +26,11 @@ body {
 // ============================================================
 // 1. HEADER — custom nav bar (black, 60px)
 //    Connector: above-site-header (Discourse 2026+). nav_items via plugin.
+//    Native .d-header-wrap is hidden; search/user tools are moved into
+//    .robotime-header__user via robotime-hub.js; --header-offset is set in JS.
 // ============================================================
-.d-header-wrap .d-header {
-  background-color: $robotime-black !important;
-  box-shadow: none;
-  border-bottom: none;
+.d-header-wrap {
+  display: none !important;
 }
 
 .robotime-above-header {
@@ -47,6 +47,8 @@ body {
   margin: 0 auto;
   padding: 0 24px;
   height: 60px;
+  position: relative;
+  z-index: 1100;
 
   &__logo {
     flex-shrink: 0;
@@ -107,6 +109,24 @@ body {
     border-radius: 20px;
     padding: 6px 16px;
     flex-shrink: 0;
+    min-height: 40px;
+
+    // Native header tools (moved from .d-header)
+    .panel,
+    .d-header-icons {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0;
+    }
+
+    .d-icon {
+      color: $robotime-white;
+    }
+
+    .header-dropdown-toggle {
+      color: $robotime-white;
+    }
   }
 
   &__mobile-menu-btn {
@@ -585,19 +605,34 @@ body {
 
 // ============================================================
 // 5. TOPIC CARDS — masonry layout (staggered)
+//    Core uses <table class="topic-list"> + <tbody class="topic-list-body">.
+//    column-count on a table tbody is ignored until we break table display.
 // ============================================================
 .topic-list {
   padding: 0;
+  display: block;
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
 
-  thead { display: none; }
+  thead {
+    display: none;
+  }
 
-  // Use CSS columns to achieve staggered card heights
   tbody {
+    display: block;
     column-count: 2;
     column-gap: 20px;
   }
 
-  .topic-list-item {
+  // Full-width rows (separators, plugin outlets)
+  tbody > tr:not(.topic-list-item) {
+    display: block;
+    width: 100%;
+    column-span: all;
+  }
+
+  tr.topic-list-item {
     list-style: none;
     border-radius: 20px;
     overflow: hidden;
@@ -606,8 +641,10 @@ body {
     transition: box-shadow 0.25s, transform 0.25s;
     cursor: pointer;
     display: inline-block;
+    vertical-align: top;
     width: 100%;
     margin: 0 0 20px;
+    box-sizing: border-box;
     break-inside: avoid;
     page-break-inside: avoid;
 
@@ -621,9 +658,16 @@ body {
       border: none;
       padding: 0;
     }
-    .main-link { order: 1; }
-    .posters { order: 3; }
-    .num, .activity { display: none; }
+    .main-link {
+      order: 1;
+    }
+    .posters {
+      order: 3;
+    }
+    .num,
+    .activity {
+      display: none;
+    }
   }
 }
 

@@ -1,6 +1,74 @@
 import { apiInitializer } from "discourse/lib/api";
 
 export default apiInitializer((api) => {
+  /**
+   * Move Discourse header actions (search, hamburger, user menu) into the
+   * custom bar, then CSS hides .d-header-wrap entirely.
+   */
+  function relocateNativeHeaderTools() {
+    const slot = document.querySelector(".robotime-header__user");
+    const header = document.querySelector(".d-header");
+    if (!slot || !header) {
+      return;
+    }
+
+    const tools =
+      header.querySelector(".d-header-icons") ||
+      header.querySelector(".header-icons") ||
+      header.querySelector(".panel") ||
+      header.querySelector(".header-buttons");
+
+    if (!tools || slot.contains(tools)) {
+      return;
+    }
+
+    slot.appendChild(tools);
+  }
+
+  function updateRobotimeHeaderOffset() {
+    let h = 0;
+    const above = document.querySelector(".robotime-above-header");
+    if (above) {
+      h += above.getBoundingClientRect().height;
+    }
+    const carousel = document.getElementById("robotime-carousel");
+    if (carousel) {
+      const ch = carousel.getBoundingClientRect().height;
+      if (ch > 0) {
+        h += ch;
+      }
+    }
+    const px = `${Math.max(0, Math.round(h))}px`;
+    document.documentElement.style.setProperty("--header-offset", px);
+    document.documentElement.style.setProperty("--main-outlet-offset", px);
+  }
+
+  function setupRobotimeHeaderOffsetObserverOnce() {
+    if (window.__robotimeHeaderOffsetObserver) {
+      return;
+    }
+    window.__robotimeHeaderOffsetObserver = true;
+
+    const run = () => {
+      requestAnimationFrame(() => updateRobotimeHeaderOffset());
+    };
+
+    if (typeof ResizeObserver !== "undefined") {
+      const ro = new ResizeObserver(run);
+      const above = document.querySelector(".robotime-above-header");
+      const carousel = document.getElementById("robotime-carousel");
+      if (above) {
+        ro.observe(above);
+      }
+      if (carousel) {
+        ro.observe(carousel);
+      }
+    }
+
+    window.addEventListener("resize", run, { passive: true });
+    run();
+  }
+
   function setupRobotimeCarouselArrowsOnce() {
     if (window.__robotimeCarouselArrowDelegation) return;
     window.__robotimeCarouselArrowDelegation = true;
@@ -252,6 +320,7 @@ export default apiInitializer((api) => {
       });
     }
     renderFilterQuickTags(config.filter_quick_tags);
+    requestAnimationFrame(() => updateRobotimeHeaderOffset());
   }
 
   function initMobileMenu() {
@@ -272,6 +341,13 @@ export default apiInitializer((api) => {
 
   api.onPageChange(() => {
     requestAnimationFrame(() => {
+      relocateNativeHeaderTools();
+      setupRobotimeHeaderOffsetObserverOnce();
+      updateRobotimeHeaderOffset();
+      requestAnimationFrame(() => {
+        relocateNativeHeaderTools();
+        updateRobotimeHeaderOffset();
+      });
       initMobileMenu();
 
       const carouselRoot = document.getElementById("robotime-carousel");
@@ -290,6 +366,7 @@ export default apiInitializer((api) => {
             "robotime-carousel--collapsed",
             collapsed
           );
+          updateRobotimeHeaderOffset();
         };
 
         window.addEventListener(
