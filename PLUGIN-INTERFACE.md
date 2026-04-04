@@ -276,8 +276,8 @@ end
 
 | 主题文件 | 数据来源 | 渲染内容 |
 |----------|----------|----------|
-| `javascripts/robotime/connectors/custom-header/robotime.hbs` | `nav_items`（由 JS 填充） | 自定义顶栏 DOM（桌面端 + 移动端菜单容器） |
-| `javascripts/robotime/connectors/custom-after-header/robotime.hbs` | `hero_banners`（由 JS 填充） | 顶栏下轮播容器 |
+| `javascripts/robotime/connectors/above-site-header/robotime-header.hbs` | `nav_items`（由 JS 填充） | 自定义顶栏 DOM（Outlet：**above-site-header**，在默认站点 header **之上**） |
+| `javascripts/robotime/connectors/below-site-header/robotime-carousel.hbs` | `hero_banners`（由 JS 填充） | 轮播区（Outlet：**below-site-header**，紧贴默认 header **之下**） |
 | `javascripts/discourse/api-initializers/robotime-hub.js` | 全部 | `fetch('/hub-config.json')` → 渲染导航、顶栏轮播、侧栏活动区、`filter_quick_tags` 预显标签行 |
 | `common/header.html` 等 | — | 仅占位注释；连接器须在 `javascripts/<命名空间>/connectors/...`，Initializer 在 `javascripts/discourse/api-initializers/` |
 | `common/common.scss` | — | 纯样式，不含数据 |

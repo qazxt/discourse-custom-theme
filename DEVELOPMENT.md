@@ -26,8 +26,8 @@
 │   └── en.yml                  # 英文翻译字符串
 ├── common/
 │   ├── common.scss             # 通用 SCSS（变量、Header、轮播、侧栏、话题卡片、筛选栏）
-│   ├── header.html             # 占位（顶栏见 javascripts/robotime/connectors/...）
-│   ├── after_header.html       # 占位（轮播见 javascripts/robotime/connectors/...）
+│   ├── header.html             # 占位（顶栏见 javascripts/robotime/connectors/above-site-header/）
+│   ├── after_header.html       # 占位（轮播见 javascripts/robotime/connectors/below-site-header/）
 │   └── head_tag.html           # 占位（逻辑见 javascripts/discourse/api-initializers/robotime-hub.js）
 ├── javascripts/
 │   ├── discourse/
@@ -35,10 +35,10 @@
 │   │       └── robotime-hub.js   # hub-config、轮播、侧栏小部件、quick tags
 │   └── robotime/
 │       └── connectors/
-│           ├── custom-header/
-│           │   └── robotime.hbs
-│           └── custom-after-header/
-│               └── robotime.hbs
+│           ├── above-site-header/
+│           │   └── robotime-header.hbs
+│           └── below-site-header/
+│               └── robotime-carousel.hbs
 ├── desktop/
 │   └── desktop.scss            # 桌面端 ≥1200px + 平板 768–1199px 布局
 ├── mobile/
@@ -129,7 +129,7 @@ quaternary (橙):  #ffb93e    danger:            #e45735
 
 ### 4.2 分类卡片轮播（Carousel）
 
-- **文件**: `javascripts/robotime/connectors/custom-after-header/robotime.hbs`, `javascripts/discourse/api-initializers/robotime-hub.js`, `common/common.scss` (`.robotime-carousel` 区块)
+- **文件**: `javascripts/robotime/connectors/below-site-header/robotime-carousel.hbs`, `javascripts/robotime/connectors/above-site-header/robotime-header.hbs`, `javascripts/discourse/api-initializers/robotime-hub.js`, `common/common.scss`
 - **卡片数据**: 由插件接口 `/hub-config.json` 下发（字段 `hero_banners[]`），主题在 `common/head_tag.html` 中 `fetch('/hub-config.json')` 后渲染
 - **收缩模式纯色**: 轮播收缩时图片层隐藏，仅保留卡片背景色；颜色使用该卡片的 `bg_color`（不返回则默认 `#f6ebe3`）
 - **动效**:

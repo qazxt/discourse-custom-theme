@@ -25,12 +25,17 @@ body {
 
 // ============================================================
 // 1. HEADER — custom nav bar (black, 60px)
-//    nav_items populated by plugin
+//    Connector: above-site-header (Discourse 2026+). nav_items via plugin.
 // ============================================================
 .d-header-wrap .d-header {
   background-color: $robotime-black !important;
   box-shadow: none;
   border-bottom: none;
+}
+
+.robotime-above-header {
+  background-color: $robotime-black;
+  width: 100%;
 }
 
 .robotime-header {
