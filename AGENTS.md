@@ -12,6 +12,7 @@ This is a **Discourse custom theme** repository ("Robotime Community Theme") for
 - `common/common.scss` — Shared SCSS styles for all viewports (header, carousel, sidebar, topic cards, filter bar)
 - `javascripts/robotime/connectors/above-site-header/robotime-header.hbs` — Custom top bar (Plugin Outlet **above-site-header**; use Plugin Outlet Locations theme to verify)
 - `javascripts/robotime/connectors/below-site-header/robotime-carousel.hbs` — Carousel under default header (**below-site-header**)
+- `javascripts/robotime/connectors/after-sidebar-sections/robotime-sidebar-slot.hbs` — `.robotime-sidebar-widget-slot` for hub **sidebar_widgets** (**after-sidebar-sections**)
 - `javascripts/discourse/api-initializers/robotime-hub.js` — `hub-config.json`, carousel, sidebar widget, quick tags, mobile menu
 - `common/header.html`, `common/after_header.html`, `common/head_tag.html` — Legacy placeholders only (no inline `text/x-handlebars` / `discourse-plugin`)
 - `desktop/desktop.scss` — Desktop and tablet layout overrides

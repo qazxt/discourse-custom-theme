@@ -370,8 +370,20 @@ body {
   background: $robotime-white;
 }
 
+// Native sidebar links — preview-style grey pills; active state kept below in §4
+.sidebar-wrapper .sidebar-section-link-wrapper {
+  margin-bottom: 6px;
+}
+
+.sidebar-wrapper .sidebar-section-link:not(.active) {
+  background: $robotime-light-gray;
+}
+
 .robotime-sidebar-widget-slot {
-  margin-top: 16px;
+  margin-top: 8px;
+  padding: 0 0.65em 1rem;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .robotime-sidebar-widget {
@@ -604,7 +616,7 @@ body {
     }
   }
   &:hover:not(.active) {
-    background: $robotime-light-gray;
+    background: #eeeeee;
   }
 }
 
