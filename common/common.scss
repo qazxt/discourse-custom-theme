@@ -13,6 +13,7 @@ $robotime-light-gray: #f7f7f7;
 $robotime-border-gray: #dddddd;
 $robotime-hover-white: #cccccc;
 $robotime-header-user-bg: rgba(255, 255, 255, 0.1);
+$robotime-sidebar-canvas: #f5f5f5; // design mockup: column behind menu + widget
 
 $font-primary: "Google Sans Flex", "Google Sans", "Noto Sans", "Helvetica Neue",
   Arial, sans-serif;
@@ -21,6 +22,7 @@ $font-primary: "Google Sans Flex", "Google Sans", "Noto Sans", "Helvetica Neue",
 
 body {
   font-family: $font-primary;
+  background-color: $robotime-sidebar-canvas; // preview.html body #f5f5f5
 }
 
 // ============================================================
@@ -364,26 +366,76 @@ body {
 }
 
 // ============================================================
-// 3. SIDEBAR — sidebar_widgets slot at bottom
+// 3. SIDEBAR — matches preview.html .sidebar / .sidebar-menu / widget / .new-topic-btn
 // ============================================================
-.sidebar-wrapper .sidebar-container {
-  background: $robotime-white;
+.sidebar-wrapper {
+  background-color: $robotime-sidebar-canvas;
 }
 
-// Native sidebar links — preview-style grey pills; active state kept below in §4
+.sidebar-wrapper .sidebar-container {
+  background: transparent;
+}
+
+// Native sidebar links — preview: default white (not grey) pills; active = black (§4)
 .sidebar-wrapper .sidebar-section-link-wrapper {
   margin-bottom: 6px;
 }
 
 .sidebar-wrapper .sidebar-section-link:not(.active) {
-  background: $robotime-light-gray;
+  background: $robotime-white;
+  color: $robotime-black;
+}
+
+.robotime-sidebar-hub {
+  padding: 12px 0.65em 1rem;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .robotime-sidebar-widget-slot {
-  margin-top: 8px;
-  padding: 0 0.65em 1rem;
+  margin-top: 0;
+  padding: 0;
   width: 100%;
   box-sizing: border-box;
+}
+
+// preview.html .new-topic-btn — below hub widget (connector)
+.robotime-sidebar-new-topic {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  margin-top: 12px;
+  box-sizing: border-box;
+  min-height: 44px;
+  padding: 0 16px;
+  background: $robotime-blue;
+  color: $robotime-white;
+  border: none;
+  border-radius: 22px;
+  font-family: $font-primary;
+  font-size: 16px;
+  font-weight: 500;
+  text-decoration: none;
+  text-align: center;
+  transition: opacity 0.2s;
+
+  &:hover {
+    opacity: 0.9;
+    color: $robotime-white;
+  }
+
+  &__icon {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    fill: currentColor;
+  }
+
+  &__label {
+    line-height: 1.2;
+  }
 }
 
 .robotime-sidebar-widget {
@@ -398,6 +450,8 @@ body {
     margin-bottom: 10px;
     text-align: center;
     line-height: 1.3;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   &__carousel {
@@ -406,11 +460,12 @@ body {
 
   &__card {
     display: block;
-    border: 1px solid #eee;
+    border: 1px solid $robotime-border-gray;
     border-radius: 12px;
     overflow: hidden;
     text-decoration: none;
     color: inherit;
+    background: $robotime-white;
     transition: box-shadow 0.2s;
 
     &:hover {
@@ -444,19 +499,24 @@ body {
     height: 6px;
     border-radius: 50%;
     background: $robotime-border-gray;
-    &.active { background: $robotime-blue; }
+    &.active {
+      background: $robotime-blue;
+    }
   }
 
   &__view-all {
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 100%;
+    box-sizing: border-box;
     margin-top: 12px;
     padding: 10px 14px;
     font-family: $font-primary;
     font-size: 14px;
     font-weight: 500;
     color: $robotime-gray;
+    background: $robotime-white;
     border: 1px solid $robotime-border-gray;
     border-radius: 12px;
     text-decoration: none;
@@ -602,10 +662,12 @@ body {
   }
 }
 
+// preview.html .sidebar-menu a — 12px 20px, 16px; active black + white icons
 .sidebar-section-link-wrapper .sidebar-section-link {
   border-radius: 12px;
-  padding: 10px 16px;
+  padding: 12px 20px;
   font-family: $font-primary;
+  font-size: 16px;
 
   &.active {
     background: $robotime-black !important;
@@ -614,7 +676,12 @@ body {
     .d-icon {
       color: $robotime-white !important;
     }
+
+    .emoji {
+      filter: none;
+    }
   }
+
   &:hover:not(.active) {
     background: #eeeeee;
   }
