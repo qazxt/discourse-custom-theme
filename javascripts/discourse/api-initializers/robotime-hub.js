@@ -374,30 +374,76 @@ export default apiInitializer((api) => {
       if (carouselRoot && !window.__robotimeCarouselCollapseInit) {
         window.__robotimeCarouselCollapseInit = true;
         let collapsed = false;
-        let rafId = null;
+        let scrollRafId = null;
+        let offsetSweepTimer = null;
 
-        const update = () => {
-          rafId = null;
-          const shouldCollapse = window.scrollY > 60;
-          if (shouldCollapse === collapsed) return;
-          collapsed = shouldCollapse;
+        // Only collapse when the document can scroll meaningfully (short lists: stay expanded, no jitter).
+        const SCROLLABLE_MIN_EXTRA = 140;
+        const SCROLL_COLLAPSE_AT = 100;
+        const SCROLL_EXPAND_AT = 28;
+
+        function pageHasRealScroll() {
+          const el = document.documentElement;
+          return el.scrollHeight > window.innerHeight + SCROLLABLE_MIN_EXTRA;
+        }
+
+        function scheduleHeaderOffsetAfterCollapseChange() {
+          updateRobotimeHeaderOffset();
+          if (offsetSweepTimer) {
+            clearTimeout(offsetSweepTimer);
+          }
+          offsetSweepTimer = setTimeout(() => {
+            offsetSweepTimer = null;
+            updateRobotimeHeaderOffset();
+          }, 340);
+        }
+
+        function runCarouselCollapseUpdate() {
+          scrollRafId = null;
+
+          if (!pageHasRealScroll()) {
+            if (collapsed) {
+              collapsed = false;
+              carouselRoot.classList.remove("robotime-carousel--collapsed");
+              scheduleHeaderOffsetAfterCollapseChange();
+            }
+            return;
+          }
+
+          const y = window.scrollY;
+          let nextCollapsed = collapsed;
+          if (!collapsed && y > SCROLL_COLLAPSE_AT) {
+            nextCollapsed = true;
+          } else if (collapsed && y < SCROLL_EXPAND_AT) {
+            nextCollapsed = false;
+          }
+
+          if (nextCollapsed === collapsed) {
+            return;
+          }
+          collapsed = nextCollapsed;
           carouselRoot.classList.toggle(
             "robotime-carousel--collapsed",
             collapsed
           );
-          updateRobotimeHeaderOffset();
-        };
+          scheduleHeaderOffsetAfterCollapseChange();
+        }
 
-        window.addEventListener(
-          "scroll",
-          () => {
-            if (rafId) return;
-            rafId = window.requestAnimationFrame(update);
-          },
-          { passive: true }
-        );
+        function queueCarouselCollapseCheck() {
+          if (scrollRafId) {
+            return;
+          }
+          scrollRafId = window.requestAnimationFrame(runCarouselCollapseUpdate);
+        }
 
-        update();
+        window.addEventListener("scroll", queueCarouselCollapseCheck, {
+          passive: true,
+        });
+        window.addEventListener("resize", queueCarouselCollapseCheck, {
+          passive: true,
+        });
+
+        queueCarouselCollapseCheck();
       }
 
       fetch("/hub-config.json")
