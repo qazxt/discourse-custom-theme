@@ -114,9 +114,11 @@
   }
 }
 
-// --- Mobile sidebar hidden ---
-.sidebar-wrapper {
-  display: none;
+// --- Mobile only: hide sidebar column (must be media-scoped — unscoped rules break desktop) ---
+@media (max-width: 767px) {
+  .sidebar-wrapper {
+    display: none !important;
+  }
 }
 
 // --- Mobile content full width ---

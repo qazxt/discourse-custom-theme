@@ -115,7 +115,7 @@
 
 ### 3.3 左侧栏底部活动轮播区（`sidebar_section_title` / `sidebar_view_all` / `sidebar_widgets`）
 
-**位置**: 左侧边栏菜单下方的 `.robotime-sidebar-widget-slot` 插槽（主题通过 **after-sidebar-sections** outlet 的 `robotime-sidebar-slot.hbs` 注入 DOM；数据仍来自 `hub-config.json`）。
+**位置**: 左侧边栏菜单下方的 `.robotime-sidebar-widget-slot` 插槽（主题通过 `javascripts/discourse/connectors/after-sidebar-sections/robotime-sidebar-slot.hbs` 注入 DOM；数据仍来自 `hub-config.json`；「新建话题」文案由 `robotime-hub.js` 写入，避免在 connector 内使用 `theme-i18n` 导致渲染失败）。
 
 整体结构（自上而下）：
 

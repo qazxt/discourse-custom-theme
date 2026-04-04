@@ -323,6 +323,23 @@ export default apiInitializer((api) => {
     requestAnimationFrame(() => updateRobotimeHeaderOffset());
   }
 
+  function sidebarNewTopicLabelText() {
+    const lang = (document.documentElement.lang || "").toLowerCase();
+    if (lang.startsWith("zh")) {
+      return "新建话题";
+    }
+    return "New topic";
+  }
+
+  /** Connector leaves label span empty — avoids theme-i18n failures breaking the sidebar outlet. */
+  function ensureSidebarNewTopicLabel() {
+    document.querySelectorAll(".robotime-sidebar-new-topic__label").forEach((el) => {
+      if (!el.textContent.trim()) {
+        el.textContent = sidebarNewTopicLabelText();
+      }
+    });
+  }
+
   function initMobileMenu() {
     const menuBtn = document.querySelector(".robotime-header__mobile-menu-btn");
     const mobileNav = document.querySelector(".robotime-mobile-nav");
@@ -344,9 +361,11 @@ export default apiInitializer((api) => {
       relocateNativeHeaderTools();
       setupRobotimeHeaderOffsetObserverOnce();
       updateRobotimeHeaderOffset();
+      ensureSidebarNewTopicLabel();
       requestAnimationFrame(() => {
         relocateNativeHeaderTools();
         updateRobotimeHeaderOffset();
+        ensureSidebarNewTopicLabel();
       });
       initMobileMenu();
 
@@ -391,6 +410,7 @@ export default apiInitializer((api) => {
             "[Robotime Theme] hub-config.json not available — plugin may be disabled."
           );
           renderFilterQuickTags(null);
+          ensureSidebarNewTopicLabel();
         });
     });
   });

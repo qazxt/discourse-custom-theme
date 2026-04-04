@@ -63,8 +63,18 @@
   position: sticky;
   top: calc(var(--header-offset, 120px) + 8px);
   align-self: flex-start;
-  max-height: calc(100vh - var(--header-offset, 120px) - 16px);
+  max-height: max(
+    12rem,
+    calc(100vh - var(--header-offset, 120px) - 16px)
+  );
   overflow-y: auto;
+}
+
+// Ensure desktop never inherits a leaked `display: none` on .sidebar-wrapper
+@media (min-width: 768px) {
+  .sidebar-wrapper {
+    display: block !important;
+  }
 }
 
 // --- Topic list area: full width of outlet; min-width avoids grid/flex overflow ---
