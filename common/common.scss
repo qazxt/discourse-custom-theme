@@ -575,6 +575,20 @@ body {
   text-align: start;
 }
 
+// --- Categories: hide left sidebar section + “类别” nav tab (keep category dropdown in .category-breadcrumb) ---
+.sidebar-wrapper .sidebar-section[data-section-name="categories"],
+.sidebar-wrapper .sidebar-section-wrapper[data-section-name="categories"],
+.sidebar-wrapper .sidebar-section-wrapper:has([data-section-name="categories"]) {
+  display: none !important;
+}
+
+.list-controls .navigation-container .nav-pills > li.categories,
+.list-controls .navigation-container .nav-pills > li.nav-item_categories,
+#navigation-bar li.categories,
+#navigation-bar li.nav-item_categories {
+  display: none !important;
+}
+
 // --- Topic list: Categories / Tags dropdowns + tabs + quick tags (design homepage) ---
 .list-controls .container {
   display: flex;
