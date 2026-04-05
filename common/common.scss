@@ -20,6 +20,11 @@ $font-primary: "Google Sans Flex", "Google Sans", "Noto Sans", "Helvetica Neue",
 
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap");
 
+// Reserve scrollbar gutter so layout width does not flip when overflow toggles at ~100vh.
+html {
+  scrollbar-gutter: stable;
+}
+
 body {
   font-family: $font-primary;
   background-color: $robotime-sidebar-canvas; // preview.html body #f5f5f5
@@ -29,7 +34,8 @@ body {
 // 1. HEADER — custom nav bar (black, 60px)
 //    Connector: above-site-header (Discourse 2026+). nav_items via plugin.
 //    Native .d-header-wrap is hidden; search/user tools are moved into
-//    .robotime-header__user via robotime-hub.js; --header-offset is set in JS.
+//    .robotime-header__user via robotime-hub.js; --robotime-header-offset is set in JS
+//    (avoid --header-offset — Discourse core also writes it).
 // ============================================================
 .d-header-wrap {
   display: none !important;

@@ -25,6 +25,9 @@ export default apiInitializer((api) => {
     slot.appendChild(tools);
   }
 
+  /** Last applied offset; skip identical writes to avoid reflow / scrollbar gutter oscillation. */
+  let lastRobotimeStackOffsetPx = null;
+
   function updateRobotimeHeaderOffset() {
     let h = 0;
     const above = document.querySelector(".robotime-above-header");
@@ -39,7 +42,13 @@ export default apiInitializer((api) => {
       }
     }
     const px = `${Math.max(0, Math.round(h))}px`;
-    document.documentElement.style.setProperty("--header-offset", px);
+    if (px === lastRobotimeStackOffsetPx) {
+      return;
+    }
+    lastRobotimeStackOffsetPx = px;
+    // Theme-only name: Discourse core overwrites --header-offset (e.g. to 0); do not fight it.
+    document.documentElement.style.setProperty("--robotime-header-offset", px);
+    // Keep legacy outlet var for any layout that still reads it from the theme.
     document.documentElement.style.setProperty("--main-outlet-offset", px);
   }
 

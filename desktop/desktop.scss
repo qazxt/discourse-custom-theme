@@ -61,11 +61,11 @@
   width: 270px;
   flex-shrink: 0;
   position: sticky;
-  top: calc(var(--header-offset, 120px) + 8px);
+  top: calc(var(--robotime-header-offset, 120px) + 8px);
   align-self: flex-start;
   max-height: max(
     12rem,
-    calc(100vh - var(--header-offset, 120px) - 16px)
+    calc(100vh - var(--robotime-header-offset, 120px) - 16px)
   );
   overflow-y: auto;
 }
