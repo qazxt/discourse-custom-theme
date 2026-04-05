@@ -544,7 +544,6 @@ body {
 }
 
 // --- Direct children use full column width (align with topic list; no viewport breakout) ---
-#main-outlet > .welcome-banner,
 #main-outlet > #main-container,
 #main-outlet > .list-controls,
 #main-outlet > .container.list-container {
@@ -553,26 +552,25 @@ body {
   box-sizing: border-box;
 }
 
-// --- Welcome / search banner: cancel full-viewport centering from core / banner TC ---
-#main-outlet .welcome-banner {
-  margin-left: 0;
-  margin-right: 0;
-  position: relative;
-  left: auto;
-  right: auto;
-  transform: none;
+// --- Hide welcome banner + search strip above the topic list (core / search-banner theme components) ---
+#main-outlet > .welcome-banner,
+#main-outlet .welcome-banner,
+#main-outlet > .custom-search-banner,
+#main-outlet .custom-search-banner,
+#main-outlet > #search-banner,
+#main-outlet > .search-banner,
+#main-outlet .custom-search-banner-wrap {
+  display: none !important;
 }
 
-#main-outlet .welcome-banner .custom-search-banner-wrap,
-#main-outlet .welcome-banner__wrap {
-  max-width: 100%;
-  margin-left: 0;
-  margin-right: 0;
-  box-sizing: border-box;
-}
-
-#main-outlet .welcome-banner__title {
-  text-align: start;
+// --- Chat “频道” + DM: hide native blocks above Robotime sidebar carousel (after-sidebar-sections) ---
+.sidebar-wrapper .sidebar-section[data-section-name="chat-channels"],
+.sidebar-wrapper .sidebar-section-wrapper[data-section-name="chat-channels"],
+.sidebar-wrapper .sidebar-section-wrapper:has([data-section-name="chat-channels"]),
+.sidebar-wrapper .sidebar-section[data-section-name="chat-dms"],
+.sidebar-wrapper .sidebar-section-wrapper[data-section-name="chat-dms"],
+.sidebar-wrapper .sidebar-section-wrapper:has([data-section-name="chat-dms"]) {
+  display: none !important;
 }
 
 // --- Categories: hide left sidebar section + “类别” nav tab (keep category dropdown in .category-breadcrumb) ---

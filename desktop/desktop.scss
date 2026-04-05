@@ -34,8 +34,8 @@
 }
 
 // --- Main outlet (discovery / latest) ---
-// Core renders siblings under #main-outlet: welcome-banner, #main-container,
-// .list-controls, .list-container — they must stack vertically. Default flex
+// Core renders siblings under #main-outlet (e.g. #main-container, .list-controls,
+// .list-container). Welcome/search banners are hidden in common.scss. Default flex
 // is row, which squeezed them into columns and hid the topic list.
 #main-outlet {
   display: flex;
