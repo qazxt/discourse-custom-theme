@@ -400,19 +400,16 @@ body {
   box-sizing: border-box;
 }
 
-// Remove extra bottom margin from the last native sidebar block so gap isn’t doubled before hub.
-.sidebar-wrapper .sidebar-sections > .sidebar-section-wrapper:last-of-type,
-.sidebar-wrapper .sidebar-sections > .sidebar-section:last-of-type {
-  margin-bottom: 0 !important;
-}
-
-.sidebar-wrapper .sidebar-sections > .sidebar-more-section:last-of-type {
-  margin-bottom: 0 !important;
-}
-
 .sidebar-wrapper .sidebar-sections {
   padding-bottom: 0;
   margin-bottom: 0;
+
+  // Last native block before .robotime-sidebar-hub: drop extra margin (core adds section spacing).
+  > .sidebar-section-wrapper:last-of-type,
+  > .sidebar-section:last-of-type,
+  > .sidebar-more-section:last-of-type {
+    margin-bottom: 0 !important;
+  }
 }
 
 .robotime-sidebar-widget-slot {
@@ -586,26 +583,14 @@ body {
   display: none !important;
 }
 
-// --- Chat “频道” + DM: hide native blocks above Robotime sidebar carousel (after-sidebar-sections) ---
-.sidebar-wrapper .sidebar-section[data-section-name="chat-channels"],
-.sidebar-wrapper .sidebar-section-wrapper[data-section-name="chat-channels"],
-.sidebar-wrapper .sidebar-section-wrapper:has([data-section-name="chat-channels"]),
-.sidebar-wrapper .sidebar-section[data-section-name="chat-dms"],
-.sidebar-wrapper .sidebar-section-wrapper[data-section-name="chat-dms"],
-.sidebar-wrapper .sidebar-section-wrapper:has([data-section-name="chat-dms"]),
-#d-sidebar .sidebar-section[data-section-name="chat-channels"],
-#d-sidebar .sidebar-section-wrapper[data-section-name="chat-channels"],
-#d-sidebar .sidebar-section[data-section-name="chat-dms"],
-#d-sidebar .sidebar-section-wrapper[data-section-name="chat-dms"] {
-  display: none !important;
-}
-
-// --- Categories: hide left sidebar section + “类别” nav tab (keep category dropdown in .category-breadcrumb) ---
-.sidebar-wrapper .sidebar-section[data-section-name="categories"],
-.sidebar-wrapper .sidebar-section-wrapper[data-section-name="categories"],
-.sidebar-wrapper .sidebar-section-wrapper:has([data-section-name="categories"]),
-#d-sidebar .sidebar-section[data-section-name="categories"],
-#d-sidebar .sidebar-section-wrapper[data-section-name="categories"],
+// --- Hide categories + chat channel/DM blocks (empty shells still eat flex height in .sidebar-sections) ---
+// `>` matches Discourse’s flat section list; #d-sidebar + .sidebar-wrapper cover id / legacy markup.
+#d-sidebar .sidebar-sections > [data-section-name="categories"],
+#d-sidebar .sidebar-sections > [data-section-name="chat-channels"],
+#d-sidebar .sidebar-sections > [data-section-name="chat-dms"],
+.sidebar-wrapper .sidebar-sections > [data-section-name="categories"],
+.sidebar-wrapper .sidebar-sections > [data-section-name="chat-channels"],
+.sidebar-wrapper .sidebar-sections > [data-section-name="chat-dms"],
 .sidebar-custom-sections .sidebar-section[data-section-name="categories"] {
   display: none !important;
 }
@@ -782,12 +767,11 @@ body {
   background: $robotime-black !important;
   color: $robotime-white !important;
 
-  .sidebar-section-link-prefix,
   .d-icon {
     color: $robotime-white !important;
   }
 
-  .sidebar-section-link-prefix .d-icon {
+  .sidebar-section-link-prefix svg {
     color: $robotime-white !important;
   }
 
@@ -800,16 +784,12 @@ body {
   }
 }
 
-.sidebar-section-link-wrapper:not(.active) .sidebar-section-link:hover,
-.sidebar-section-link-wrapper:not(.active) a.sidebar-section-link:hover,
-.sidebar-section-link-wrapper:not(.active) button.sidebar-section-link:hover,
+.sidebar-section-link-wrapper:not(.active) :is(a, button).sidebar-section-link:hover,
 .sidebar-section-link:not(.active):hover {
   background: #eeeeee !important;
 }
 
-.sidebar-section-link-wrapper.active .sidebar-section-link:hover,
-.sidebar-section-link-wrapper.active a.sidebar-section-link:hover,
-.sidebar-section-link-wrapper.active button.sidebar-section-link:hover {
+.sidebar-section-link-wrapper.active :is(a, button).sidebar-section-link:hover {
   background: $robotime-black !important;
 }
 

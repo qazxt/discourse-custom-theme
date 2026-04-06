@@ -1,6 +1,11 @@
 import { apiInitializer } from "discourse/lib/api";
 
 export default apiInitializer((api) => {
+  /** Sidebar nav rows: #d-sidebar is the real container; .sidebar-wrapper kept for older layouts. */
+  const ROBOTIME_SIDEBAR_MENU_LINKS =
+    "#d-sidebar .sidebar-section-link-wrapper :is(a, button).sidebar-section-link, " +
+    ".sidebar-wrapper .sidebar-section-link-wrapper :is(a, button).sidebar-section-link";
+
   /**
    * Move Discourse header actions (search, hamburger, user menu) into the
    * custom bar, then CSS hides .d-header-wrap entirely.
@@ -413,42 +418,46 @@ export default apiInitializer((api) => {
   }
 
   function injectRobotimeSidebarMenuIcons() {
-    document
-      .querySelectorAll(
-        ".sidebar-wrapper .sidebar-section-link-wrapper a.sidebar-section-link, .sidebar-wrapper .sidebar-section-link-wrapper button.sidebar-section-link"
-      )
-      .forEach((el) => {
-        const key = robotimeSidebarIconKey(el);
-        if (!key) {
-          return;
-        }
-        const prefix = el.querySelector(".sidebar-section-link-prefix");
-        if (!prefix) {
-          return;
-        }
-        const dataUrl = robotimeSidebarIconDataUrl(key);
-        if (!dataUrl) {
-          return;
-        }
+    document.querySelectorAll(ROBOTIME_SIDEBAR_MENU_LINKS).forEach((el) => {
+      const key = robotimeSidebarIconKey(el);
+      if (!key) {
+        return;
+      }
+      const prefix = el.querySelector(".sidebar-section-link-prefix");
+      if (!prefix) {
+        return;
+      }
+      const dataUrl = robotimeSidebarIconDataUrl(key);
+      if (!dataUrl) {
+        return;
+      }
 
-        const existing = prefix.querySelector(".robotime-sidebar-menu-icon");
-        if (el.dataset.robotimeSidebarIcon === key && existing) {
-          return;
-        }
+      const existing = prefix.querySelector(".robotime-sidebar-menu-icon");
+      if (el.dataset.robotimeSidebarIcon === key && existing) {
+        return;
+      }
 
-        el.dataset.robotimeSidebarIcon = key;
-        prefix.classList.add("robotime-sidebar-link-prefix--robotime-icon");
-        if (existing) {
-          existing.remove();
-        }
+      el.dataset.robotimeSidebarIcon = key;
+      prefix.classList.add("robotime-sidebar-link-prefix--robotime-icon");
+      if (existing) {
+        existing.remove();
+      }
 
-        const img = document.createElement("img");
-        img.className = "robotime-sidebar-menu-icon";
-        img.alt = "";
-        img.decoding = "async";
-        img.src = dataUrl;
-        prefix.appendChild(img);
-      });
+      const img = document.createElement("img");
+      img.className = "robotime-sidebar-menu-icon";
+      img.alt = "";
+      img.decoding = "async";
+      img.src = dataUrl;
+      prefix.appendChild(img);
+    });
+  }
+
+  function runRobotimeLayoutPass() {
+    relocateNativeHeaderTools();
+    updateRobotimeHeaderOffset();
+    ensureSidebarNewTopicLabel();
+    injectRobotimeSidebarMenuIcons();
+    scheduleRobotimeTopicThumbnails();
   }
 
   function initMobileMenu() {
@@ -608,20 +617,10 @@ export default apiInitializer((api) => {
 
   api.onPageChange(() => {
     requestAnimationFrame(() => {
-      relocateNativeHeaderTools();
       setupRobotimeHeaderOffsetObserverOnce();
       setupRobotimeTopicThumbnailObserverOnce();
-      updateRobotimeHeaderOffset();
-      ensureSidebarNewTopicLabel();
-      injectRobotimeSidebarMenuIcons();
-      scheduleRobotimeTopicThumbnails();
-      requestAnimationFrame(() => {
-        relocateNativeHeaderTools();
-        updateRobotimeHeaderOffset();
-        ensureSidebarNewTopicLabel();
-        injectRobotimeSidebarMenuIcons();
-        scheduleRobotimeTopicThumbnails();
-      });
+      runRobotimeLayoutPass();
+      requestAnimationFrame(runRobotimeLayoutPass);
       initMobileMenu();
 
       const carouselRoot = document.getElementById("robotime-carousel");
