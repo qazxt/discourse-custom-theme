@@ -236,8 +236,24 @@
       page-break-inside:avoid;
     }
     .topic-card:hover{box-shadow:0 6px 24px rgba(0,0,0,0.12);transform:translateY(-3px);}
+    /* Cover: w/h > 0.85 → 1:1, else 3:4 (matches Discourse theme JS + AGENTS.md) */
     .topic-thumb{width:100%;aspect-ratio:1/1;overflow:hidden;background:var(--border-gray);position:relative;}
     .topic-thumb.portrait{aspect-ratio:3/4;}
+    .topic-thumb--placeholder{
+      aspect-ratio:1/1;
+      background:linear-gradient(145deg,var(--light-gray) 0%,#ececec 100%);
+      position:relative;
+      min-height:120px;
+    }
+    .topic-thumb--placeholder::after{
+      content:"";
+      position:absolute;left:50%;top:50%;width:56px;height:56px;
+      transform:translate(-50%,-50%);
+      opacity:0.32;background-color:var(--gray);
+      -webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm0 2v14h14V5H5zm2 2h10v8.5l-2.5-3-2.2 2.8L9 13.3 7 11V7zm2 1.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z'/%3E%3C/svg%3E");
+      mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm0 2v14h14V5H5zm2 2h10v8.5l-2.5-3-2.2 2.8L9 13.3 7 11V7zm2 1.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z'/%3E%3C/svg%3E");
+      -webkit-mask-size:contain;mask-size:contain;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:center;mask-position:center;
+    }
     .topic-thumb img{width:100%;height:100%;object-fit:cover;}
     .topic-badge{position:absolute;top:12px;left:12px;background:linear-gradient(135deg,var(--blue),#4ba3d9);color:var(--white);font-size:12px;font-weight:500;padding:4px 12px;border-radius:12px;}
     .ratio-pill{position:absolute;top:12px;right:12px;background:rgba(0,0,0,0.65);color:#fff;font-size:11px;font-weight:700;padding:4px 10px;border-radius:999px;letter-spacing:0.5px;}
@@ -485,9 +501,9 @@ document.querySelectorAll('.filter-tabs .filter-tab').forEach(t=>t.addEventListe
   });
 })();
 
-// Topic cards
+// Topic cards — portrait:true ≈ 3:4 mock; false ≈ 1:1 (same rule as w/h > 0.85 on real images)
 [
-  // 交替方图/竖图，方便肉眼看出长短交错
+  {title:"No cover image (placeholder demo)",badge:null,views:12,likes:3,comments:1,color:"#ddd",noThumb:true},
   {title:"Mechanical Music Box Guide — Beginner Friendly",badge:null,views:85,likes:45,comments:23,color:"#e8a87c",portrait:true},
   {title:"Unicorn W / Rose",badge:"Official Events",views:120,likes:99,comments:100,color:"#4ba3d9",portrait:false},
   {title:"Spin & Win Lucky Draw",badge:"Official Events",views:340,likes:210,comments:89,color:"#66cbff",portrait:true},
@@ -497,10 +513,17 @@ document.querySelectorAll('.filter-tabs .filter-tab').forEach(t=>t.addEventListe
   {title:"Robotime Showcase: Community Picks",badge:"Featured",views:412,likes:301,comments:104,color:"#8bc34a",portrait:true},
   {title:"Wooden Marble Run",badge:null,views:91,likes:58,comments:19,color:"#f07ea3",portrait:false}
 ].forEach(t=>{
-  const h=t.portrait?533:400,init=t.title.split(' ').map(w=>w[0]).join('').slice(0,2);
+  const init=t.title.split(' ').map(w=>w[0]).join('').slice(0,2);
   const c=document.createElement('div');c.className='topic-card';
-  const ratioLabel=t.portrait?'3:4':'1:1';
-  c.innerHTML=`<div class="topic-thumb${t.portrait?' portrait':''}"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='${h}'%3E%3Crect width='400' height='${h}' fill='${encodeURIComponent(t.color)}'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dominant-baseline='middle' fill='white' font-size='36'%3E${encodeURIComponent(t.title.split(' ').slice(0,2).join(' '))}%3C/text%3E%3C/svg%3E" alt=""><span class="ratio-pill">${ratioLabel}</span>${t.badge?`<span class="topic-badge">${t.badge}</span>`:''}</div><div class="topic-content"><div class="topic-title">${t.title}</div><div class="topic-meta"><div class="topic-stats"><span class="topic-stat"><img src="Icon/topic-stats/views.png" alt="">${t.views}</span><span class="topic-stat"><img src="Icon/topic-stats/likes.png" alt="">${t.likes}</span><span class="topic-stat"><img src="Icon/topic-stats/comments.png" alt="">${t.comments}</span></div><img class="topic-avatar-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Crect width='40' height='40' rx='20' fill='${encodeURIComponent(t.color)}'/%3E%3Ctext x='50%25' y='55%25' text-anchor='middle' dominant-baseline='middle' fill='white' font-size='14'%3E${encodeURIComponent(init)}%3C/text%3E%3C/svg%3E" alt=""></div></div>`;
+  let thumbBlock;
+  if (t.noThumb) {
+    thumbBlock='<div class="topic-thumb topic-thumb--placeholder" aria-hidden="true"><span class="ratio-pill">—</span></div>';
+  } else {
+    const h=t.portrait?533:400;
+    const ratioLabel=t.portrait?'3:4':'1:1';
+    thumbBlock=`<div class="topic-thumb${t.portrait?' portrait':''}"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='${h}'%3E%3Crect width='400' height='${h}' fill='${encodeURIComponent(t.color)}'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dominant-baseline='middle' fill='white' font-size='36'%3E${encodeURIComponent(t.title.split(' ').slice(0,2).join(' '))}%3C/text%3E%3C/svg%3E" alt=""><span class="ratio-pill">${ratioLabel}</span>${t.badge?`<span class="topic-badge">${t.badge}</span>`:''}</div>`;
+  }
+  c.innerHTML=`${thumbBlock}<div class="topic-content"><div class="topic-title">${t.title}</div><div class="topic-meta"><div class="topic-stats"><span class="topic-stat"><img src="Icon/topic-stats/views.png" alt="">${t.views}</span><span class="topic-stat"><img src="Icon/topic-stats/likes.png" alt="">${t.likes}</span><span class="topic-stat"><img src="Icon/topic-stats/comments.png" alt="">${t.comments}</span></div><img class="topic-avatar-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Crect width='40' height='40' rx='20' fill='${encodeURIComponent(t.color)}'/%3E%3Ctext x='50%25' y='55%25' text-anchor='middle' dominant-baseline='middle' fill='white' font-size='14'%3E${encodeURIComponent(init)}%3C/text%3E%3C/svg%3E" alt=""></div></div>`;
   document.getElementById('topicGrid').appendChild(c);
 });
 </script>

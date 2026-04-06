@@ -833,7 +833,35 @@ body {
 // 5. TOPIC CARDS — CSS Grid (design-rule/homepage.jpg + preview.html)
 //    column-gap 20px; row-gap 40px (stats baseline → next card image).
 //    In-card: ~20px below cover; title ~18px; stats row 24px #000 + 40px avatar.
+//    Cover ratio: JS sets data-robotime-thumb-ratio — w/h > 0.85 → square 1:1, else 3:4.
+//    No cover: data-robotime-thumb-state="placeholder" (1:1 + muted icon).
 // ============================================================
+
+$robotime-topic-no-cover-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm0 2v14h14V5H5zm2 2h10v8.5l-2.5-3-2.2 2.8L9 13.3 7 11V7zm2 1.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z'/%3E%3C/svg%3E");
+
+@mixin robotime-topic-thumb-placeholder-icon {
+  &::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 56px;
+    height: 56px;
+    transform: translate(-50%, -50%);
+    opacity: 0.32;
+    background-color: $robotime-gray;
+    -webkit-mask-image: $robotime-topic-no-cover-mask;
+    mask-image: $robotime-topic-no-cover-mask;
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
+    pointer-events: none;
+  }
+}
+
 .topic-list {
   padding: 0;
   display: block;
@@ -888,18 +916,49 @@ body {
       box-sizing: border-box;
     }
 
-    // Topic thumbnails / image cell (topic list thumbnails TC / core)
+    // Topic thumbnails — aspect + crop from data-* (set in robotime-hub.js)
     td.topic-thumbnails {
       order: 0;
       flex-shrink: 0;
       padding: 0 !important;
       line-height: 0;
+      width: 100%;
+      box-sizing: border-box;
+      position: relative;
+      overflow: hidden;
+      background: $robotime-light-gray;
+      aspect-ratio: 1 / 1;
 
-      img,
-      .topic-thumbnail img {
-        width: 100%;
+      &[data-robotime-thumb-ratio="square"] {
+        aspect-ratio: 1 / 1;
+      }
+
+      &[data-robotime-thumb-ratio="portrait"] {
+        aspect-ratio: 3 / 4;
+      }
+
+      &[data-robotime-thumb-state="placeholder"] {
+        @include robotime-topic-thumb-placeholder-icon;
+
+        img {
+          display: none !important;
+        }
+      }
+
+      :is(a, .topic-thumbnail) {
         display: block;
+        position: absolute;
+        inset: 0;
+        line-height: 0;
+      }
+
+      img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
         object-fit: cover;
+        display: block;
       }
     }
 
@@ -972,16 +1031,36 @@ body {
 
   &__thumbnail {
     width: 100%;
-    aspect-ratio: 1 / 1;
     overflow: hidden;
-    background: $robotime-border-gray;
+    background: $robotime-light-gray;
     position: relative;
+    aspect-ratio: 1 / 1;
+
+    &[data-robotime-thumb-ratio="square"] {
+      aspect-ratio: 1 / 1;
+    }
+
+    &[data-robotime-thumb-ratio="portrait"] {
+      aspect-ratio: 3 / 4;
+    }
+
+    &[data-robotime-thumb-state="placeholder"] {
+      @include robotime-topic-thumb-placeholder-icon;
+
+      img {
+        display: none !important;
+      }
+    }
 
     img {
+      position: absolute;
+      inset: 0;
       width: 100%;
       height: 100%;
       object-fit: cover;
     }
+
+    // Legacy manual flags (no JS)
     &--portrait { aspect-ratio: 3 / 4; }
     &[data-ratio="square"] { aspect-ratio: 1 / 1; }
     &[data-ratio="portrait"] { aspect-ratio: 3 / 4; }

@@ -460,18 +460,149 @@ export default apiInitializer((api) => {
     });
   }
 
+  /**
+   * Topic list cover: intrinsic w/h > this → 1:1 crop, else 3:4 (AGENTS.md / design).
+   * No image / load error → square placeholder.
+   */
+  const ROBOTIME_THUMB_WH_RATIO_SPLIT = 0.85;
+
+  let robotimeThumbApplyTimer = null;
+
+  function scheduleRobotimeTopicThumbnails() {
+    if (robotimeThumbApplyTimer) {
+      clearTimeout(robotimeThumbApplyTimer);
+    }
+    robotimeThumbApplyTimer = setTimeout(() => {
+      robotimeThumbApplyTimer = null;
+      applyRobotimeTopicListThumbnails();
+    }, 80);
+  }
+
+  function robotimeClearThumbCellDataset(cell) {
+    cell.removeAttribute("data-robotime-thumb-ratio");
+    cell.removeAttribute("data-robotime-thumb-state");
+  }
+
+  function robotimeSetTopicThumbPlaceholder(cell, ratioMode = "square") {
+    cell.setAttribute("data-robotime-thumb-state", "placeholder");
+    cell.setAttribute("data-robotime-thumb-ratio", ratioMode);
+  }
+
+  function robotimeApplyTopicThumbRatio(cell, naturalWidth, naturalHeight) {
+    if (!naturalWidth || !naturalHeight) {
+      robotimeSetTopicThumbPlaceholder(cell, "square");
+      return;
+    }
+    cell.removeAttribute("data-robotime-thumb-state");
+    const r = naturalWidth / naturalHeight;
+    cell.setAttribute(
+      "data-robotime-thumb-ratio",
+      r > ROBOTIME_THUMB_WH_RATIO_SPLIT ? "square" : "portrait"
+    );
+  }
+
+  function robotimeProcessThumbnailCell(cell) {
+    robotimeClearThumbCellDataset(cell);
+    const img = cell.querySelector("img");
+    if (!img) {
+      robotimeSetTopicThumbPlaceholder(cell, "square");
+      return;
+    }
+    const src = (img.getAttribute("src") || "").trim();
+    if (!src) {
+      robotimeSetTopicThumbPlaceholder(cell, "square");
+      return;
+    }
+
+    const finalize = () => {
+      if (img.naturalWidth === 0 && img.naturalHeight === 0) {
+        robotimeSetTopicThumbPlaceholder(cell, "square");
+        return;
+      }
+      robotimeApplyTopicThumbRatio(cell, img.naturalWidth, img.naturalHeight);
+    };
+
+    if (img.complete) {
+      finalize();
+    } else {
+      img.addEventListener("load", finalize, { once: true });
+      img.addEventListener(
+        "error",
+        () => {
+          robotimeSetTopicThumbPlaceholder(cell, "square");
+        },
+        { once: true }
+      );
+    }
+  }
+
+  function robotimeProcessCustomTopicThumb(wrap) {
+    robotimeClearThumbCellDataset(wrap);
+    const img = wrap.querySelector("img");
+    if (!img || !(img.getAttribute("src") || "").trim()) {
+      robotimeSetTopicThumbPlaceholder(wrap, "square");
+      return;
+    }
+    const done = () => {
+      if (!img.naturalWidth || !img.naturalHeight) {
+        robotimeSetTopicThumbPlaceholder(wrap, "square");
+        return;
+      }
+      wrap.removeAttribute("data-robotime-thumb-state");
+      const r = img.naturalWidth / img.naturalHeight;
+      wrap.setAttribute(
+        "data-robotime-thumb-ratio",
+        r > ROBOTIME_THUMB_WH_RATIO_SPLIT ? "square" : "portrait"
+      );
+    };
+    if (img.complete) {
+      done();
+    } else {
+      img.addEventListener("load", done, { once: true });
+      img.addEventListener(
+        "error",
+        () => {
+          robotimeSetTopicThumbPlaceholder(wrap, "square");
+        },
+        { once: true }
+      );
+    }
+  }
+
+  function applyRobotimeTopicListThumbnails() {
+    document.querySelectorAll("tr.topic-list-item td.topic-thumbnails").forEach((cell) => {
+      robotimeProcessThumbnailCell(cell);
+    });
+    document.querySelectorAll(".robotime-topic-card__thumbnail").forEach((wrap) => {
+      robotimeProcessCustomTopicThumb(wrap);
+    });
+  }
+
+  function setupRobotimeTopicThumbnailObserverOnce() {
+    if (window.__robotimeTopicThumbObserver) {
+      return;
+    }
+    window.__robotimeTopicThumbObserver = true;
+    const root = document.querySelector("#main") || document.body;
+    const mo = new MutationObserver(() => scheduleRobotimeTopicThumbnails());
+    mo.observe(root, { childList: true, subtree: true });
+  }
+
   api.onPageChange(() => {
     requestAnimationFrame(() => {
       relocateNativeHeaderTools();
       setupRobotimeHeaderOffsetObserverOnce();
+      setupRobotimeTopicThumbnailObserverOnce();
       updateRobotimeHeaderOffset();
       ensureSidebarNewTopicLabel();
       injectRobotimeSidebarMenuIcons();
+      scheduleRobotimeTopicThumbnails();
       requestAnimationFrame(() => {
         relocateNativeHeaderTools();
         updateRobotimeHeaderOffset();
         ensureSidebarNewTopicLabel();
         injectRobotimeSidebarMenuIcons();
+        scheduleRobotimeTopicThumbnails();
       });
       initMobileMenu();
 
