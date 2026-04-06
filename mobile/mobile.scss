@@ -2,6 +2,10 @@
 // Robotime Community Theme - Mobile Styles (<768px)
 // ============================================================
 
+html {
+  --robotime-topbar-height: 52px;
+}
+
 // --- Mobile header ---
 .robotime-header {
   padding: 0 12px;
@@ -43,12 +47,12 @@
 .robotime-mobile-nav {
   display: none;
   position: fixed;
-  top: 52px;
+  top: var(--robotime-topbar-height, 52px);
   left: 0;
   right: 0;
   bottom: 0;
   background: rgba(0, 0, 0, 0.95);
-  z-index: 1100;
+  z-index: 1220;
   flex-direction: column;
   padding: 20px;
   overflow-y: auto;
