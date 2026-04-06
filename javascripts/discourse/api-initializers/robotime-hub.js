@@ -675,6 +675,42 @@ export default apiInitializer((api) => {
     );
   }
 
+  /** Custom list thumbnail `<a>` (direct child of `tr`) — same ratio rules as `td.topic-thumbnails`. */
+  function robotimeProcessRobotimeListThumbnailAnchor(anchor) {
+    robotimeClearThumbCellDataset(anchor);
+    const img = anchor.querySelector("img");
+    if (!img) {
+      robotimeSetTopicThumbPlaceholder(anchor, "square");
+      return;
+    }
+    const src = (img.getAttribute("src") || "").trim();
+    if (!src) {
+      robotimeSetTopicThumbPlaceholder(anchor, "square");
+      return;
+    }
+
+    const finalize = () => {
+      if (img.naturalWidth === 0 && img.naturalHeight === 0) {
+        robotimeSetTopicThumbPlaceholder(anchor, "square");
+        return;
+      }
+      robotimeApplyTopicThumbRatio(anchor, img.naturalWidth, img.naturalHeight);
+    };
+
+    if (img.complete) {
+      finalize();
+    } else {
+      img.addEventListener("load", finalize, { once: true });
+      img.addEventListener(
+        "error",
+        () => {
+          robotimeSetTopicThumbPlaceholder(anchor, "square");
+        },
+        { once: true }
+      );
+    }
+  }
+
   function robotimeProcessThumbnailCell(cell) {
     robotimeClearThumbCellDataset(cell);
     const img = cell.querySelector("img");
@@ -760,6 +796,11 @@ export default apiInitializer((api) => {
     document.querySelectorAll("tr.topic-list-item td.topic-thumbnails").forEach((cell) => {
       robotimeProcessThumbnailCell(cell);
     });
+    document
+      .querySelectorAll("tr.topic-list-item > a.robotime-topic-list-thumbnail-link")
+      .forEach((anchor) => {
+        robotimeProcessRobotimeListThumbnailAnchor(anchor);
+      });
     document.querySelectorAll(".robotime-topic-card__thumbnail").forEach((wrap) => {
       robotimeProcessCustomTopicThumb(wrap);
     });
