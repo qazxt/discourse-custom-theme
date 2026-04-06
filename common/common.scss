@@ -1490,8 +1490,10 @@ $robotime-topic-placeholder-icon-fill: url("data:image/svg+xml,%3Csvg xmlns='htt
       --robotime-topic-card-pad-x: 24px;
       --robotime-topic-card-pad-y-after-cover: 28px;
       --robotime-topic-card-footer-pad-y: 14px;
+      --robotime-topic-card-footer-col-gap: 16px;
 
       align-items: stretch;
+      column-gap: var(--robotime-topic-card-footer-col-gap);
       // Room inside overflow:hidden + rounded card so 40px avatar + border is not clipped at bottom.
       padding-bottom: 20px;
       box-sizing: border-box;
@@ -1521,12 +1523,16 @@ $robotime-topic-placeholder-icon-fill: url("data:image/svg+xml,%3Csvg xmlns='htt
 
       .main-link .robotime-topic-meta {
         align-items: center;
-        gap: 10px 22px;
+        gap: 10px 16px;
         font-size: 15px;
         line-height: 1.3;
+        min-width: 0;
+        max-width: 100%;
+        box-sizing: border-box;
 
         .robotime-topic-meta__item {
           gap: 8px;
+          flex-shrink: 0;
         }
 
         .d-icon,
@@ -1538,6 +1544,9 @@ $robotime-topic-placeholder-icon-fill: url("data:image/svg+xml,%3Csvg xmlns='htt
 
       .main-link .topic-meta {
         font-size: 15px;
+        min-width: 0;
+        max-width: 100%;
+        box-sizing: border-box;
 
         .topic-views,
         .topic-replies,
@@ -1548,7 +1557,9 @@ $robotime-topic-placeholder-icon-fill: url("data:image/svg+xml,%3Csvg xmlns='htt
         .top-line,
         .bottom-line {
           align-items: center;
-          gap: 10px 22px;
+          gap: 10px 16px;
+          min-width: 0;
+          flex-wrap: wrap;
         }
 
         .d-icon,
@@ -1590,6 +1601,8 @@ $robotime-topic-placeholder-icon-fill: url("data:image/svg+xml,%3Csvg xmlns='htt
       > .robotime-topic-meta,
       > .topic-meta {
         margin-top: 0 !important;
+        min-width: 0;
+        max-width: 100%;
       }
 
       &[data-robotime-topic-row="has-thumb"] {
