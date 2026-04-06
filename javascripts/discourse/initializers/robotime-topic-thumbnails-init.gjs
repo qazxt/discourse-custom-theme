@@ -1,10 +1,10 @@
 import { apiInitializer } from "discourse/lib/api";
+import HeaderTopicCell from "discourse/components/topic-list/header/topic-cell";
 import RobotimeTopicListThumbnail from "../components/robotime-topic-list-thumbnail";
-import RobotimeTopicMeta from "../components/robotime-topic-meta";
+import RobotimeTopicListTopicCell from "../components/robotime-topic-list-topic-cell";
 
 /* global settings */
 export default apiInitializer((api) => {
-  // `settings` is injected by Discourse for theme JS.
   // eslint-disable-next-line no-undef
   const ts = typeof settings !== "undefined" && settings ? settings : {};
   const enabled =
@@ -22,17 +22,23 @@ export default apiInitializer((api) => {
     if (!columns.has("topic-thumbnails")) {
       columns.add("topic-thumbnails", { item: RobotimeTopicListThumbnail }, { before: "topic" });
     }
+
+    /* Card body = preview `.topic-content`: title + single footer row (meta + last poster). */
+    if (metaEnabled && columns.has("topic")) {
+      columns.delete("topic");
+      if (columns.has("posters")) {
+        columns.delete("posters");
+      }
+      columns.add(
+        "topic",
+        {
+          header: HeaderTopicCell,
+          item: RobotimeTopicListTopicCell,
+        },
+        { before: "replies" }
+      );
+    }
+
     return columns;
   });
-
-  if (metaEnabled) {
-    // `topic-list-after-title` sits INSIDE `span.link-top-line` (desktop topic-cell) — breaks card grid.
-    // `topic-list-main-link-bottom` is after link-bottom-line, sibling of link-top-line → display:contents works.
-    api.renderInOutlet(
-      "topic-list-main-link-bottom",
-      <template>
-        <RobotimeTopicMeta @topic={{@outletArgs.topic}} />
-      </template>
-    );
-  }
 });
