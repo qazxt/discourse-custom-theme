@@ -382,6 +382,25 @@ body {
   background: transparent;
 }
 
+// Core lays out #d-sidebar as column flex; .sidebar-sections often gets flex-grow: 1, which
+// stretches the block and pushes .robotime-sidebar-hub (connector sibling) to the bottom with a huge gap.
+#d-sidebar.sidebar-container {
+  height: auto !important;
+  min-height: 0;
+  justify-content: flex-start;
+
+  > .sidebar-sections {
+    flex: 0 1 auto !important;
+    flex-grow: 0 !important;
+    min-height: 0;
+  }
+
+  > .robotime-sidebar-hub,
+  > .sidebar-footer-wrapper {
+    flex-shrink: 0;
+  }
+}
+
 // Native sidebar links — preview: light-gray pills; active = black pill + white icons
 .sidebar-wrapper .sidebar-section-link-wrapper {
   margin-bottom: 6px;
