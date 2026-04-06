@@ -53,3 +53,17 @@ robotime_filter_quick_tags:
   description:
     en: "Topic list quick tags — theme setting (authoritative). JSON array, e.g. [{\"label\":\"Diy\",\"url\":\"/tag/diy\"}]. Not read from hub-config.json."
     zh_CN: "话题列表预显标签（以主题设置为准）。JSON 数组字符串，如 [{\"label\":\"Diy\",\"url\":\"/tag/diy\"}]。不从 hub-config.json 读取。"
+
+robotime_topic_thumbnails_enabled:
+  default: true
+  type: bool
+  description:
+    en: "Enable Robotime lightweight topic-thumbnails data integration (adds topic-thumbnails column)."
+    zh_CN: "启用 Robotime 轻量话题缩略图数据接入（添加 topic-thumbnails 列）。"
+
+robotime_topic_meta_enabled:
+  default: true
+  type: bool
+  description:
+    en: "Render Robotime topic meta (views / likes / replies) inside main-link using topic data."
+    zh_CN: "在 main-link 中渲染 Robotime 话题统计（浏览/点赞/评论）。"
