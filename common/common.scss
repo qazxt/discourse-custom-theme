@@ -1484,11 +1484,35 @@ $robotime-topic-placeholder-icon-fill: url("data:image/svg+xml,%3Csvg xmlns='htt
 
     // When core renders .topic-meta, stats live in main-link — hide duplicate <td>s.
     // Flatten `td.main-link` (display:contents) so .robotime-topic-meta / .topic-meta and td.posters share grid row 4 (stats left, avatars right).
+    // Design: 20px below cover → title → 20px → stats row; stats gap 20px; avatar 40px with bottom aligned to stats (not vertically centered in row).
     &:has(.topic-meta),
     &:has(.robotime-topic-meta) {
+      align-items: stretch;
+      // Room inside overflow:hidden + rounded card so 40px avatar + border is not clipped at bottom.
+      padding-bottom: 20px;
+      box-sizing: border-box;
+
       .main-link .link-top-line {
         position: relative;
         z-index: 0;
+      }
+
+      .main-link a.title,
+      .main-link .title.raw-link,
+      .main-link .link-top-line .title {
+        font-size: 24px !important;
+        line-height: 1.35 !important;
+      }
+
+      .main-link .robotime-topic-meta {
+        align-items: flex-end;
+        gap: 8px 20px;
+      }
+
+      .main-link .topic-meta .top-line,
+      .main-link .topic-meta .bottom-line {
+        align-items: flex-end;
+        gap: 6px 20px;
       }
 
       grid-template-columns: minmax(0, 1fr) auto;
@@ -1500,6 +1524,13 @@ $robotime-topic-placeholder-icon-fill: url("data:image/svg+xml,%3Csvg xmlns='htt
 
       .posters {
         display: flex !important;
+        align-items: flex-end;
+      }
+
+      .posters .avatar,
+      .posters img.avatar {
+        width: 40px;
+        height: 40px;
       }
 
       td.posters > a,
@@ -1509,6 +1540,8 @@ $robotime-topic-placeholder-icon-fill: url("data:image/svg+xml,%3Csvg xmlns='htt
         justify-self: unset;
         padding: 0 !important;
         min-height: 0;
+        display: inline-flex;
+        align-items: flex-end;
       }
 
       > .robotime-topic-meta,
@@ -1533,7 +1566,7 @@ $robotime-topic-placeholder-icon-fill: url("data:image/svg+xml,%3Csvg xmlns='htt
         > .link-top-line {
           grid-row: 2;
           grid-column: 1 / -1;
-          padding: 14px 16px 0;
+          padding: 20px 16px 0;
           align-self: stretch;
           background: $robotime-white;
         }
@@ -1550,8 +1583,8 @@ $robotime-topic-placeholder-icon-fill: url("data:image/svg+xml,%3Csvg xmlns='htt
           grid-row: 4;
           grid-column: 1;
           justify-self: stretch;
-          align-self: center;
-          padding: 10px 0 12px 16px;
+          align-self: end;
+          padding: 20px 0 0 16px;
           background: $robotime-white;
         }
 
@@ -1559,8 +1592,8 @@ $robotime-topic-placeholder-icon-fill: url("data:image/svg+xml,%3Csvg xmlns='htt
           grid-row: 4;
           grid-column: 2;
           justify-self: end;
-          align-self: center;
-          padding: 10px 12px 12px 8px !important;
+          align-self: end;
+          padding: 20px 16px 0 12px !important;
         }
       }
 
@@ -1598,8 +1631,8 @@ $robotime-topic-placeholder-icon-fill: url("data:image/svg+xml,%3Csvg xmlns='htt
         > .link-top-line {
           grid-row: 2;
           grid-column: 1 / -1;
-          padding: 14px 16px 0;
-          margin-top: 14px;
+          padding: 20px 16px 0;
+          margin-top: 20px;
           align-self: stretch;
           background: $robotime-white;
         }
@@ -1616,8 +1649,8 @@ $robotime-topic-placeholder-icon-fill: url("data:image/svg+xml,%3Csvg xmlns='htt
           grid-row: 4;
           grid-column: 1;
           justify-self: stretch;
-          align-self: center;
-          padding: 10px 0 12px 16px;
+          align-self: end;
+          padding: 20px 0 0 16px;
           background: $robotime-white;
         }
 
@@ -1625,8 +1658,8 @@ $robotime-topic-placeholder-icon-fill: url("data:image/svg+xml,%3Csvg xmlns='htt
           grid-row: 4;
           grid-column: 2;
           justify-self: end;
-          align-self: center;
-          padding: 10px 12px 12px 8px !important;
+          align-self: end;
+          padding: 20px 16px 0 12px !important;
         }
       }
     }
