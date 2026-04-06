@@ -1,6 +1,21 @@
 # 导航栏轮播区设计规范
 
-> 基于 `navbar.jpg`、`navbar-animation.jpg`、`navbar-bg-colors.jpg` 整理
+> 基于 `navbar.jpg`、`navbar-animation.jpg`、`navbar-bg-colors.jpg` 整理，并与当前主题实现对齐说明见文末「设计稿与代码」。
+
+---
+
+## 零、design-rule 目录资源索引
+
+| 文件 | 内容范围（设计意图） | 备注 |
+|------|----------------------|------|
+| `homepage.jpg` | 主页整体标注（顶栏、轮播、侧栏、列表区相对关系） | 与 `theme-overview.jpg` 互补 |
+| `theme-overview.jpg` | 主题页面总览 / 模块尺度 | 更新 UI 时应对照是否仍匹配 |
+| `navbar.jpg` | 顶栏 + 轮播区尺寸、卡片规格 | 轮播卡片 **245×140、圆角 10px** 等 |
+| `navbar-animation.jpg` | 顶栏与卡片 **Hover** 动效参数 | 与 §五 一并使用 |
+| `navbar-bg-colors.jpg` | 各卡背景色 **迭代标注** | 与 §二 数据表、§七 **可能不一致** — 以运营在 `hub-config.json` 的 `bg_color` + §二 白/黑字规则为准；需设计侧统一时再改稿 |
+| `DESIGN-SPEC.md` | 本文档（从 JPG 抽取的结构化规范） | 与代码冲突时优先以仓库内实现 + `PLUGIN-INTERFACE.md` 为准，再回写本文与配图 |
+
+**原则**：新增或替换 JPG 后，应在本表与相关章节同步一句「最后对照日期」，避免文档长期脱节。
 
 ---
 
@@ -74,7 +89,7 @@
 | 字体 | Google Sans Flex-Regular | Noto Sans (替代) |
 | 标题字号 | **`24px`** | `14px` (等比缩放) |
 | 标题字重 | Regular → `700` (加粗以补偿小字号) | `700` |
-| 标题对齐 | **左对齐** | `text-align: left` |
+| 标题对齐 | **左对齐**（标注） | 代码多为 **`center`**（以 `common.scss` 为准） |
 | 标题位置 | 卡片内部底部左侧 | `padding: 0 8px 6px` |
 | Type C 渐变 | 底部半透明 | `linear-gradient(to top, rgba(0,0,0,0.5), transparent)` 底部 55% |
 | Type C 文字色 | `#ffffff` | `#ffffff` |
@@ -84,18 +99,18 @@
 ### 重要设计规则
 
 1. **圆角统一 10px** — 非 14px
-2. **文字在卡片内部底部、左对齐** — 非居中、非卡片外
+2. **文字在卡片内部底部**；标注稿多写 **左对齐**，当前 Discourse 主题为 **水平居中**（见 §十一）；定稿时请统一设计或改 SCSS
 3. **卡片只有一个色块**，文字覆盖在色块底部，无独立白色文字区
 4. **Type A 溢出图标必须明显超出卡片上沿** — 产生立体弹出感
 5. **深色背景 (#e65e2a, #582f78, #028be3) 使用白色文字**
 
 ---
 
-## 四、Hover 动效
+## 五、Hover 动效
 
 | 参数 | 值 |
 |------|-----|
-| 缩放倍率 | `scale(1.12)` |
+| 缩放倍率 | `scale(1.12)`（Discourse 主题内卡片 hover；**收缩态**下为 `scale(1.05)`，见 `common.scss`） |
 | 旋转角度 (仅 1/2/5/8) | `rotate(5deg)` |
 | 缓动曲线 | `cubic-bezier(0.34, 1.56, 0.64, 1)` (弹性回弹) |
 | 过渡时长 | `0.35s` |
@@ -103,7 +118,7 @@
 
 ---
 
-## 五、轨道滑动
+## 六、轨道滑动
 
 | 参数 | 值 |
 |------|-----|
@@ -113,7 +128,7 @@
 
 ---
 
-## 六、背景色号更新记录
+## 七、背景色号更新记录
 
 来源：`design-rule/navbar-bg-colors.jpg`
 
@@ -133,13 +148,15 @@
 | Card 10 (Exclusive Deals) | `#f6ebe3` | 暖米色 |
 | Card 11 (Instruction Manual) | `#f6ebe3` | 暖米色 |
 
+> **说明**：上表来自单色稿迭代；**§二 卡片数据总表** 中按语义保留了橙/紫/蓝等强调色。线上卡片底色以 JSON `bg_color` 为准。设计若定稿为一种体系，应 **更新 JPG + §二 + §七** 三处一致。
+
 ---
 
-## 七、侧栏底部活动轮播区（Official Events）
+## 八、侧栏底部活动轮播区（Official Events）
 
 > 对应首页左侧栏菜单下方的推广/活动轮播模块（数据由插件 `/hub-config.json` 提供，后台可配置）。
 
-### 7.1 纵向结构（自上而下）
+### 8.1 纵向结构（自上而下）
 
 | 区块 | 配置字段 | 说明 |
 |------|----------|------|
@@ -148,7 +165,7 @@
 | 单张卡片内标题 | `sidebar_widgets[].title` | 显示在**图片下方**（灰字说明性标题，非顶部区块标题） |
 | 底部操作 | `sidebar_view_all` | **轮播整体下方**的「查看全部」链接：`label` + `url`，可选外链 `is_external` |
 
-### 7.2 样式要点
+### 8.2 样式要点
 
 | 元素 | 样式要点 |
 |------|----------|
@@ -157,17 +174,17 @@
 | 圆点指示器 | 未选中 `#dddddd`，选中 `#66cbff`，间距约 `6px` |
 | View all 链接 | 全宽居中、圆角 `12px`、浅灰描边，Hover 时浅灰底、文字接近黑色 |
 
-### 7.3 交互
+### 8.3 交互
 
 - 多张轮播时仅**中间卡片+圆点**切换；**顶部区块标题与底部 View all 固定**，不随幻灯片变化。
 
 ---
 
-## 八、内容区上方筛选条（Categories / Tags / Tabs / 预显标签）
+## 九、内容区上方筛选条（Categories / Tags / Tabs / 预显标签）
 
-> 对应主页主内容区顶部的筛选与快捷标签（列表页 `.list-controls`）。**Categories、Tags、Latest 等**由 Discourse 原生提供；**预显标签**由 `/hub-config.json` 的 `filter_quick_tags` 提供。
+> 对应主页主内容区顶部的筛选与快捷标签（列表页 `.list-controls`）。**Categories、Tags、Latest 等**由 Discourse 原生提供；**预显标签**由 **主题设置** `robotime_filter_quick_tags`（`settings.yml`）提供。**`hub-config.json` 中的 `filter_quick_tags`（若有）主题会忽略**，详见 `PLUGIN-INTERFACE.md`。
 
-### 8.1 第一行
+### 9.1 第一行
 
 | 元素 | 视觉 | 字号 / 颜色（设计稿） |
 |------|------|------------------------|
@@ -177,17 +194,46 @@
 
 主题实现要点：`select-kit-header` 加 `1px solid #777`、`border-radius: 12px`；`.nav-pills` 使用 `gap: 30px` 等（见 `common/common.scss`）。
 
-### 8.2 第二行 — 预显标签（`filter_quick_tags`）
+### 9.2 第二行 — 预显标签（主题 `robotime_filter_quick_tags`）
 
 | 属性 | 值 |
 |------|-----|
 | 位置 | 紧贴第一行**下方**，纵向间距约 **10px** |
-| 文案 | 以 `#` 开头的标签名（后台可配 `label`，主题可自动补 `#`） |
+| 文案 | 以 `#` 开头的标签名（管理员在主题设置 JSON 中配 `label`，主题可自动补 `#`） |
 | 字号 | **16px** |
 | 颜色 | 默认 `#777777`；**选中 / 点击** ：下划线 + 可视为强调（主题用黑字 `#000000`） |
 | 横向间距 | 标签之间 **30px** |
-| 配置 | 插件在 `hub-config.json` 中返回 `filter_quick_tags: [{ label, url, is_external? }]` |
+| 配置 | **仅** Theme settings：`robotime_filter_quick_tags`（JSON 数组字符串）；**非** hub-config |
 
-### 8.3 移动端
+### 9.3 移动端
 
 - 下拉与 Tab 字号略缩小、可横向滚动；预显标签行可横向滑动（见 `mobile/mobile.scss`）。
+
+---
+
+## 十、顶栏 + 分类轮播：固定视口与滚动收缩（实现对齐）
+
+设计稿 JPG 多截取「首屏静态」；**真实站点**上顶栏与轮播应 **始终贴在视口顶部**（与仓库内 `preview.html` 中 `#global-hub-header { position: fixed } + 占位` 一致），滚动时 **轮播区收缩**而非整块滚走。
+
+| 要点 | 实现位置 |
+|------|----------|
+| 顶栏容器 `.robotime-above-header` | `position: fixed; top: 0; left/right: 0; z-index: 1200`（`common.scss`） |
+| 轮播 `#robotime-carousel` | `position: fixed; top: var(--robotime-topbar-height); z-index: 1190`；桌面顶栏高 **60px**，移动 **52px**（`html` / `mobile.scss` 变量） |
+| 主内容不被遮挡 | `#main-outlet-wrapper { padding-top: var(--robotime-header-offset) }`；`--robotime-header-offset` 由 `robotime-hub.js` 根据顶栏 + 轮播 **实际高度** 写入 `html` 样式 |
+| 滚动收缩 | `window` 滚动超过约 **100px** 且页面可滚动时，为轮播根节点加 `robotime-carousel--collapsed`；回到顶部附近 **28px** 内展开（见 `robotime-hub.js` 常量） |
+| 收缩视觉 | 区背景 **黑**、卡片变小、图与渐变遮罩隐藏、轨道 `gap` 缩小、箭头改为浅色半透明样式；**与 preview 的 `.layer-b.collapsed` 一致** |
+| 侧栏 sticky | 桌面 `.sidebar-wrapper` 的 `top` 已用 `calc(var(--robotime-header-offset) + 8px)`，随折叠高度变化 |
+
+**交互稿对照**：`preview.html` 内联脚本中的 `collapsed` / `#content-spacer` 与线上 **变量占位** 方案等价（线上无单独 spacer 节点，用 wrapper 的 `padding-top`）。
+
+---
+
+## 十一、设计稿与代码的常见差异备忘
+
+| 项目 | 设计稿（JPG / 旧说明） | 当前代码（权威来源） |
+|------|------------------------|---------------------|
+| 轮播卡片标题对齐 | §四 写「左对齐」 | `common.scss` 中 `.robotime-carousel__card-label` 为 **居中**；若需改稿或改代码须二选一统一 |
+| 卡片间距 | 早期写 `18px` / 多版并存 | 主题轨道 `gap: 45px`（展开）；收缩桌面 `20px`、移动 `10px` |
+| 预显标签数据源 | 旧文档写 hub JSON | **仅** `settings.yml` → `robotime_filter_quick_tags` |
+| 话题列表列数 | 部分描述写「桌面 2 列」 | **≥1200px：3 列**；768–1199：**2 列**；&lt;768：**1 列**（`desktop.scss` / `mobile.scss`） |
+| 顶栏与轮播滚动 | JPG 多为静态、未写 sticky | **固定 + 收缩**，见 §十 |

@@ -1,7 +1,8 @@
 # 插件接口与配置分工 — Robotime Community Theme
 
 > 本文档说明：**哪些能力必须依赖插件**、**哪些可在主题内配置**、**统一数据格式**、**主题如何取数**，以及 **插件侧实现与后台需求**。  
-> 实现代码以仓库内 `javascripts/discourse/api-initializers/robotime-hub.js`、`settings.yml` 为准。
+> 实现代码以仓库内 `javascripts/discourse/api-initializers/robotime-hub.js`、`settings.yml` 为准。  
+> **视觉与交互稿**：`design-rule/` 下 JPG + `DESIGN-SPEC.md`（含 **设计资源索引 §零**、**固定顶栏/轮播收缩 §十**、**稿码差异 §十一**）；若与本文冲突，以 **本文 + 代码** 为数据源准绳，以 **DESIGN-SPEC** 为视觉准绳并推动设计改稿。
 
 ---
 

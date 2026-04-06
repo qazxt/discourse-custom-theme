@@ -993,11 +993,10 @@ $robotime-topic-placeholder-icon-fill: url("data:image/svg+xml,%3Csvg xmlns='htt
 
   tr.topic-list-item {
     display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: auto auto;
-    grid-template-areas:
-      "thumb"
-      "body";
+    // Meta row: posts | views | activity | (flex) | posters — matches Discourse 2025+ DOM (no .topic-item-stats in main-link).
+    grid-template-columns: auto auto auto minmax(0, 1fr) auto;
+    align-items: center;
+    column-gap: 8px;
     min-width: 0;
     list-style: none;
     border-radius: 18px;
@@ -1022,14 +1021,24 @@ $robotime-topic-placeholder-icon-fill: url("data:image/svg+xml,%3Csvg xmlns='htt
       display: block;
       border: none;
       padding: 0;
+      box-sizing: border-box;
+    }
+
+    td.main-link,
+    td.topic-thumbnails {
       width: 100% !important;
       max-width: 100%;
-      box-sizing: border-box;
+    }
+
+    td.posters,
+    td.num.topic-list-data,
+    td.activity.topic-list-data {
+      width: auto !important;
+      max-width: none;
     }
 
     // Topic thumbnails — aspect + crop from data-* (set in robotime-hub.js)
     td.topic-thumbnails {
-      grid-area: thumb;
       align-self: stretch;
       padding: 0 !important;
       line-height: 0;
@@ -1080,10 +1089,9 @@ $robotime-topic-placeholder-icon-fill: url("data:image/svg+xml,%3Csvg xmlns='htt
     }
 
     .main-link {
-      grid-area: body;
       position: relative;
       align-self: stretch;
-      padding: 14px 16px 44px;
+      padding: 14px 16px 12px;
       background: $robotime-white;
     }
 
@@ -1107,6 +1115,8 @@ $robotime-topic-placeholder-icon-fill: url("data:image/svg+xml,%3Csvg xmlns='htt
     td.main-link .badge-category,
     td.main-link .topic-item-stats a,
     td.main-link .topic-list-num a,
+    td.num.topic-list-data a,
+    td.activity.topic-list-data a,
     .posters a,
     .posters button {
       position: relative;
@@ -1122,7 +1132,7 @@ $robotime-topic-placeholder-icon-fill: url("data:image/svg+xml,%3Csvg xmlns='htt
     &[data-robotime-topic-row="no-cover"] td.main-link {
       display: flex;
       flex-direction: column;
-      padding: 0 16px 44px;
+      padding: 0 16px 12px;
 
       &::before {
         content: "";
@@ -1194,17 +1204,50 @@ $robotime-topic-placeholder-icon-fill: url("data:image/svg+xml,%3Csvg xmlns='htt
       z-index: 2;
     }
 
+    td.num.posts-map.topic-list-data,
+    td.num.views.topic-list-data,
+    td.activity.topic-list-data {
+      display: flex !important;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 10px 0 12px !important;
+      font-family: $font-primary;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 1.2;
+      color: $robotime-gray;
+
+      .number {
+        font: inherit;
+        color: inherit;
+      }
+
+      a {
+        color: inherit;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        min-height: 28px;
+      }
+
+      .d-icon,
+      svg {
+        width: 18px;
+        height: 18px;
+        color: $robotime-gray;
+      }
+    }
+
+    td.num.posts-map.topic-list-data {
+      padding-left: 16px !important;
+    }
+
     .posters {
-      grid-area: body;
-      position: absolute;
-      right: 12px;
-      bottom: 10px;
-      left: auto;
-      top: auto;
+      position: static;
       z-index: 2;
       margin: 0;
-      padding: 0;
-      display: flex;
+      padding: 10px 12px 12px 0 !important;
+      display: flex !important;
       align-items: center;
       justify-content: flex-end;
       gap: 4px;
@@ -1221,9 +1264,71 @@ $robotime-topic-placeholder-icon-fill: url("data:image/svg+xml,%3Csvg xmlns='htt
       object-fit: cover;
     }
 
-    .num,
-    .activity {
-      display: none !important;
+    // --- Grid row placement (see robotime-hub.js data-robotime-topic-row) — core puts stats in td.num / td.activity, not .main-link. ---
+    &[data-robotime-topic-row="has-thumb"] {
+      grid-template-rows: auto auto auto;
+
+      td.topic-thumbnails {
+        grid-row: 1;
+        grid-column: 1 / -1;
+      }
+
+      td.main-link {
+        grid-row: 2;
+        grid-column: 1 / -1;
+      }
+
+      td.num.posts-map.topic-list-data {
+        grid-row: 3;
+        grid-column: 1;
+      }
+
+      td.num.views.topic-list-data {
+        grid-row: 3;
+        grid-column: 2;
+      }
+
+      td.activity.topic-list-data {
+        grid-row: 3;
+        grid-column: 3;
+      }
+
+      td.posters {
+        grid-row: 3;
+        grid-column: 5;
+        justify-self: end;
+      }
+    }
+
+    &[data-robotime-topic-row="no-cover"],
+    &:not([data-robotime-topic-row]) {
+      grid-template-rows: auto auto;
+
+      td.main-link {
+        grid-row: 1;
+        grid-column: 1 / -1;
+      }
+
+      td.num.posts-map.topic-list-data {
+        grid-row: 2;
+        grid-column: 1;
+      }
+
+      td.num.views.topic-list-data {
+        grid-row: 2;
+        grid-column: 2;
+      }
+
+      td.activity.topic-list-data {
+        grid-row: 2;
+        grid-column: 3;
+      }
+
+      td.posters {
+        grid-row: 2;
+        grid-column: 5;
+        justify-self: end;
+      }
     }
   }
 }

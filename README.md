@@ -2,9 +2,11 @@
 
 # 🎨 Discourse 定制主题需求文档  
 > 项目名称：Robotime Community Theme  
-> 版本：v1.0  
-> 最后更新：2025年9月8日  
+> 版本：v1.1（文档对齐代码）  
+> 最后更新：2026年4月2日  
 > 适用平台：Discourse v3.x+  
+
+**说明**：产品级需求以本文档为准；**实现细节、数据源分工、固定顶栏与滚动收缩** 以 `DEVELOPMENT.md`、`design-rule/DESIGN-SPEC.md`、`PLUGIN-INTERFACE.md` 为补充（避免本文档滞后）。
 
 ---
 
@@ -30,46 +32,42 @@
   - 背景：半透明深灰 `rgba(255,255,255,0.1)`，圆角 `20px`
 
 #### ⚙️ 动态行为
-- 所有菜单项支持 hover 下划线动画（CSS transition: `border-bottom 0.3s ease`）
-- 用户头像点击跳转至个人中心
+- 所有菜单项支持 hover 下划线动画（CSS：伪元素 `width` `0.3s ease`）
+- 用户头像与工具区行为以 Discourse 原生为准（主题将图标区并入自定义顶栏）
+- **整 bar 固定**：向下滚动页面时顶栏 **不离开视口**（`position: fixed`，见主题 `common.scss`）
 
 ---
 
 ### 2️⃣ 分类卡片轮播区（Category Carousel）
 
 #### ✅ 静态布局
-- **容器高度**：`140px`（含上下留白）
-- **卡片尺寸**：
+- **容器**：紧贴顶栏下方；展开态含内边距与设计留白；**收缩态**高度变小、区背景改深色（与 `preview.html` 一致）
+- **卡片尺寸（设计目标）**：
   - 宽度：`245px`
-  - 高度：`109px`（内容区）+ `18px`（底部文字区）= `127px` 总高
+  - 总高约 `140px`（含底部标签区）
   - 圆角：`10px`
-  - 间距：卡片间水平间距 `10px`
+  - 间距：轨道 **展开** 约 `45px`（实现值以 SCSS 为准）
 - **字体**：
-  - 标题：`Google Sans Flex-Regular`, `24px`, 黑色 `#000000`
-  - 副标题/描述：`16px`, 灰色 `#777777`
-- **背景色方案**（每个卡片独立配色）：
+  - 标题：`Google Sans Flex-Regular`, `24px`（线上多 fallback 至 Noto Sans）
+  - 标签颜色按底色对比度分 **深底白字 / 浅底黑字**（见 `DESIGN-SPEC.md` §二）
+- **数据**：卡片列表由 **`/hub-config.json` 的 `hero_banners`** 提供；开关为主题 **`robotime_carousel_enabled`**
+- **背景色**：以每条 banner 的 `bg_color` 为准；下表为 **早期需求示意**（与 `navbar-bg-colors.jpg`、规范表可能不完全一致，以设计定稿 + JSON 为准）
 
-| 卡片名称             | 背景色     | 文字色   |
-|----------------------|------------|----------|
-| User Guide & Perks   | `#f6ebe3`  | `#000000`|
-| Crafting Tips & Ideas| `#ffdcb04` | `#000000`|
-| Ongoing Events       | `#f6ebe3`  | `#000000`|
-| Say Hi To Everyone   | `#fef7e7`  | `#000000`|
-| Spin & WIN           | `#ffb93e`  | `#000000`|
-| Showcase & Story     | `#f6ebe3`  | `#000000`|
-| DIY & Crafting Club  | `#f6ebe3`  | `#000000`|
-| Nanci’s Dairy        | `#f6ebe3`  | `#000000`|
-| New Arrivals         | `#f6ebe3`  | `#000000`|
-| Exclusive Deals      | `#f6ebe3`  | `#000000`|
-| Instruction Manual   | `#f6ebe3`  | `#000000`|
+| 卡片名称             | 背景色（示意） | 文字色（示意） |
+|----------------------|----------------|----------------|
+| User Guide & Perks   | `#f6ebe3`      | `#000000`      |
+| Crafting Tips & Ideas| `#ffdb04` 等   | `#000000`      |
+| Ongoing Events       | `#e65e2a` 等   | `#ffffff`      |
+| … | … | … |
 
-> 💡 注：部分卡片背景色重复，实际应按设计稿中对应位置分配颜色。
+> 💡 完整色号与 Type A/B/C 规则见 **`design-rule/DESIGN-SPEC.md`**。
 
 #### ⚙️ 动态效果
-- **鼠标悬停**：
-  - 缩放：`transform: scale(1.1)`
-  - 旋转：部分卡片右转 `5deg`（见下方“旋转规则”）
-  - 过渡时间：`0.3s ease-in-out`
+- **整区固定 + 滚动收缩**：轮播条 **`position: fixed`** 在顶栏下；用户向下滚动后主内容正常滚动，轮播 **缩小为窄条**（类名 `robotime-carousel--collapsed`），而非滚出屏幕
+- **鼠标悬停（展开态）**：
+  - 缩放：`scale(1.12)`；部分卡片额外 **`rotate(5deg)`**
+  - 缓动：`cubic-bezier(0.34, 1.56, 0.64, 1)`，约 `0.35s`
+- **收缩态 hover**：缩放幅度减小（`scale(1.05)`），避免贴边
 - **旋转规则**（按卡片顺序）：
 
 | 卡片序号 | 是否旋转 | 角度 |
@@ -133,15 +131,17 @@
   - 未选中：灰色 `#777777`
   - 选中：黑色 `#000000` + 下划线
   - 间距：横向间距 `30px`
+- **第二行预显标签**：由 **主题设置 `robotime_filter_quick_tags`**（JSON）配置，**不是** hub-config 字段
 - **右侧按钮**：
   - “New Topic” 按钮：浅灰背景 `#f7f7f7`，图标 + 文字，点击弹出新建话题框
 
 #### ✅ 话题卡片列表
+- **列数**：**≥1200px：3 列**；平板 **2 列**；手机 **1 列**
 - **卡片尺寸**：
-  - 宽度：`413px`
-  - 高度：自适应（最小 `290px`）
+  - 宽度：流式栅格（非固定 `413px`）
+  - 高度：自适应（随封面比例规则变化）
   - 圆角：`20px`
-  - 间距：垂直 `20px`，水平 `20px`
+  - 间距：由 grid `gap` 控制（见 SCSS）
 - **内容结构**：
   - 顶部横幅图（渐变蓝底 + “Official Events” 文字）
   - 标题：`Unicorn W / Rose`, `24px`, 黑色 `#000000`
@@ -165,10 +165,10 @@
 ## 🛠 三、技术要求
 
 ### 1. 技术栈
-- **模板引擎**：Handlebars (`.hbs`)
+- **模板引擎**：Handlebars（主题连接器 `.hbs`）
 - **样式语言**：SCSS (Sass)
-- **脚本语言**：JavaScript (Ember.js 组件可选)
-- **配置管理**：YAML (`theme.yaml`)
+- **脚本语言**：JavaScript（`api-initializers`）
+- **配置管理**：`about.json`、`settings.yml`、`locales/*.yml`（Discourse 主题标准，**非** 独立 `theme.yaml`）
 
 ### 2. 兼容性要求
 - 支持主流浏览器：Chrome, Firefox, Safari, Edge（最新两个版本）

@@ -18,7 +18,8 @@ This is a **Discourse custom theme** repository ("Robotime Community Theme") for
 - `desktop/desktop.scss` — Desktop and tablet layout overrides
 - `mobile/mobile.scss` — Mobile responsive styles (<768px, hamburger menu, single-column layout)
 - `preview.html` — Standalone preview page for visual testing without a Discourse instance
-- `design-rule/` — JPG design mockups with annotated measurements
+- `design-rule/` — JPG mockups (`homepage`, `theme-overview`, `navbar`, `navbar-animation`, `navbar-bg-colors`) + **`DESIGN-SPEC.md`**（资源索引 **§零**、稿码差异 **§十一**、固定顶栏/滚动收缩 **§十**）
+- `PLUGIN-INTERFACE.md` — **hub-config vs Theme settings** 分工（导航/预显标签/Logo 仅主题；JSON 仅 `hero_banners` / `sidebar_widgets`）
 - `Icon/` — PNG icon assets (sidebar, like/comment/view icons)
 
 ### Verifying SCSS
@@ -43,6 +44,7 @@ Then open `http://localhost:8080/preview.html` for the interactive theme preview
 
 - The theme is a **sub-theme** that depends on a Discourse base theme (e.g. `discourse-corporate`).
 - SCSS variables are centralized at the top of `common/common.scss`.
+- **Hub stack**: `.robotime-above-header` and `#robotime-carousel` are **`position: fixed`**; `#main-outlet-wrapper` uses **`padding-top: var(--robotime-header-offset)`** (set by `robotime-hub.js` from measured heights). On scroll, the carousel gets **`robotime-carousel--collapsed`** (narrow strip, dark bar — aligned with `preview.html`).
 - Image aspect ratio handling: images with w/h ratio > 0.85 get 1:1 cropping, otherwise 3:4.
 - Carousel cards have per-card rotation rules (cards 1, 2, 5, 8 rotate 5deg on hover).
 - To test on a real Discourse instance, install via Admin > Customize > Themes > Import from Git.
