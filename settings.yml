@@ -2,54 +2,54 @@ robotime_logo_url:
   default: ""
   type: string
   description:
-    en: "URL for the Robotime logo image in the header"
-    zh_CN: "顶部导航栏 Robotime Logo 图片 URL"
+    en: "Header logo image URL (theme setting). When set, replaces the default ROBOTIME text in the blue pill."
+    zh_CN: "顶栏 Logo 图片 URL（主题设置）。填写后替换蓝色胶囊内的默认 ROBOTIME 文字。"
 
 robotime_nav_links:
   default: "Help|/help,Community Perks|/community-perks,Win Prize|/win-prize,How To|/how-to,About|/about,Buy|https://www.robotime.com"
   type: string
   description:
-    en: "Navigation links in format: Label|URL, separated by commas"
-    zh_CN: "导航链接，格式: 标签|URL，逗号分隔"
+    en: "Top nav links — theme setting (authoritative). Format: Label|URL, comma-separated. Not read from hub-config.json."
+    zh_CN: "顶栏导航链接（以主题设置为准）。格式：标签|URL，英文逗号分隔。不从 hub-config.json 读取。"
 
 robotime_carousel_enabled:
   default: true
   type: bool
   description:
-    en: "Enable the category carousel below the header"
-    zh_CN: "启用顶部导航栏下方的分类卡片轮播区"
+    en: "Show the category carousel below the header. When false, hero_banners from hub-config.json are ignored."
+    zh_CN: "是否显示顶栏下方的分类轮播。关闭时忽略 hub-config.json 的 hero_banners。"
 
 robotime_official_events_category:
   default: ""
   type: string
   description:
-    en: "Category slug for Official Events in the sidebar"
-    zh_CN: "侧栏中 Official Events 对应的分类 slug"
+    en: "Optional category slug for reference (e.g. building sidebar URLs elsewhere). Not auto-wired to hub-config in current JS."
+    zh_CN: "可选：活动/官方事件分类 slug（供运营参考）。当前 JS 不会自动写入 hub-config。"
 
 robotime_sidebar_section_title:
   default: "Official Events"
   type: string
   description:
-    en: "Title shown above the sidebar event carousel (plugin should expose the same via hub-config.json sidebar_section_title when using dynamic config)"
-    zh_CN: "侧栏活动轮播图上方标题（使用插件动态配置时应在 hub-config.json 的 sidebar_section_title 中下发）"
+    en: "Sidebar widget section title — theme setting (authoritative). Shown above sidebar_widgets when hub-config provides widgets."
+    zh_CN: "侧栏活动区标题（以主题设置为准）。仅当 hub-config.json 提供 sidebar_widgets 时显示在轮播上方。"
 
 robotime_sidebar_view_all_label:
   default: "View All Events"
   type: string
   description:
-    en: "Label for the link below the sidebar event carousel (plugin: sidebar_view_all.label)"
-    zh_CN: "侧栏轮播下方「查看全部」链接文案（插件字段 sidebar_view_all.label）"
+    en: "Sidebar “view all” link label — theme setting. Used only if robotime_sidebar_view_all_url is non-empty."
+    zh_CN: "侧栏「查看全部」链接文案（主题设置）。仅当「查看全部 URL」非空时使用。"
 
 robotime_sidebar_view_all_url:
   default: ""
   type: string
   description:
-    en: "URL for View All Events below the carousel (plugin: sidebar_view_all.url); leave empty to hide the link if not set by plugin"
-    zh_CN: "侧栏轮播下方「查看全部」链接地址（插件字段 sidebar_view_all.url）；留空且插件未配置则不显示"
+    en: "Sidebar “view all” URL — theme setting (authoritative). Empty = hide the link below sidebar widgets."
+    zh_CN: "侧栏「查看全部」链接地址（以主题设置为准）。留空则不显示该链接。"
 
 robotime_filter_quick_tags:
   default: ""
   type: string
   description:
-    en: "Optional JSON array for list quick tags, e.g. [{\"label\":\"Diy\",\"url\":\"/tag/diy\"}]. Plugin should merge into hub-config.json \"filter_quick_tags\" (or read this setting server-side when building the response)."
-    zh_CN: "可选。话题列表预显标签 JSON 数组，如 [{\"label\":\"Diy\",\"url\":\"/tag/diy\"}]；插件应合并进 hub-config 的 filter_quick_tags，或在服务端组装 JSON 时读取本项。"
+    en: "Topic list quick tags — theme setting (authoritative). JSON array, e.g. [{\"label\":\"Diy\",\"url\":\"/tag/diy\"}]. Not read from hub-config.json."
+    zh_CN: "话题列表预显标签（以主题设置为准）。JSON 数组字符串，如 [{\"label\":\"Diy\",\"url\":\"/tag/diy\"}]。不从 hub-config.json 读取。"

@@ -1,5 +1,6 @@
 import { apiInitializer } from "discourse/lib/api";
 
+/* global settings — injected by Discourse when compiling theme JS from settings.yml */
 export default apiInitializer((api) => {
   /** Sidebar nav rows: #d-sidebar is the real container; .sidebar-wrapper kept for older layouts. */
   const ROBOTIME_SIDEBAR_MENU_LINKS =
@@ -28,6 +29,148 @@ export default apiInitializer((api) => {
     }
 
     slot.appendChild(tools);
+  }
+
+  function getThemeSettings() {
+    try {
+      // `settings` is injected by Discourse when building theme JS from settings.yml
+      // eslint-disable-next-line no-undef
+      if (typeof settings !== "undefined" && settings) {
+        // eslint-disable-next-line no-undef
+        return settings;
+      }
+    } catch (e) {
+      /* theme compiled without settings */
+    }
+    return {};
+  }
+
+  function parseRobotimeNavLinks(raw) {
+    const s = String(raw || "").trim();
+    if (!s) {
+      return [];
+    }
+    return s
+      .split(",")
+      .map((p) => p.trim())
+      .filter(Boolean)
+      .map((pair) => {
+        const i = pair.indexOf("|");
+        if (i <= 0) {
+          return null;
+        }
+        const label = pair.slice(0, i).trim();
+        const url = pair.slice(i + 1).trim();
+        if (!label || !url) {
+          return null;
+        }
+        return {
+          label,
+          url,
+          is_external: /^https?:\/\//i.test(url),
+        };
+      })
+      .filter(Boolean);
+  }
+
+  function parseRobotimeFilterQuickTagsJson(raw) {
+    const s = String(raw || "").trim();
+    if (!s) {
+      return [];
+    }
+    try {
+      const data = JSON.parse(s);
+      return Array.isArray(data) ? data.filter((t) => t && t.url) : [];
+    } catch (e) {
+      console.warn(
+        "[Robotime Theme] robotime_filter_quick_tags must be a JSON array string."
+      );
+      return [];
+    }
+  }
+
+  /** Values from Admin → Themes → Theme settings (settings.yml). Authoritative for nav, tags, logo, sidebar copy. */
+  function buildRobotimeThemeConfig() {
+    const ts = getThemeSettings();
+    const carouselEnabled =
+      ts.robotime_carousel_enabled !== false &&
+      ts.robotime_carousel_enabled !== "false" &&
+      ts.robotime_carousel_enabled !== 0;
+
+    const sidebarTitle = String(ts.robotime_sidebar_section_title ?? "").trim();
+    const viewLabel = String(ts.robotime_sidebar_view_all_label ?? "").trim();
+    const viewUrl = String(ts.robotime_sidebar_view_all_url ?? "").trim();
+
+    return {
+      nav_items: parseRobotimeNavLinks(ts.robotime_nav_links),
+      filter_quick_tags: parseRobotimeFilterQuickTagsJson(ts.robotime_filter_quick_tags),
+      sidebar_section_title: sidebarTitle,
+      sidebar_view_all: viewUrl
+        ? {
+            label: viewLabel || "View All Events",
+            url: viewUrl,
+            is_external: /^https?:\/\//i.test(viewUrl),
+          }
+        : undefined,
+      _robotime_carousel_enabled: carouselEnabled,
+    };
+  }
+
+  /**
+   * Remote JSON supplies hero_banners + sidebar_widgets only.
+   * Theme settings override: nav_items, filter_quick_tags, sidebar_section_title, sidebar_view_all, carousel toggle.
+   */
+  function mergeHubWithTheme(remote, themeCfg) {
+    const r = remote && typeof remote === "object" ? remote : {};
+    const t = themeCfg && typeof themeCfg === "object" ? themeCfg : {};
+    return {
+      nav_items: Array.isArray(t.nav_items) ? t.nav_items : [],
+      filter_quick_tags: Array.isArray(t.filter_quick_tags) ? t.filter_quick_tags : [],
+      hero_banners: r.hero_banners,
+      sidebar_widgets: r.sidebar_widgets,
+      sidebar_section_title: t.sidebar_section_title || "",
+      sidebar_view_all: t.sidebar_view_all,
+      _robotime_carousel_enabled: t._robotime_carousel_enabled !== false,
+    };
+  }
+
+  function applyRobotimeHeaderLogo() {
+    const url = String(getThemeSettings().robotime_logo_url || "").trim();
+    document.querySelectorAll(".robotime-header__logo a").forEach((a) => {
+      a.textContent = "";
+      if (url) {
+        const img = document.createElement("img");
+        img.className = "robotime-header__logo-img";
+        img.src = url;
+        img.alt = "";
+        img.decoding = "async";
+        a.appendChild(img);
+      } else {
+        a.textContent = "ROBOTIME";
+      }
+    });
+  }
+
+  function setRobotimeCarouselThemeVisibility(enabled) {
+    const el =
+      document.querySelector(".robotime-carousel") ||
+      document.getElementById("robotime-carousel");
+    if (!el) {
+      return;
+    }
+    if (enabled === false) {
+      el.classList.add("robotime-carousel--theme-disabled");
+      el.style.setProperty("display", "none", "important");
+      const track = document.getElementById("carousel-track");
+      if (track) {
+        track.innerHTML = "";
+        track._robotimeCarousel = null;
+      }
+    } else {
+      el.classList.remove("robotime-carousel--theme-disabled");
+      el.style.removeProperty("display");
+    }
+    requestAnimationFrame(() => updateRobotimeHeaderOffset());
   }
 
   /** Last applied offset; skip identical writes to avoid reflow / scrollbar gutter oscillation. */
@@ -120,10 +263,10 @@ export default apiInitializer((api) => {
   }
 
   function renderNavLinks(desktopContainer, mobileContainer, navItems) {
-    if (!navItems) return;
     const fill = (container) => {
       if (!container) return;
       container.innerHTML = "";
+      if (!navItems || !navItems.length) return;
       navItems.forEach((item) => {
         const a = document.createElement("a");
         a.href = item.url;
@@ -321,19 +464,33 @@ export default apiInitializer((api) => {
     const carouselTrack = document.getElementById("carousel-track");
     const sidebarSlot = document.querySelector(".robotime-sidebar-widget-slot");
 
-    if (config.nav_items) {
-      renderNavLinks(navDesktop, mobileNav, config.nav_items);
-    }
-    if (config.hero_banners) {
+    const carouselOn = config._robotime_carousel_enabled !== false;
+    setRobotimeCarouselThemeVisibility(carouselOn);
+
+    renderNavLinks(navDesktop, mobileNav, config.nav_items);
+    if (carouselOn && config.hero_banners && config.hero_banners.length) {
       renderCarousel(carouselTrack, config.hero_banners);
+    } else if (carouselTrack) {
+      carouselTrack.innerHTML = "";
+      carouselTrack._robotimeCarousel = null;
     }
-    if (config.sidebar_widgets) {
+    if (config.sidebar_widgets && config.sidebar_widgets.length) {
       renderSidebarWidgets(sidebarSlot, config.sidebar_widgets, {
         section_title: config.sidebar_section_title,
         view_all: config.sidebar_view_all,
       });
+    } else if (sidebarSlot) {
+      sidebarSlot.innerHTML = "";
+      if (window.__robotimeSidebarInterval) {
+        clearInterval(window.__robotimeSidebarInterval);
+        window.__robotimeSidebarInterval = null;
+      }
     }
-    renderFilterQuickTags(config.filter_quick_tags);
+    renderFilterQuickTags(
+      config.filter_quick_tags && config.filter_quick_tags.length
+        ? config.filter_quick_tags
+        : null
+    );
     requestAnimationFrame(() => updateRobotimeHeaderOffset());
   }
 
@@ -454,6 +611,7 @@ export default apiInitializer((api) => {
 
   function runRobotimeLayoutPass() {
     relocateNativeHeaderTools();
+    applyRobotimeHeaderLogo();
     updateRobotimeHeaderOffset();
     ensureSidebarNewTopicLabel();
     injectRobotimeSidebarMenuIcons();
@@ -700,16 +858,23 @@ export default apiInitializer((api) => {
         queueCarouselCollapseCheck();
       }
 
+      const themeCfg = buildRobotimeThemeConfig();
+      applyHubConfig(mergeHubWithTheme({}, themeCfg));
+
       fetch("/hub-config.json")
-        .then((r) => r.json())
-        .then((config) => {
-          applyHubConfig(config || {});
+        .then((r) => {
+          if (!r.ok) {
+            throw new Error(String(r.status));
+          }
+          return r.json();
+        })
+        .then((remote) => {
+          applyHubConfig(mergeHubWithTheme(remote || {}, themeCfg));
         })
         .catch(() => {
           console.warn(
-            "[Robotime Theme] hub-config.json not available — plugin may be disabled."
+            "[Robotime Theme] hub-config.json not available — using theme settings only for nav, tags, sidebar copy; carousel/widgets empty."
           );
-          renderFilterQuickTags(null);
           ensureSidebarNewTopicLabel();
         });
     });

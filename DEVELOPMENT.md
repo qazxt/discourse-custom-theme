@@ -130,7 +130,7 @@ quaternary (橙):  #ffb93e    danger:            #e45735
 ### 4.2 分类卡片轮播（Carousel）
 
 - **文件**: `javascripts/robotime/connectors/below-site-header/robotime-carousel.hbs`, `javascripts/robotime/connectors/above-site-header/robotime-header.hbs`, `javascripts/discourse/api-initializers/robotime-hub.js`, `common/common.scss`
-- **卡片数据**: 由插件接口 `/hub-config.json` 下发（字段 `hero_banners[]`），主题在 `common/head_tag.html` 中 `fetch('/hub-config.json')` 后渲染
+- **卡片数据**: 字段 `hero_banners[]` 来自 **`/hub-config.json`**；是否显示整区由主题设置 **`robotime_carousel_enabled`** 控制；由 `robotime-hub.js` `fetch` 后渲染
 - **收缩模式纯色**: 轮播收缩时图片层隐藏，仅保留卡片背景色；颜色使用该卡片的 `bg_color`（不返回则默认 `#f6ebe3`）
 - **动效**:
   - 轨道滑动: `cubic-bezier(0.25, 0.46, 0.45, 0.94)` 0.5s
@@ -146,10 +146,10 @@ quaternary (橙):  #ffb93e    danger:            #e45735
   - 激活态（白色）: `Icon/左侧图标/白色/资源 22-25`
   - 未激活态（黑色）: `Icon/左侧图标/黑色/资源 26-29`
   - 通过 `filter: brightness(0) invert(1)` 切换
-- **侧栏底部活动轮播区**（数据来自 `/hub-config.json`，由插件下发）:
-  - **顶部标题**: `sidebar_section_title`（可后台配置；空则不显示）
-  - **轮播幻灯片**: `sidebar_widgets[]`（单张静态或多张 5 秒轮播 + 圆点）
-  - **底部链接**: `sidebar_view_all`（`label` + `url` + 可选 `is_external`；无 `url` 则不显示）
+- **侧栏底部活动轮播区**:
+  - **顶部标题 / 查看全部 文案与 URL**: **主题设置** `robotime_sidebar_*`（权威）
+  - **轮播幻灯片**: `sidebar_widgets[]` 来自 **`/hub-config.json`**
+  - 无 `url` 时不显示「查看全部」链接
   - 主题侧样式: 标题为品牌蓝 `#66cbff` 圆角条白字；底部为描边圆角按钮式链接
 - **Discourse 原生**: 侧栏内 "New topic" 等仍由 Discourse 提供（非本主题 mock）
 
@@ -157,7 +157,7 @@ quaternary (橙):  #ffb93e    danger:            #e45735
 
 - **筛选栏**（列表页 `.list-controls`，对接 Discourse 原生导航）:
   - **第一行**: Categories、Tags 为原生下拉；主题样式为 **#777 圆角描边**（`select-kit-header`）；右侧 **Latest**（默认选中）/ **New** / **Top** / **Bookmarks** 为 Tab，**24px**（桌面）、灰字选中黑字 + 下划线；下拉与 Tab 间距见 `common/common.scss`。
-  - **第二行预显标签**: 数据来自 `/hub-config.json` 的 **`filter_quick_tags`**（插件后台配置）；**16px**、`#777`，选中/悬停黑字 + 下划线；显示时自动为 `label` 加 `#` 前缀（若未写）。
+  - **第二行预显标签**: 数据来自主题设置 **`robotime_filter_quick_tags`**（JSON 数组）；**16px**、`#777`，选中/悬停黑字 + 下划线；显示时自动为 `label` 加 `#` 前缀（若未写）。
 - **筛选栏（预览）**: `preview.html` 内用 `.filter-dd` 模拟下拉框，结构与稿一致。
 - **话题列表 Tab 动效**: 黑色文字 + 底部下划线（与 `common/common.scss` 中 `.nav-pills` 一致）
 - **话题卡片**: 多列瀑布流，桌面/平板 2 列，移动端 1 列
@@ -235,10 +235,10 @@ quaternary (橙):  #ffb93e    danger:            #e45735
 | `robotime_nav_links` | string | `Help\|/help,...` | 导航链接，格式 `标签\|URL` 逗号分隔 |
 | `robotime_carousel_enabled` | bool | `true` | 启用/禁用分类轮播 |
 | `robotime_official_events_category` | string | 空 | Official Events 对应的分类 slug |
-| `robotime_sidebar_section_title` | string | `Official Events` | 侧栏活动轮播上方标题（插件可在 `hub-config.json` 的 `sidebar_section_title` 中覆盖） |
-| `robotime_sidebar_view_all_label` | string | `View All Events` | 侧栏轮播下方链接文案（插件字段 `sidebar_view_all.label`） |
-| `robotime_sidebar_view_all_url` | string | 空 | 侧栏轮播下方链接 URL（插件字段 `sidebar_view_all.url`） |
-| `robotime_filter_quick_tags` | string | 空 | 预显标签 JSON 数组字符串；插件宜合并进 `filter_quick_tags` |
+| `robotime_sidebar_section_title` | string | `Official Events` | 侧栏活动区标题（有 `sidebar_widgets` 时显示） |
+| `robotime_sidebar_view_all_label` | string | `View All Events` | 侧栏「查看全部」文案 |
+| `robotime_sidebar_view_all_url` | string | 空 | 侧栏「查看全部」URL；空则不显示链接 |
+| `robotime_filter_quick_tags` | string | 空 | 预显标签 JSON 数组字符串（主题权威，不从 hub-config 读） |
 
 ---
 

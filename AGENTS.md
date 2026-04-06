@@ -13,7 +13,7 @@ This is a **Discourse custom theme** repository ("Robotime Community Theme") for
 - `javascripts/robotime/connectors/above-site-header/robotime-header.hbs` — Custom top bar (Plugin Outlet **above-site-header**; use Plugin Outlet Locations theme to verify)
 - `javascripts/robotime/connectors/below-site-header/robotime-carousel.hbs` — Carousel under default header (**below-site-header**)
 - `javascripts/discourse/connectors/after-sidebar-sections/robotime-sidebar-slot.hbs` — `.robotime-sidebar-hub` + hub slot + **New topic** link (**after-sidebar-sections**; label filled by `robotime-hub.js`, no `theme-i18n` in template)
-- `javascripts/discourse/api-initializers/robotime-hub.js` — `hub-config.json`, carousel, sidebar widget, quick tags, mobile menu
+- `javascripts/discourse/api-initializers/robotime-hub.js` — Theme `settings` (nav, logo, quick tags, sidebar copy, carousel toggle) + `hub-config.json` (`hero_banners`, `sidebar_widgets` only), mobile menu
 - `common/header.html`, `common/after_header.html`, `common/head_tag.html` — Legacy placeholders only (no inline `text/x-handlebars` / `discourse-plugin`)
 - `desktop/desktop.scss` — Desktop and tablet layout overrides
 - `mobile/mobile.scss` — Mobile responsive styles (<768px, hamburger menu, single-column layout)

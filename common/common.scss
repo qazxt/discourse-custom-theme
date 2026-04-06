@@ -74,6 +74,15 @@ body {
       transition: opacity 0.2s;
       &:hover { opacity: 0.9; }
     }
+
+    .robotime-header__logo-img {
+      display: block;
+      max-height: 40px;
+      max-width: 180px;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+    }
   }
 
   &__nav {
@@ -865,14 +874,16 @@ body {
 }
 
 // ============================================================
-// 5. TOPIC CARDS — CSS Grid (design-rule/homepage.jpg + preview.html)
-//    column-gap 20px; row-gap 40px (stats baseline → next card image).
-//    In-card: ~20px below cover; title ~18px; stats row 24px #000 + 40px avatar.
+// 5. TOPIC CARDS — topic list as cards (homepage + theme-overview placeholder demo)
+//    Layout: tall media band (~#eee) + white body; title; footer row = stats left, avatars right.
 //    Cover ratio: JS sets data-robotime-thumb-ratio — w/h > 0.85 → square 1:1, else 3:4.
-//    No cover: data-robotime-thumb-state="placeholder" (1:1 + muted icon).
+//    Placeholder / no-cover: taller band (4:5) + centered icon (mixin).
 // ============================================================
 
 $robotime-topic-no-cover-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm0 2v14h14V5H5zm2 2h10v8.5l-2.5-3-2.2 2.8L9 13.3 7 11V7zm2 1.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z'/%3E%3C/svg%3E");
+
+// Centered gallery placeholder (no-cover band + td.topic-thumbnails placeholder)
+$robotime-topic-placeholder-icon-fill: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23999999' fill-opacity='0.4' d='M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm0 2v14h14V5H5zm2 2h10v8.5l-2.5-3-2.2 2.8L9 13.3 7 11V7zm2 1.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z'/%3E%3C/svg%3E");
 
 @mixin robotime-topic-thumb-placeholder-icon {
   &::after {
@@ -880,11 +891,11 @@ $robotime-topic-no-cover-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.
     position: absolute;
     left: 50%;
     top: 50%;
-    width: 56px;
-    height: 56px;
+    width: 64px;
+    height: 64px;
     transform: translate(-50%, -50%);
-    opacity: 0.32;
-    background-color: $robotime-gray;
+    opacity: 0.28;
+    background-color: #777777;
     -webkit-mask-image: $robotime-topic-no-cover-mask;
     mask-image: $robotime-topic-no-cover-mask;
     -webkit-mask-size: contain;
@@ -923,22 +934,29 @@ $robotime-topic-no-cover-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.
   }
 
   tr.topic-list-item {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    grid-template-areas:
+      "thumb"
+      "body";
     min-width: 0;
     list-style: none;
-    border-radius: 20px;
+    border-radius: 18px;
     overflow: hidden;
     background: $robotime-white;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
-    transition: box-shadow 0.25s, transform 0.25s;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+    transition: box-shadow 0.25s, transform 0.25s, border-color 0.25s;
     cursor: pointer;
     width: 100%;
     margin: 0;
     box-sizing: border-box;
+    position: relative;
 
     &:hover {
-      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
+      border-color: rgba(0, 0, 0, 0.08);
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
       transform: translateY(-3px);
     }
 
@@ -953,15 +971,15 @@ $robotime-topic-no-cover-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.
 
     // Topic thumbnails — aspect + crop from data-* (set in robotime-hub.js)
     td.topic-thumbnails {
-      order: 0;
-      flex-shrink: 0;
+      grid-area: thumb;
+      align-self: stretch;
       padding: 0 !important;
       line-height: 0;
       width: 100%;
       box-sizing: border-box;
       position: relative;
       overflow: hidden;
-      background: $robotime-light-gray;
+      background: #eeeeee;
       aspect-ratio: 1 / 1;
 
       &[data-robotime-thumb-ratio="square"] {
@@ -973,7 +991,12 @@ $robotime-topic-no-cover-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.
       }
 
       &[data-robotime-thumb-state="placeholder"] {
-        @include robotime-topic-thumb-placeholder-icon;
+        aspect-ratio: 4 / 5;
+        background-color: #eeeeee;
+        background-image: $robotime-topic-placeholder-icon-fill;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 64px 64px;
 
         img {
           display: none !important;
@@ -985,6 +1008,7 @@ $robotime-topic-no-cover-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.
         position: absolute;
         inset: 0;
         line-height: 0;
+        z-index: 2;
       }
 
       img {
@@ -998,32 +1022,71 @@ $robotime-topic-no-cover-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.
     }
 
     .main-link {
-      order: 1;
-      flex: 1 1 auto;
-      padding: 20px 16px 10px;
+      grid-area: body;
+      position: relative;
+      align-self: stretch;
+      padding: 14px 16px 44px;
+      background: $robotime-white;
+    }
+
+    // Full-card click: stretch primary topic URL across the row (core only wraps the title text).
+    // ::after positions against tr.topic-list-item because the anchor stays position: static.
+    td.main-link a.raw-link:not(.badge-category),
+    td.main-link a.title {
+      position: static !important;
+    }
+
+    td.main-link a.raw-link:not(.badge-category)::after,
+    td.main-link a.title:not(.badge-category)::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+    }
+
+    // Keep nested links / controls above the stretched hit layer (thumbnails use z-index in block above).
+    td.main-link a.badge-category,
+    td.main-link .badge-category,
+    td.main-link .topic-item-stats a,
+    td.main-link .topic-list-num a,
+    .posters a,
+    .posters button {
+      position: relative;
+      z-index: 2;
     }
 
     // Default list has no td.topic-thumbnails — JS sets data-robotime-topic-row (robotime-hub.js)
-    tr.topic-list-item[data-robotime-topic-row="has-thumb"] td.main-link::before {
+    &[data-robotime-topic-row="has-thumb"] td.main-link::before {
       content: none !important;
       display: none !important;
     }
 
-    tr.topic-list-item[data-robotime-topic-row="no-cover"] td.main-link {
+    &[data-robotime-topic-row="no-cover"] td.main-link {
       display: flex;
       flex-direction: column;
-      padding: 0 16px 16px;
+      padding: 0 16px 44px;
 
       &::before {
         content: "";
         order: -1;
-        width: 100%;
-        aspect-ratio: 1 / 1;
-        margin: 0 0 20px;
+        align-self: stretch;
+        width: calc(100% + 32px);
+        margin-left: -16px;
+        margin-right: -16px;
+        aspect-ratio: 4 / 5;
         flex-shrink: 0;
-        background: linear-gradient(160deg, $robotime-light-gray 0%, #ececec 100%);
+        background-color: #eeeeee;
+        background-image: $robotime-topic-placeholder-icon-fill;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 64px 64px;
         box-sizing: border-box;
+        pointer-events: none;
       }
+    }
+
+    &[data-robotime-topic-row="no-cover"] td.main-link .link-top-line {
+      margin-top: 14px;
     }
 
     .main-link a.title,
@@ -1036,40 +1099,67 @@ $robotime-topic-no-cover-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.
       color: $robotime-black !important;
     }
 
-    // Stats under title: homepage ~20px below title, 24px #000 + icons
+    // Footer row: stats left, avatars right (design mockup — same baseline).
     .main-link .topic-item-stats,
-    .main-link .topic-list-num,
-    .main-link .topic-post-badges {
-      margin-top: 20px;
+    .main-link .topic-list-num {
+      position: absolute;
+      left: 16px;
+      bottom: 12px;
+      margin: 0 !important;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px 16px;
+      max-width: calc(100% - 56px);
       font-family: $font-primary;
-      font-size: 24px;
-      font-weight: 400;
+      font-size: 14px;
+      font-weight: 500;
       line-height: 1.2;
-      color: $robotime-black;
+      color: $robotime-gray;
+      z-index: 2;
 
       .d-icon,
       svg {
-        width: 20px;
-        height: 20px;
-        color: $robotime-black;
+        width: 18px;
+        height: 18px;
+        color: $robotime-gray;
       }
     }
 
+    .main-link .topic-post-badges {
+      margin-top: 10px;
+      font-family: $font-primary;
+      font-size: 13px;
+      line-height: 1.3;
+      position: relative;
+      z-index: 2;
+    }
+
     .posters {
-      order: 2;
-      padding: 0 16px 20px;
-      margin-top: auto;
+      grid-area: body;
+      position: absolute;
+      right: 12px;
+      bottom: 10px;
+      left: auto;
+      top: auto;
+      z-index: 2;
+      margin: 0;
+      padding: 0;
       display: flex;
       align-items: center;
       justify-content: flex-end;
+      gap: 4px;
     }
 
     .posters .avatar,
     .posters img.avatar {
-      width: 40px;
-      height: 40px;
+      position: relative;
+      z-index: 2;
+      width: 32px;
+      height: 32px;
       border-radius: 50%;
-      border: 2px solid $robotime-light-gray;
+      border: 2px solid #e8e8e8;
       object-fit: cover;
     }
 
