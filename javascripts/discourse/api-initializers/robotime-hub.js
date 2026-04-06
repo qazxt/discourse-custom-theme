@@ -368,10 +368,10 @@ export default apiInitializer((api) => {
     return svg ? `data:image/svg+xml,${encodeURIComponent(svg)}` : null;
   }
 
-  function robotimeSidebarIconKey(anchor) {
-    const href = (anchor.getAttribute("href") || "").split(/[?#]/)[0].toLowerCase();
-    const linkName = (anchor.dataset.linkName || "").toLowerCase();
-    const text = (anchor.textContent || "").trim().toLowerCase();
+  function robotimeSidebarIconKey(el) {
+    const href = (el.getAttribute("href") || "").split(/[?#]/)[0].toLowerCase();
+    const linkName = (el.dataset.linkName || "").toLowerCase();
+    const text = (el.textContent || "").trim().toLowerCase();
 
     if (linkName.includes("more") || text === "more" || text === "更多") {
       return "more";
@@ -379,15 +379,17 @@ export default apiInitializer((api) => {
     if (/invite|invitation/i.test(href) || linkName.includes("invite")) {
       return "invite";
     }
+    // Avoid matching /chat/search as inbox — do not use a bare "/chat/" segment test.
     if (
-      /\/my\/messages|private-message|\/chat\/|\/u\/[^/]+\/messages/i.test(href) ||
-      linkName.includes("message")
+      /\/my\/messages|private-message|\/u\/[^/]+\/messages(\/|$)/i.test(href) ||
+      (linkName.includes("message") && linkName !== "chat-search")
     ) {
       return "messages";
     }
     if (
-      /\/activity|my-posts|\/drafts|\/u\/[^/]+\/(activity|summary)(\/|$)/i.test(href) ||
+      /\/activity|\/drafts|\/u\/[^/]+\/(activity|summary)(\/|$)/i.test(href) ||
       linkName === "user-posts" ||
+      linkName === "my-posts" ||
       linkName === "my-threads"
     ) {
       return "posts";
@@ -398,6 +400,7 @@ export default apiInitializer((api) => {
     if (
       /\/(latest|new|unread|top|read|posted|hot)(\/|$)/i.test(href) ||
       linkName === "topics" ||
+      linkName === "everything" ||
       linkName.startsWith("topics-") ||
       linkName === "unread" ||
       linkName === "new" ||
@@ -410,38 +413,42 @@ export default apiInitializer((api) => {
   }
 
   function injectRobotimeSidebarMenuIcons() {
-    document.querySelectorAll(".sidebar-wrapper a.sidebar-section-link").forEach((a) => {
-      const key = robotimeSidebarIconKey(a);
-      if (!key) {
-        return;
-      }
-      const prefix = a.querySelector(".sidebar-section-link-prefix");
-      if (!prefix) {
-        return;
-      }
-      const dataUrl = robotimeSidebarIconDataUrl(key);
-      if (!dataUrl) {
-        return;
-      }
+    document
+      .querySelectorAll(
+        ".sidebar-wrapper .sidebar-section-link-wrapper a.sidebar-section-link, .sidebar-wrapper .sidebar-section-link-wrapper button.sidebar-section-link"
+      )
+      .forEach((el) => {
+        const key = robotimeSidebarIconKey(el);
+        if (!key) {
+          return;
+        }
+        const prefix = el.querySelector(".sidebar-section-link-prefix");
+        if (!prefix) {
+          return;
+        }
+        const dataUrl = robotimeSidebarIconDataUrl(key);
+        if (!dataUrl) {
+          return;
+        }
 
-      const existing = prefix.querySelector(".robotime-sidebar-menu-icon");
-      if (a.dataset.robotimeSidebarIcon === key && existing) {
-        return;
-      }
+        const existing = prefix.querySelector(".robotime-sidebar-menu-icon");
+        if (el.dataset.robotimeSidebarIcon === key && existing) {
+          return;
+        }
 
-      a.dataset.robotimeSidebarIcon = key;
-      prefix.classList.add("robotime-sidebar-link-prefix--robotime-icon");
-      if (existing) {
-        existing.remove();
-      }
+        el.dataset.robotimeSidebarIcon = key;
+        prefix.classList.add("robotime-sidebar-link-prefix--robotime-icon");
+        if (existing) {
+          existing.remove();
+        }
 
-      const img = document.createElement("img");
-      img.className = "robotime-sidebar-menu-icon";
-      img.alt = "";
-      img.decoding = "async";
-      img.src = dataUrl;
-      prefix.appendChild(img);
-    });
+        const img = document.createElement("img");
+        img.className = "robotime-sidebar-menu-icon";
+        img.alt = "";
+        img.decoding = "async";
+        img.src = dataUrl;
+        prefix.appendChild(img);
+      });
   }
 
   function initMobileMenu() {
@@ -569,6 +576,16 @@ export default apiInitializer((api) => {
     }
   }
 
+  function markRobotimeTopicRowCoverLayout() {
+    document.querySelectorAll("tr.topic-list-item").forEach((row) => {
+      if (row.querySelector("td.topic-thumbnails")) {
+        row.setAttribute("data-robotime-topic-row", "has-thumb");
+      } else {
+        row.setAttribute("data-robotime-topic-row", "no-cover");
+      }
+    });
+  }
+
   function applyRobotimeTopicListThumbnails() {
     document.querySelectorAll("tr.topic-list-item td.topic-thumbnails").forEach((cell) => {
       robotimeProcessThumbnailCell(cell);
@@ -576,6 +593,7 @@ export default apiInitializer((api) => {
     document.querySelectorAll(".robotime-topic-card__thumbnail").forEach((wrap) => {
       robotimeProcessCustomTopicThumb(wrap);
     });
+    markRobotimeTopicRowCoverLayout();
   }
 
   function setupRobotimeTopicThumbnailObserverOnce() {

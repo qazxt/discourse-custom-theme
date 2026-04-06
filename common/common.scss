@@ -592,14 +592,21 @@ body {
 .sidebar-wrapper .sidebar-section-wrapper:has([data-section-name="chat-channels"]),
 .sidebar-wrapper .sidebar-section[data-section-name="chat-dms"],
 .sidebar-wrapper .sidebar-section-wrapper[data-section-name="chat-dms"],
-.sidebar-wrapper .sidebar-section-wrapper:has([data-section-name="chat-dms"]) {
+.sidebar-wrapper .sidebar-section-wrapper:has([data-section-name="chat-dms"]),
+#d-sidebar .sidebar-section[data-section-name="chat-channels"],
+#d-sidebar .sidebar-section-wrapper[data-section-name="chat-channels"],
+#d-sidebar .sidebar-section[data-section-name="chat-dms"],
+#d-sidebar .sidebar-section-wrapper[data-section-name="chat-dms"] {
   display: none !important;
 }
 
 // --- Categories: hide left sidebar section + “类别” nav tab (keep category dropdown in .category-breadcrumb) ---
 .sidebar-wrapper .sidebar-section[data-section-name="categories"],
 .sidebar-wrapper .sidebar-section-wrapper[data-section-name="categories"],
-.sidebar-wrapper .sidebar-section-wrapper:has([data-section-name="categories"]) {
+.sidebar-wrapper .sidebar-section-wrapper:has([data-section-name="categories"]),
+#d-sidebar .sidebar-section[data-section-name="categories"],
+#d-sidebar .sidebar-section-wrapper[data-section-name="categories"],
+.sidebar-custom-sections .sidebar-section[data-section-name="categories"] {
   display: none !important;
 }
 
@@ -697,8 +704,9 @@ body {
   }
 }
 
-// preview.html .sidebar-menu a — flex, gap 12px, 12px 20px, 16px; light-gray pills; active black + white icons
-.sidebar-section-link-wrapper .sidebar-section-link {
+// preview.html .sidebar-menu — flex, gap 12px; Discourse uses .sidebar-section-link-content-text (not …-content)
+.sidebar-section-link-wrapper a.sidebar-section-link,
+.sidebar-section-link-wrapper button.sidebar-section-link {
   display: flex;
   align-items: center;
   gap: 12px;
@@ -709,10 +717,34 @@ body {
   line-height: 1.3;
   min-height: 0;
   box-sizing: border-box;
+}
 
-  .sidebar-section-link-content {
+.sidebar-section-link-wrapper button.sidebar-section-link {
+  appearance: none;
+  width: 100%;
+  max-width: 100%;
+  text-align: start;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  color: inherit;
+  margin: 0;
+}
+
+.sidebar-section-link-wrapper .sidebar-section-link {
+  .sidebar-section-link-content,
+  .sidebar-section-link-content-text {
     flex: 1;
     min-width: 0;
+  }
+
+  .sidebar-section-link-content-badge {
+    flex-shrink: 0;
+    margin-left: auto;
+    font-size: 12px;
+    font-weight: 500;
+    color: $robotime-gray;
+    white-space: nowrap;
   }
 
   .sidebar-section-link-prefix {
@@ -744,7 +776,7 @@ body {
   }
 }
 
-// Discourse often puts .active on the wrapper <li>, not the <a>
+// Discourse often puts .active on the wrapper <li>, not the <a> / <button>
 .sidebar-section-link-wrapper.active .sidebar-section-link,
 .sidebar-section-link-wrapper .sidebar-section-link.active {
   background: $robotime-black !important;
@@ -769,11 +801,15 @@ body {
 }
 
 .sidebar-section-link-wrapper:not(.active) .sidebar-section-link:hover,
+.sidebar-section-link-wrapper:not(.active) a.sidebar-section-link:hover,
+.sidebar-section-link-wrapper:not(.active) button.sidebar-section-link:hover,
 .sidebar-section-link:not(.active):hover {
   background: #eeeeee !important;
 }
 
-.sidebar-section-link-wrapper.active .sidebar-section-link:hover {
+.sidebar-section-link-wrapper.active .sidebar-section-link:hover,
+.sidebar-section-link-wrapper.active a.sidebar-section-link:hover,
+.sidebar-section-link-wrapper.active button.sidebar-section-link:hover {
   background: $robotime-black !important;
 }
 
@@ -966,6 +1002,29 @@ $robotime-topic-no-cover-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.
       order: 1;
       flex: 1 1 auto;
       padding: 20px 16px 10px;
+    }
+
+    // Default list has no td.topic-thumbnails — JS sets data-robotime-topic-row (robotime-hub.js)
+    tr.topic-list-item[data-robotime-topic-row="has-thumb"] td.main-link::before {
+      content: none !important;
+      display: none !important;
+    }
+
+    tr.topic-list-item[data-robotime-topic-row="no-cover"] td.main-link {
+      display: flex;
+      flex-direction: column;
+      padding: 0 16px 16px;
+
+      &::before {
+        content: "";
+        order: -1;
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        margin: 0 0 20px;
+        flex-shrink: 0;
+        background: linear-gradient(160deg, $robotime-light-gray 0%, #ececec 100%);
+        box-sizing: border-box;
+      }
     }
 
     .main-link a.title,
