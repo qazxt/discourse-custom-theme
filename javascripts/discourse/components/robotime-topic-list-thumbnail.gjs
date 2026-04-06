@@ -8,7 +8,7 @@ export default class RobotimeTopicListThumbnail extends Component {
   }
 
   get hasThumbnail() {
-    return !!this.topic?.thumbnails?.length;
+    return !!this.thumbnailSrc;
   }
 
   get displayWidth() {
@@ -46,7 +46,44 @@ export default class RobotimeTopicListThumbnail extends Component {
       }
       return t.max_width > this.displayWidth * 2;
     });
-    return largeEnough.at(-1)?.url || this.original?.url || "";
+    return (
+      largeEnough.at(-1)?.url ||
+      this.original?.url ||
+      this.topic?.image_url ||
+      this.topic?.imageUrl ||
+      this.excerptImageSrc ||
+      ""
+    );
+  }
+
+  get excerptImageSrc() {
+    const excerpt = String(this.topic?.excerpt || "").trim();
+    if (!excerpt) {
+      return "";
+    }
+    try {
+      const doc = new window.DOMParser().parseFromString(
+        `<div>${excerpt}</div>`,
+        "text/html"
+      );
+      const img = doc.querySelector("img");
+      const src = (img?.getAttribute("src") || "").trim();
+      return src;
+    } catch (e) {
+      return "";
+    }
+  }
+
+  get thumbnailSrc() {
+    return this.fallbackSrc;
+  }
+
+  get imageWidth() {
+    return this.original?.width || null;
+  }
+
+  get imageHeight() {
+    return this.original?.height || null;
   }
 
   get url() {
@@ -65,10 +102,10 @@ export default class RobotimeTopicListThumbnail extends Component {
       {{#if this.hasThumbnail}}
         <img
           class="robotime-topic-list-thumbnail-img"
-          src={{this.fallbackSrc}}
+          src={{this.thumbnailSrc}}
           srcset={{this.srcSet}}
-          width={{this.original.width}}
-          height={{this.original.height}}
+          width={{this.imageWidth}}
+          height={{this.imageHeight}}
           loading="lazy"
           alt=""
         />
