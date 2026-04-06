@@ -1483,7 +1483,8 @@ $robotime-topic-placeholder-icon-fill: url("data:image/svg+xml,%3Csvg xmlns='htt
     }
 
     // When core renders .topic-meta, stats live in main-link — hide duplicate <td>s.
-    // Flatten `td.main-link` (display:contents) so .robotime-topic-meta / .topic-meta and td.posters share grid row 4 (stats left, avatars right).
+    // Flatten `td.main-link` (display:contents) so .robotime-topic-meta / .topic-meta and td.posters share one footer row.
+    // Three grid rows only: cover | title | (meta + posters). Hidden link-bottom-line must not leave an empty middle track.
     // Meta cards: generous horizontal inset; title / stats / avatar scale as a set (icons ~24px vs 40px avatar).
     &:has(.topic-meta),
     &:has(.robotime-topic-meta) {
@@ -1615,7 +1616,7 @@ $robotime-topic-placeholder-icon-fill: url("data:image/svg+xml,%3Csvg xmlns='htt
       }
 
       &[data-robotime-topic-row="has-thumb"] {
-        grid-template-rows: auto auto auto auto;
+        grid-template-rows: auto auto auto;
 
         td.main-link {
           display: contents;
@@ -1636,28 +1637,23 @@ $robotime-topic-placeholder-icon-fill: url("data:image/svg+xml,%3Csvg xmlns='htt
           background: $robotime-white;
         }
 
-        > .link-bottom-line {
-          grid-row: 3;
-          grid-column: 1 / -1;
-          padding: 10px var(--robotime-topic-card-pad-x) 0;
-          background: $robotime-white;
-        }
+        // link-bottom-line hidden — do not assign grid-row (avoids blank row between title and footer).
 
         > .robotime-topic-meta,
         > .topic-meta {
-          grid-row: 4;
+          grid-row: 3;
           grid-column: 1;
           justify-self: stretch;
           align-self: center;
           padding: var(--robotime-topic-card-footer-pad-y) var(--robotime-topic-card-pad-x)
             var(--robotime-topic-card-footer-pad-y) var(--robotime-topic-card-pad-x);
           background: $robotime-white;
-          min-height: 48px;
+          min-height: 0;
           box-sizing: border-box;
         }
 
         td.posters {
-          grid-row: 4;
+          grid-row: 3;
           grid-column: 2;
           justify-self: end;
           align-self: center;
@@ -1669,7 +1665,7 @@ $robotime-topic-placeholder-icon-fill: url("data:image/svg+xml,%3Csvg xmlns='htt
 
       &[data-robotime-topic-row="no-cover"],
       &:not([data-robotime-topic-row]) {
-        grid-template-rows: auto auto auto auto;
+        grid-template-rows: auto auto auto;
 
         &::before {
           content: "";
@@ -1702,33 +1698,26 @@ $robotime-topic-placeholder-icon-fill: url("data:image/svg+xml,%3Csvg xmlns='htt
           grid-row: 2;
           grid-column: 1 / -1;
           padding: var(--robotime-topic-card-pad-y-after-cover) var(--robotime-topic-card-pad-x) 0;
-          margin-top: 20px;
+          margin-top: 12px;
           align-self: stretch;
-          background: $robotime-white;
-        }
-
-        > .link-bottom-line {
-          grid-row: 3;
-          grid-column: 1 / -1;
-          padding: 10px var(--robotime-topic-card-pad-x) 0;
           background: $robotime-white;
         }
 
         > .robotime-topic-meta,
         > .topic-meta {
-          grid-row: 4;
+          grid-row: 3;
           grid-column: 1;
           justify-self: stretch;
           align-self: center;
           padding: var(--robotime-topic-card-footer-pad-y) var(--robotime-topic-card-pad-x)
             var(--robotime-topic-card-footer-pad-y) var(--robotime-topic-card-pad-x);
           background: $robotime-white;
-          min-height: 48px;
+          min-height: 0;
           box-sizing: border-box;
         }
 
         td.posters {
-          grid-row: 4;
+          grid-row: 3;
           grid-column: 2;
           justify-self: end;
           align-self: center;

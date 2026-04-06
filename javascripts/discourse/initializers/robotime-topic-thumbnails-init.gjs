@@ -26,8 +26,10 @@ export default apiInitializer((api) => {
   });
 
   if (metaEnabled) {
+    // `topic-list-after-title` sits INSIDE `span.link-top-line` (desktop topic-cell) — breaks card grid.
+    // `topic-list-main-link-bottom` is after link-bottom-line, sibling of link-top-line → display:contents works.
     api.renderInOutlet(
-      "topic-list-before-link",
+      "topic-list-main-link-bottom",
       <template>
         <RobotimeTopicMeta @topic={{@outletArgs.topic}} />
       </template>
