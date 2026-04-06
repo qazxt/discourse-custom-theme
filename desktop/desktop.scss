@@ -20,9 +20,7 @@
     width: 160px;
   }
 
-  &__card-img {
-    height: 109px;
-  }
+  // Image is full-bleed inside the card (do not set height — breaks inset:0 overlay layout).
 }
 
 // Ensure collapsed carousel still shrinks on desktop overrides

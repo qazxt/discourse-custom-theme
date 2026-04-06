@@ -304,9 +304,11 @@ export default apiInitializer((api) => {
         ? "dark-bg"
         : "light-bg";
       const normalBg = card.bg_color || "#f6ebe3";
+      // Outer ring uses bg_color (inner image is full-bleed and hides body background otherwise).
+      el.style.backgroundColor = normalBg;
       el.innerHTML = `
-      <div class="robotime-carousel__card-body" style="background-color: ${normalBg}">
-        <div class="robotime-carousel__card-img" style="background-image: url('${card.image_url}')"></div>
+      <div class="robotime-carousel__card-body" style="background-color: ${normalBg}; --robotime-carousel-bg: ${normalBg}">
+        <div class="robotime-carousel__card-img" style="background-color: ${normalBg}; background-image: url('${card.image_url}')"></div>
         <div class="robotime-carousel__card-label ${bgClass}">${card.title}</div>
       </div>`;
 

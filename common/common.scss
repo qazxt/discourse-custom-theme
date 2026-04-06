@@ -244,12 +244,16 @@ body {
     flex-shrink: 0;
     width: 245px;
     height: 140px;
+    // Hub bg_color shows in this padding ring (image sits inside and cannot cover it).
+    padding: 3px;
+    box-sizing: border-box;
     border-radius: 10px;
     overflow: hidden;
     cursor: pointer;
     position: relative;
     text-decoration: none;
     color: inherit;
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.06);
     transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
       box-shadow 0.3s ease,
       width var(--robotime-hub-transition),
@@ -271,15 +275,13 @@ body {
     }
   }
 
+  // Full-bleed image; title sits on the image (gradient), not in a separate strip below.
   &__card-body {
     width: 100%;
     height: 100%;
-    border-radius: 10px;
+    border-radius: 7px;
     position: relative;
     overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
 
     &::after {
       content: "";
@@ -287,10 +289,15 @@ body {
       left: 0;
       right: 0;
       bottom: 0;
-      height: 60%;
-      background: linear-gradient(to top, rgba(0, 0, 0, 0.45), transparent);
-      border-radius: 0 0 10px 10px;
+      height: 55%;
+      background: linear-gradient(
+        to top,
+        color-mix(in srgb, var(--robotime-carousel-bg, #2a2a2a) 22%, rgba(0, 0, 0, 0.72)) 0%,
+        transparent 100%
+      );
+      border-radius: 0 0 7px 7px;
       z-index: 1;
+      pointer-events: none;
     }
   }
 
@@ -300,20 +307,27 @@ body {
     z-index: 0;
     background-size: cover;
     background-position: center;
-    border-radius: 10px;
+    background-repeat: no-repeat;
+    border-radius: 7px;
     opacity: 1;
     visibility: visible;
     transition: opacity 0.3s ease, visibility 0.3s ease;
   }
 
   &__card-label {
-    position: relative;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
     z-index: 2;
-    height: 19.5px;
+    box-sizing: border-box;
+    min-height: 0;
+    height: auto;
+    max-height: 50%;
     display: flex;
     align-items: flex-end;
     justify-content: center;
-    padding: 0 10px 5px;
+    padding: 8px 10px 10px;
     font-family: $font-primary;
     font-size: 24px;
     font-weight: 400;
@@ -323,7 +337,16 @@ body {
     text-overflow: ellipsis;
     line-height: 1.2;
     text-align: center;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
+    pointer-events: none;
+  }
+
+  &__card-label.light-bg {
+    color: $robotime-white;
+  }
+
+  &__card-label.dark-bg {
+    color: $robotime-white;
   }
 
   // --- Collapsed state (scroll) ---
@@ -362,6 +385,7 @@ body {
       width: 140px;
       height: 60px;
       border-radius: 8px;
+      padding: 2px;
 
       &:hover {
         transform: scale(1.05);
@@ -375,7 +399,9 @@ body {
     }
 
     .robotime-carousel__card-body {
-      border-radius: 8px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
       justify-content: center;
 
       &::after {
@@ -384,7 +410,12 @@ body {
     }
 
     .robotime-carousel__card-label {
-      height: 80%;
+      position: relative;
+      left: auto;
+      right: auto;
+      bottom: auto;
+      max-height: none;
+      height: auto;
       padding: 0 10px;
       display: flex;
       align-items: center;
@@ -393,12 +424,14 @@ body {
       font-weight: 700;
       text-shadow: 0 1px 0 rgba(0, 0, 0, 0.15);
       line-height: 1.1;
+      pointer-events: none;
     }
 
     .robotime-carousel__card-label.light-bg {
       color: $robotime-black;
       text-shadow: none;
     }
+
     .robotime-carousel__card-label.dark-bg {
       color: $robotime-white;
     }
