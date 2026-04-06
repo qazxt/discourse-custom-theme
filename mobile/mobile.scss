@@ -138,7 +138,8 @@
 // --- Mobile topic cards (single column) ---
 .topic-list tbody {
   grid-template-columns: minmax(0, 1fr);
-  gap: 12px;
+  column-gap: 0;
+  row-gap: 16px;
 }
 
 .topic-list .topic-list-item {
@@ -151,20 +152,26 @@
   }
 
   &__content {
-    padding: 10px 12px;
+    padding: 16px 12px 14px;
+    gap: 16px;
   }
 
   &__title {
-    font-size: 15px;
+    font-size: 16px;
   }
 
   &__stat {
-    font-size: 12px;
+    font-size: 18px;
+
+    svg, img {
+      width: 18px;
+      height: 18px;
+    }
   }
 
   &__avatar {
-    width: 32px;
-    height: 32px;
+    width: 36px;
+    height: 36px;
   }
 }
 

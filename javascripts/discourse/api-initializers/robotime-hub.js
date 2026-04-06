@@ -349,6 +349,101 @@ export default apiInitializer((api) => {
     });
   }
 
+  /** preview.html-style menu icons (20×20); SVG data URIs so no theme asset URL is required. */
+  const RSB_ICON_SVGS = {
+    topics:
+      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="16" y2="18"/></svg>',
+    posts:
+      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2"><circle cx="12" cy="8" r="3.5"/><path d="M6 20v-1a6 6 0 0 1 12 0v1"/></svg>',
+    messages:
+      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2"><rect x="3" y="5" width="18" height="12" rx="2"/><path d="M3 7l9 5 9-5"/></svg>',
+    invite:
+      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2"><circle cx="9" cy="8" r="3"/><path d="M5 20v-1a4 4 0 0 1 4-4h1"/><path d="M16 11v6M13 14h6"/></svg>',
+    more:
+      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#000"><circle cx="6" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="18" cy="12" r="1.8"/></svg>',
+  };
+
+  function robotimeSidebarIconDataUrl(key) {
+    const svg = RSB_ICON_SVGS[key];
+    return svg ? `data:image/svg+xml,${encodeURIComponent(svg)}` : null;
+  }
+
+  function robotimeSidebarIconKey(anchor) {
+    const href = (anchor.getAttribute("href") || "").split(/[?#]/)[0].toLowerCase();
+    const linkName = (anchor.dataset.linkName || "").toLowerCase();
+    const text = (anchor.textContent || "").trim().toLowerCase();
+
+    if (linkName.includes("more") || text === "more" || text === "更多") {
+      return "more";
+    }
+    if (/invite|invitation/i.test(href) || linkName.includes("invite")) {
+      return "invite";
+    }
+    if (
+      /\/my\/messages|private-message|\/chat\/|\/u\/[^/]+\/messages/i.test(href) ||
+      linkName.includes("message")
+    ) {
+      return "messages";
+    }
+    if (
+      /\/activity|my-posts|\/drafts|\/u\/[^/]+\/(activity|summary)(\/|$)/i.test(href) ||
+      linkName === "user-posts" ||
+      linkName === "my-threads"
+    ) {
+      return "posts";
+    }
+    if (/\/bookmarks(\/|$)/i.test(href) || linkName.includes("bookmark")) {
+      return "posts";
+    }
+    if (
+      /\/(latest|new|unread|top|read|posted|hot)(\/|$)/i.test(href) ||
+      linkName === "topics" ||
+      linkName.startsWith("topics-") ||
+      linkName === "unread" ||
+      linkName === "new" ||
+      linkName === "top"
+    ) {
+      return "topics";
+    }
+
+    return null;
+  }
+
+  function injectRobotimeSidebarMenuIcons() {
+    document.querySelectorAll(".sidebar-wrapper a.sidebar-section-link").forEach((a) => {
+      const key = robotimeSidebarIconKey(a);
+      if (!key) {
+        return;
+      }
+      const prefix = a.querySelector(".sidebar-section-link-prefix");
+      if (!prefix) {
+        return;
+      }
+      const dataUrl = robotimeSidebarIconDataUrl(key);
+      if (!dataUrl) {
+        return;
+      }
+
+      const existing = prefix.querySelector(".robotime-sidebar-menu-icon");
+      if (a.dataset.robotimeSidebarIcon === key && existing) {
+        return;
+      }
+
+      a.dataset.robotimeSidebarIcon = key;
+      prefix.classList.add("robotime-sidebar-link-prefix--robotime-icon");
+      if (existing) {
+        existing.remove();
+      }
+
+      const img = document.createElement("img");
+      img.className = "robotime-sidebar-menu-icon";
+      img.alt = "";
+      img.decoding = "async";
+      img.src = dataUrl;
+      prefix.appendChild(img);
+    });
+  }
+
   function initMobileMenu() {
     const menuBtn = document.querySelector(".robotime-header__mobile-menu-btn");
     const mobileNav = document.querySelector(".robotime-mobile-nav");
@@ -371,10 +466,12 @@ export default apiInitializer((api) => {
       setupRobotimeHeaderOffsetObserverOnce();
       updateRobotimeHeaderOffset();
       ensureSidebarNewTopicLabel();
+      injectRobotimeSidebarMenuIcons();
       requestAnimationFrame(() => {
         relocateNativeHeaderTools();
         updateRobotimeHeaderOffset();
         ensureSidebarNewTopicLabel();
+        injectRobotimeSidebarMenuIcons();
       });
       initMobileMenu();
 
