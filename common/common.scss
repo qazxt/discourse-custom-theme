@@ -1025,7 +1025,8 @@ $robotime-topic-placeholder-icon-fill: url("data:image/svg+xml,%3Csvg xmlns='htt
     }
 
     td.main-link,
-    td.topic-thumbnails {
+    td.topic-thumbnails,
+    > .robotime-topic-list-thumbnail-link {
       width: 100% !important;
       max-width: 100%;
     }
@@ -1038,7 +1039,8 @@ $robotime-topic-placeholder-icon-fill: url("data:image/svg+xml,%3Csvg xmlns='htt
     }
 
     // Topic thumbnails — aspect + crop from data-* (set in robotime-hub.js)
-    td.topic-thumbnails {
+    td.topic-thumbnails,
+    > .robotime-topic-list-thumbnail-link {
       align-self: stretch;
       padding: 0 !important;
       line-height: 0;
@@ -1078,7 +1080,8 @@ $robotime-topic-placeholder-icon-fill: url("data:image/svg+xml,%3Csvg xmlns='htt
         z-index: 2;
       }
 
-      img {
+      img,
+      .robotime-topic-list-thumbnail-img {
         position: absolute;
         inset: 0;
         width: 100%;
@@ -1412,7 +1415,8 @@ $robotime-topic-placeholder-icon-fill: url("data:image/svg+xml,%3Csvg xmlns='htt
       &[data-robotime-topic-row="has-thumb"] {
         grid-template-rows: auto auto auto;
 
-        td.topic-thumbnails {
+        td.topic-thumbnails,
+        > .robotime-topic-list-thumbnail-link {
           grid-row: 1;
           grid-column: 1 / -1;
         }
@@ -1504,7 +1508,8 @@ $robotime-topic-placeholder-icon-fill: url("data:image/svg+xml,%3Csvg xmlns='htt
       &[data-robotime-topic-row="has-thumb"] {
         grid-template-rows: auto auto auto;
 
-        td.topic-thumbnails {
+        td.topic-thumbnails,
+        > .robotime-topic-list-thumbnail-link {
           grid-row: 1;
           grid-column: 1 / -1;
         }

@@ -745,7 +745,10 @@ export default apiInitializer((api) => {
 
   function markRobotimeTopicRowCoverLayout() {
     document.querySelectorAll("tr.topic-list-item").forEach((row) => {
-      if (row.querySelector("td.topic-thumbnails")) {
+      if (
+        row.querySelector("td.topic-thumbnails") ||
+        row.querySelector(":scope > .robotime-topic-list-thumbnail-link")
+      ) {
         row.setAttribute("data-robotime-topic-row", "has-thumb");
       } else {
         row.setAttribute("data-robotime-topic-row", "no-cover");
