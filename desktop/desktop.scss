@@ -82,10 +82,10 @@
   min-width: 0;
 }
 
-// --- Topic grid: 3 columns on wide screens (preview.html uses column-count: 3) ---
+// --- Topic masonry: 3 columns on wide screens (preview.html column-count: 3) ---
 @media (min-width: 1200px) {
   .topic-list tbody {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-count: 3;
   }
 }
 
@@ -142,7 +142,7 @@
   }
 
   .topic-list tbody {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-count: 2;
   }
 
   .list-controls .navigation-container .select-kit .select-kit-header {

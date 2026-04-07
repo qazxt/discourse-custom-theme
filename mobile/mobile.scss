@@ -131,15 +131,14 @@ html {
   min-width: 0;
 }
 
-// --- Mobile topic cards (single column) ---
+// --- Mobile topic cards: single-column masonry strip ---
 .topic-list tbody {
-  grid-template-columns: minmax(0, 1fr);
+  column-count: 1;
   column-gap: 0;
-  row-gap: 16px;
 }
 
 .topic-list .topic-list-item {
-  margin-bottom: 0;
+  margin-bottom: 16px;
 }
 
 .robotime-topic-card {
