@@ -27,6 +27,8 @@ html {
   --robotime-header-offset: 220px;
   --robotime-topbar-height: 60px;
   --robotime-hub-transition: 0.35s ease-in-out;
+  // Above #robotime-carousel (1190) & .robotime-above-header painting; below .robotime-mobile-nav (1220)
+  --robotime-header-menu-z: 1215;
 }
 
 body {
@@ -175,6 +177,21 @@ body {
       fill: currentColor;
     }
   }
+}
+
+// Header dropdowns / user & hamburger panels: often portaled to <body> with core z-index below
+// the fixed carousel strip — panels then paint under #robotime-carousel. Lift only hub-relevant layers.
+.menu-panel,
+.menu-panel.slide-out,
+.search-menu .menu-panel,
+.user-menu .menu-panel,
+.group-menu .menu-panel,
+.hamburger-panel .menu-panel,
+.header-dropdown .menu-panel,
+.fk-d-menu__content,
+.d-menu__content,
+.user-card {
+  z-index: var(--robotime-header-menu-z) !important;
 }
 
 // Mobile nav overlay
