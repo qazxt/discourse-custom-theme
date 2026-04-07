@@ -1569,15 +1569,18 @@ $robotime-topic-placeholder-icon-fill: url("data:image/svg+xml,%3Csvg xmlns='htt
         min-width: 0;
       }
 
+      // Override `.main-link .robotime-topic-meta { order: 3 }` — that put avatar (order 0) visually first.
       .robotime-topic-content__footer .robotime-topic-meta {
         margin-top: 0;
         flex: 1;
         min-width: 0;
+        order: 0;
       }
 
       .robotime-topic-content__poster {
         flex-shrink: 0;
         margin-left: auto;
+        order: 1;
         position: relative;
         z-index: 2;
         line-height: 0;
