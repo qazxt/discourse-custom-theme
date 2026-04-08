@@ -27,8 +27,6 @@ html {
   --robotime-header-offset: 220px;
   --robotime-topbar-height: 60px;
   --robotime-hub-transition: 0.35s ease-in-out;
-  // Above #robotime-carousel (1190) & .robotime-above-header painting; below .robotime-mobile-nav (1220)
-  --robotime-header-menu-z: 1215;
 }
 
 body {
@@ -177,21 +175,6 @@ body {
       fill: currentColor;
     }
   }
-}
-
-// Header dropdowns / user & hamburger panels: often portaled to <body> with core z-index below
-// the fixed carousel strip — panels then paint under #robotime-carousel. Lift only hub-relevant layers.
-.menu-panel,
-.menu-panel.slide-out,
-.search-menu .menu-panel,
-.user-menu .menu-panel,
-.group-menu .menu-panel,
-.hamburger-panel .menu-panel,
-.header-dropdown .menu-panel,
-.fk-d-menu__content,
-.d-menu__content,
-.user-card {
-  z-index: var(--robotime-header-menu-z) !important;
 }
 
 // Mobile nav overlay
@@ -475,6 +458,19 @@ body {
 
     &--left { left: 8px; }
     &--right { right: 8px; }
+  }
+}
+
+// Keep header menus interactable over the fixed carousel.
+// Root cause: menu DOM can be portaled / wrapped, and raising only inner panel z-index is unreliable.
+// Instead, when any top menu/popover is present, the carousel yields hit-testing and sits lower.
+body:has(.menu-panel.drop-down),
+body:has(.fk-d-menu__content),
+body:has(.d-menu__content),
+body:has(.user-card) {
+  #robotime-carousel {
+    pointer-events: none;
+    z-index: 1100;
   }
 }
 
