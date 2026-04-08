@@ -42,12 +42,12 @@ body {
 }
 
 // ============================================================
-// 1. HEADER — custom nav bar (black, 60px)
-//    Connector: above-site-header (Discourse 2026+). nav_items via plugin.
-//    Native .d-header-wrap is visually hidden; search/user controls are moved into
-//    .robotime-header__user via robotime-hub.js; --robotime-header-offset is set in JS.
+// 1. HEADER — final refactor
+//    Use Discourse core header for all interactive tools/menus.
+//    Keep custom header markup non-interactive/off to avoid stacking & menu positioning conflicts.
 // ============================================================
-.d-header-wrap {
+.robotime-above-header,
+.robotime-mobile-nav {
   display: none !important;
 }
 
@@ -209,7 +209,7 @@ body {
   padding: 14px 0 18px;
   overflow: hidden;
   position: fixed;
-  top: var(--robotime-topbar-height, 60px);
+  top: var(--header-offset, var(--robotime-topbar-height, 60px));
   left: 0;
   right: 0;
   z-index: 900;
@@ -460,17 +460,7 @@ body {
   }
 }
 
-// Keep carousel always visible; menus/users should always paint above the carousel.
-// Avoid parent `:has(...)` z-index hacks (can create new stacking contexts and regress layout).
-.menu-panel,
-.menu-panel.drop-down,
-.fk-d-menu__content,
-.d-menu__content,
-.user-card,
-.tooltip,
-.popover {
-  z-index: 1400 !important;
-}
+// Core header menus keep their own stacking/positioning; do not override here.
 
 // ============================================================
 // 3. SIDEBAR — matches preview.html .sidebar / .sidebar-menu / widget / .new-topic-btn
