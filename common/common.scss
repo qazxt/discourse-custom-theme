@@ -461,14 +461,16 @@ body {
   }
 }
 
-// Keep header menus interactable over the fixed carousel.
+// Keep header menus visible + interactable over the fixed carousel.
 // Root cause: menu DOM can be portaled / wrapped, and raising only inner panel z-index is unreliable.
-// Instead, when any top menu/popover is present, the carousel yields hit-testing and sits lower.
+// When any top menu/popover is present, the carousel yields both painting and hit-testing.
 body:has(.menu-panel.drop-down),
 body:has(.fk-d-menu__content),
 body:has(.d-menu__content),
 body:has(.user-card) {
   #robotime-carousel {
+    opacity: 0;
+    visibility: hidden;
     pointer-events: none;
     z-index: 1100;
   }
