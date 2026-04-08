@@ -479,9 +479,12 @@ body {
 .robotime-header__user .user-menu.revamped.menu-panel.drop-down {
   position: fixed !important;
   top: var(--robotime-topbar-height, 60px) !important;
-  right: 24px !important;
+  right: max(12px, env(safe-area-inset-right)) !important;
   left: auto !important;
+  transform: none !important;
   z-index: 1215 !important; // above carousel (1190), below mobile overlay (1220)
+  width: min(368px, calc(100vw - 24px));
+  max-width: min(368px, calc(100vw - 24px));
   max-height: calc(100vh - var(--robotime-topbar-height, 60px) - 12px);
   overflow: auto;
   border: 1px solid var(--primary-low) !important;
@@ -499,6 +502,7 @@ body:has(.fk-d-menu__content),
 body:has(.d-menu__content),
 body:has(.user-card) {
   #robotime-carousel {
+    z-index: 1000 !important;
     pointer-events: none;
   }
 }
