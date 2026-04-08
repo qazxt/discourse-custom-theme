@@ -109,6 +109,44 @@ body {
   .d-header-icons .d-icon {
     color: inherit;
   }
+
+  // Text navigation links in core header (driven by backend/site settings).
+  // Keep selectors generic so newly configured links inherit style automatically.
+  .panel .header-link,
+  .panel .menu-links a,
+  .header-links a,
+  .custom-header-links a {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    padding-bottom: 4px;
+    font-family: $font-primary;
+    font-size: 16px;
+    font-weight: 500;
+    color: $robotime-white;
+    text-decoration: none;
+    transition: color 0.25s ease;
+
+    &::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 0;
+      height: 2px;
+      background: currentColor;
+      transition: width 0.25s ease;
+    }
+
+    &:hover {
+      color: $robotime-hover-white;
+    }
+
+    &:hover::after,
+    &.active::after {
+      width: 100%;
+    }
+  }
 }
 
 .robotime-above-header {
