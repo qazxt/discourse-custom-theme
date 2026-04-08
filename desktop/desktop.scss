@@ -15,7 +15,7 @@
 }
 
 // --- Carousel desktop sizing ---
-#robotime-carousel {
+.robotime-carousel {
   &__card {
     width: 160px;
   }
@@ -127,7 +127,7 @@
     }
   }
 
-  #robotime-carousel {
+  .robotime-carousel {
     &__card {
       width: 140px;
     }

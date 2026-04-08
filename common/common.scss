@@ -144,10 +144,9 @@ body {
     flex-shrink: 0;
     min-height: 40px;
 
-    // Native header tools (moved from .d-header): scope to icon rows only.
-    // Avoid generic `.panel` here — it collides with user menu panel internals.
-    .d-header-icons,
-    .header-icons {
+    // Native header tools (moved from .d-header)
+    .panel,
+    .d-header-icons {
       display: flex;
       align-items: center;
       gap: 8px;
@@ -161,10 +160,6 @@ body {
     .header-dropdown-toggle {
       color: $robotime-white;
     }
-
-    position: relative;
-    z-index: 1210;
-    overflow: visible;
   }
 
   &__mobile-menu-btn {
@@ -210,7 +205,7 @@ body {
 // 2. CAROUSEL — unified full-bleed photo style
 //    hero_banners populated by plugin
 // ============================================================
-#robotime-carousel {
+.robotime-carousel {
   background: $robotime-white;
   padding: 14px 0 18px;
   overflow: hidden;
@@ -466,45 +461,16 @@ body {
   }
 }
 
-// Header popovers are mounted inside `.robotime-header__user` after tool relocation.
-// Make dropdown wrappers non-positioning, and place popovers against viewport to avoid
-// being clipped/overlapped by the fixed carousel region.
-.robotime-header__user .user-menu-dropdown-wrapper,
-.robotime-header__user .header-dropdown {
-  position: static !important;
-}
-
-.robotime-header__user .menu-panel.drop-down,
-.robotime-header__user .menu-panel.slide-out,
-.robotime-header__user .user-menu.revamped.menu-panel.drop-down {
-  position: fixed !important;
-  top: var(--robotime-topbar-height, 60px) !important;
-  right: max(12px, env(safe-area-inset-right)) !important;
-  left: auto !important;
-  transform: none !important;
-  z-index: 1215 !important; // above carousel (1190), below mobile overlay (1220)
-  width: min(368px, calc(100vw - 24px));
-  max-width: min(368px, calc(100vw - 24px));
-  max-height: calc(100vh - var(--robotime-topbar-height, 60px) - 12px);
-  overflow: auto;
-  border: 1px solid var(--primary-low) !important;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18) !important;
-}
-
-.robotime-header__user .user-menu.revamped.menu-panel.drop-down,
-.robotime-header__user .user-menu.revamped.menu-panel.drop-down .panel-body {
-  background: var(--secondary) !important;
-}
-
-// Also prevent carousel from swallowing clicks while any top menu/popover is open.
+// Keep header menus interactable over the fixed carousel.
+// Root cause: menu DOM can be portaled / wrapped, and raising only inner panel z-index is unreliable.
+// Instead, when any top menu/popover is present, the carousel yields hit-testing and sits lower.
 body:has(.menu-panel.drop-down),
 body:has(.fk-d-menu__content),
 body:has(.d-menu__content),
 body:has(.user-card) {
-  #robotime-carousel,
-  .below-site-header-outlet.robotime-carousel {
-    z-index: 1000 !important;
+  #robotime-carousel {
     pointer-events: none;
+    z-index: 1100;
   }
 }
 
