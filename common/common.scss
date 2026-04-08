@@ -147,8 +147,7 @@ body {
     // Native header tools (moved from .d-header): scope to icon rows only.
     // Avoid generic `.panel` here — it collides with user menu panel internals.
     .d-header-icons,
-    .header-icons,
-    .panel .icon {
+    .header-icons {
       display: flex;
       align-items: center;
       gap: 8px;
@@ -162,6 +161,10 @@ body {
     .header-dropdown-toggle {
       color: $robotime-white;
     }
+
+    position: relative;
+    z-index: 1210;
+    overflow: visible;
   }
 
   &__mobile-menu-btn {
@@ -463,33 +466,31 @@ body {
   }
 }
 
-// Header popovers are often rendered in portal wrappers. Lift wrappers + panels above carousel.
-// Keep this below mobile overlay (1220) so mobile menu still wins.
-#d-menu-portal,
-#d-popper-root,
-[data-float-kit-portal],
-.fk-d-menu,
-.fk-d-menu__inner-content,
-.fk-d-menu__content,
-.d-menu,
-.d-menu__content,
-.menu-panel,
-.menu-panel.drop-down,
-.menu-panel.slide-out,
-.user-menu.revamped.menu-panel.drop-down,
-.user-card {
-  z-index: 1215 !important;
+// Header popovers are mounted inside `.robotime-header__user` after tool relocation.
+// Make dropdown wrappers non-positioning, and place popovers against viewport to avoid
+// being clipped/overlapped by the fixed carousel region.
+.robotime-header__user .user-menu-dropdown-wrapper,
+.robotime-header__user .header-dropdown {
+  position: static !important;
 }
 
-// Restore user menu visual container (some theme rules can accidentally leave it transparent).
-.user-menu.revamped.menu-panel.drop-down,
-.user-menu.revamped.menu-panel.drop-down .panel-body {
-  background: var(--secondary) !important;
-}
-
-.user-menu.revamped.menu-panel.drop-down {
+.robotime-header__user .menu-panel.drop-down,
+.robotime-header__user .menu-panel.slide-out,
+.robotime-header__user .user-menu.revamped.menu-panel.drop-down {
+  position: fixed !important;
+  top: var(--robotime-topbar-height, 60px) !important;
+  right: 24px !important;
+  left: auto !important;
+  z-index: 1215 !important; // above carousel (1190), below mobile overlay (1220)
+  max-height: calc(100vh - var(--robotime-topbar-height, 60px) - 12px);
+  overflow: auto;
   border: 1px solid var(--primary-low) !important;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18) !important;
+}
+
+.robotime-header__user .user-menu.revamped.menu-panel.drop-down,
+.robotime-header__user .user-menu.revamped.menu-panel.drop-down .panel-body {
+  background: var(--secondary) !important;
 }
 
 // Also prevent carousel from swallowing clicks while any top menu/popover is open.
