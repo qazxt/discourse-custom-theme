@@ -44,9 +44,12 @@ body {
 // ============================================================
 // 1. HEADER — custom nav bar (black, 60px)
 //    Connector: above-site-header (Discourse 2026+). nav_items via plugin.
-//    Core header remains visible/owned by Discourse; this bar is nav/logo only.
-//    --robotime-header-offset is set in JS (avoid --header-offset — core also writes it).
+//    Native .d-header-wrap is visually hidden; search/user controls are moved into
+//    .robotime-header__user via robotime-hub.js; --robotime-header-offset is set in JS.
 // ============================================================
+.d-header-wrap {
+  display: none !important;
+}
 
 .robotime-above-header {
   background-color: $robotime-black;
@@ -127,6 +130,34 @@ body {
     &:hover {
       color: $robotime-hover-white;
       &::after { width: 100%; }
+    }
+  }
+
+  &__user {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: $robotime-header-user-bg;
+    border-radius: 20px;
+    padding: 6px 16px;
+    flex-shrink: 0;
+    min-height: 40px;
+
+    // Native header tools (moved from .d-header)
+    .panel,
+    .d-header-icons {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0;
+    }
+
+    .d-icon {
+      color: $robotime-white;
+    }
+
+    .header-dropdown-toggle {
+      color: $robotime-white;
     }
   }
 
@@ -429,19 +460,21 @@ body {
   }
 }
 
-// Keep header menus visible + interactable over the fixed carousel.
-// Root cause: menu DOM can be portaled / wrapped, and raising only inner panel z-index is unreliable.
-// When any top menu/popover is present, the carousel yields both painting and hit-testing.
-body:has(.menu-panel.drop-down),
-body:has(.fk-d-menu__content),
-body:has(.d-menu__content),
-body:has(.user-card) {
-  #robotime-carousel {
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-    z-index: 1100;
-  }
+// Keep carousel always visible; lift menu layers above it instead.
+// `menu-panel` can be wrapped/portaled, so we raise both the panel and likely wrappers.
+.menu-panel.drop-down,
+.fk-d-menu__content,
+.d-menu__content,
+.user-card {
+  z-index: 1300 !important;
+}
+
+body > *:has(.menu-panel.drop-down),
+body > *:has(.fk-d-menu__content),
+body > *:has(.d-menu__content),
+body > *:has(.user-card) {
+  position: relative;
+  z-index: 1300 !important;
 }
 
 // ============================================================
