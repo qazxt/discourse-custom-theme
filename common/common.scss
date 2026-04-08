@@ -51,6 +51,66 @@ body {
   display: none !important;
 }
 
+// Core header skin (stable interaction, Robotime visual style)
+.d-header-wrap {
+  z-index: 1300;
+}
+
+.d-header {
+  background: $robotime-black;
+  box-shadow: none;
+  border-bottom: none;
+
+  .wrap {
+    max-width: 1400px;
+    padding: 0 24px;
+  }
+
+  .title a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 32px;
+    padding: 6px 18px;
+    border-radius: 20px;
+    background: var(--tertiary);
+    color: var(--secondary);
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 1.2px;
+    text-decoration: none;
+  }
+
+  .title .logo-big,
+  .title .logo-small {
+    max-height: 20px;
+    width: auto;
+  }
+
+  .d-header-icons {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    background: $robotime-header-user-bg;
+  }
+
+  .d-header-icons .icon,
+  .d-header-icons .header-dropdown-toggle {
+    color: $robotime-white;
+  }
+
+  .d-header-icons .icon:hover,
+  .d-header-icons .header-dropdown-toggle:hover {
+    color: $robotime-hover-white;
+  }
+
+  .d-header-icons .d-icon {
+    color: inherit;
+  }
+}
+
 .robotime-above-header {
   background-color: $robotime-black;
   width: 100%;

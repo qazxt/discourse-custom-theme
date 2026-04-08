@@ -6,6 +6,23 @@ html {
   --robotime-topbar-height: 52px;
 }
 
+.d-header {
+  .wrap {
+    padding: 0 12px;
+  }
+
+  .title a {
+    min-height: 28px;
+    padding: 4px 12px;
+    font-size: 12px;
+  }
+
+  .d-header-icons {
+    padding: 4px 10px;
+    gap: 6px;
+  }
+}
+
 // --- Mobile header ---
 .robotime-header {
   padding: 0 12px;
