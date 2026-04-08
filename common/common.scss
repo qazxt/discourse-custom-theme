@@ -212,7 +212,7 @@ body {
   top: var(--robotime-topbar-height, 60px);
   left: 0;
   right: 0;
-  z-index: 1190;
+  z-index: 900;
   transition: padding var(--robotime-hub-transition),
     background-color var(--robotime-hub-transition),
     box-shadow var(--robotime-hub-transition);
@@ -460,21 +460,16 @@ body {
   }
 }
 
-// Keep carousel always visible; lift menu layers above it instead.
-// `menu-panel` can be wrapped/portaled, so we raise both the panel and likely wrappers.
+// Keep carousel always visible; menus/users should always paint above the carousel.
+// Avoid parent `:has(...)` z-index hacks (can create new stacking contexts and regress layout).
+.menu-panel,
 .menu-panel.drop-down,
 .fk-d-menu__content,
 .d-menu__content,
-.user-card {
-  z-index: 1300 !important;
-}
-
-body > *:has(.menu-panel.drop-down),
-body > *:has(.fk-d-menu__content),
-body > *:has(.d-menu__content),
-body > *:has(.user-card) {
-  position: relative;
-  z-index: 1300 !important;
+.user-card,
+.tooltip,
+.popover {
+  z-index: 1400 !important;
 }
 
 // ============================================================
