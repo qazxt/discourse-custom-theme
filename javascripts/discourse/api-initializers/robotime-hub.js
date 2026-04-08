@@ -1,7 +1,9 @@
 import { apiInitializer } from "discourse/lib/api";
+import RobotimeCoreHeaderNav from "../components/robotime-core-header-nav";
 
 /* global settings — injected by Discourse when compiling theme JS from settings.yml */
 export default apiInitializer((api) => {
+  api.renderInOutlet("before-header-panel", RobotimeCoreHeaderNav);
   /** Sidebar nav rows: #d-sidebar is the real container; .sidebar-wrapper kept for older layouts. */
   const ROBOTIME_SIDEBAR_MENU_LINKS =
     "#d-sidebar .sidebar-section-link-wrapper :is(a, button).sidebar-section-link, " +
@@ -19,34 +21,6 @@ export default apiInitializer((api) => {
       /* theme compiled without settings */
     }
     return {};
-  }
-
-  function parseRobotimeNavLinks(raw) {
-    const s = String(raw || "").trim();
-    if (!s) {
-      return [];
-    }
-    return s
-      .split(",")
-      .map((p) => p.trim())
-      .filter(Boolean)
-      .map((pair) => {
-        const i = pair.indexOf("|");
-        if (i <= 0) {
-          return null;
-        }
-        const label = pair.slice(0, i).trim();
-        const url = pair.slice(i + 1).trim();
-        if (!label || !url) {
-          return null;
-        }
-        return {
-          label,
-          url,
-          is_external: /^https?:\/\//i.test(url),
-        };
-      })
-      .filter(Boolean);
   }
 
   function parseRobotimeFilterQuickTagsJson(raw) {
@@ -78,7 +52,6 @@ export default apiInitializer((api) => {
     const viewUrl = String(ts.robotime_sidebar_view_all_url ?? "").trim();
 
     return {
-      nav_items: parseRobotimeNavLinks(ts.robotime_nav_links),
       filter_quick_tags: parseRobotimeFilterQuickTagsJson(ts.robotime_filter_quick_tags),
       sidebar_section_title: sidebarTitle,
       sidebar_view_all: viewUrl
@@ -94,13 +67,13 @@ export default apiInitializer((api) => {
 
   /**
    * Remote JSON supplies hero_banners + sidebar_widgets only.
-   * Theme settings override: nav_items, filter_quick_tags, sidebar_section_title, sidebar_view_all, carousel toggle.
+   * Theme settings override: filter_quick_tags, sidebar_section_title, sidebar_view_all, carousel toggle.
+   * (Nav uses robotime_nav_links via RobotimeCoreHeaderNav in before-header-panel.)
    */
   function mergeHubWithTheme(remote, themeCfg) {
     const r = remote && typeof remote === "object" ? remote : {};
     const t = themeCfg && typeof themeCfg === "object" ? themeCfg : {};
     return {
-      nav_items: Array.isArray(t.nav_items) ? t.nav_items : [],
       filter_quick_tags: Array.isArray(t.filter_quick_tags) ? t.filter_quick_tags : [],
       hero_banners: r.hero_banners,
       sidebar_widgets: r.sidebar_widgets,
@@ -112,18 +85,17 @@ export default apiInitializer((api) => {
 
   function applyRobotimeHeaderLogo() {
     const url = String(getThemeSettings().robotime_logo_url || "").trim();
-    document.querySelectorAll(".robotime-header__logo a").forEach((a) => {
-      a.textContent = "";
-      if (url) {
-        const img = document.createElement("img");
-        img.className = "robotime-header__logo-img";
-        img.src = url;
-        img.alt = "";
-        img.decoding = "async";
-        a.appendChild(img);
-      } else {
-        a.textContent = "ROBOTIME";
-      }
+    if (!url) {
+      return;
+    }
+    document.querySelectorAll(".d-header .title > a").forEach((a) => {
+      a.replaceChildren();
+      const img = document.createElement("img");
+      img.className = "robotime-header__logo-img";
+      img.src = url;
+      img.alt = "";
+      img.decoding = "async";
+      a.appendChild(img);
     });
   }
 
@@ -154,9 +126,9 @@ export default apiInitializer((api) => {
 
   function updateRobotimeHeaderOffset() {
     let h = 0;
-    const above = document.querySelector(".robotime-above-header");
-    if (above) {
-      h += above.getBoundingClientRect().height;
+    const headerWrap = document.querySelector(".d-header-wrap");
+    if (headerWrap) {
+      h += headerWrap.getBoundingClientRect().height;
     }
     const carousel = document.getElementById("robotime-carousel");
     if (carousel) {
@@ -188,10 +160,10 @@ export default apiInitializer((api) => {
 
     if (typeof ResizeObserver !== "undefined") {
       const ro = new ResizeObserver(run);
-      const above = document.querySelector(".robotime-above-header");
+      const headerWrap = document.querySelector(".d-header-wrap");
       const carousel = document.getElementById("robotime-carousel");
-      if (above) {
-        ro.observe(above);
+      if (headerWrap) {
+        ro.observe(headerWrap);
       }
       if (carousel) {
         ro.observe(carousel);
@@ -236,27 +208,6 @@ export default apiInitializer((api) => {
       }
       track.style.transform = `translateX(-${st.scrollPos}px)`;
     });
-  }
-
-  function renderNavLinks(desktopContainer, mobileContainer, navItems) {
-    const fill = (container) => {
-      if (!container) return;
-      container.innerHTML = "";
-      if (!navItems || !navItems.length) return;
-      navItems.forEach((item) => {
-        const a = document.createElement("a");
-        a.href = item.url;
-        a.className = "robotime-header__nav-link";
-        a.textContent = item.label;
-        if (item.is_external) {
-          a.target = "_blank";
-          a.rel = "noopener";
-        }
-        container.appendChild(a);
-      });
-    };
-    fill(desktopContainer);
-    fill(mobileContainer);
   }
 
   function renderCarousel(track, heroBanners) {
@@ -435,15 +386,11 @@ export default apiInitializer((api) => {
   }
 
   function applyHubConfig(config) {
-    const navDesktop = document.querySelector(".robotime-header__nav");
-    const mobileNav = document.querySelector(".robotime-mobile-nav");
     const carouselTrack = document.getElementById("carousel-track");
     const sidebarSlot = document.querySelector(".robotime-sidebar-widget-slot");
 
     const carouselOn = config._robotime_carousel_enabled !== false;
     setRobotimeCarouselThemeVisibility(carouselOn);
-
-    renderNavLinks(navDesktop, mobileNav, config.nav_items);
     if (carouselOn && config.hero_banners && config.hero_banners.length) {
       renderCarousel(carouselTrack, config.hero_banners);
     } else if (carouselTrack) {
@@ -591,22 +538,6 @@ export default apiInitializer((api) => {
     ensureSidebarNewTopicLabel();
     injectRobotimeSidebarMenuIcons();
     scheduleRobotimeTopicThumbnails();
-  }
-
-  function initMobileMenu() {
-    const menuBtn = document.querySelector(".robotime-header__mobile-menu-btn");
-    const mobileNav = document.querySelector(".robotime-mobile-nav");
-    if (!menuBtn || !mobileNav || menuBtn.dataset.robotimeMenuBound) return;
-    menuBtn.dataset.robotimeMenuBound = "1";
-
-    menuBtn.addEventListener("click", () => {
-      mobileNav.classList.toggle("robotime-mobile-nav--open");
-    });
-    mobileNav.addEventListener("click", (e) => {
-      if (e.target.closest("a")) {
-        mobileNav.classList.remove("robotime-mobile-nav--open");
-      }
-    });
   }
 
   /**
@@ -798,7 +729,6 @@ export default apiInitializer((api) => {
       setupRobotimeTopicThumbnailObserverOnce();
       runRobotimeLayoutPass();
       requestAnimationFrame(runRobotimeLayoutPass);
-      initMobileMenu();
 
       const carouselRoot = document.getElementById("robotime-carousel");
 

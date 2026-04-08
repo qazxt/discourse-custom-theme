@@ -7,11 +7,9 @@
   max-width: 1400px;
 }
 
-// --- Header adjustments for desktop ---
-.robotime-header {
-  &__nav-link {
-    font-size: 16px;
-  }
+// --- Theme nav (before-header-panel) ---
+.d-header .robotime-header__nav-link {
+  font-size: 16px;
 }
 
 // --- Carousel desktop sizing ---
@@ -115,16 +113,12 @@
 
 // --- Tablet adjustments ---
 @media (min-width: 768px) and (max-width: 1199px) {
-  .robotime-header {
-    padding: 0 16px;
+  .d-header .robotime-core-header-nav {
+    gap: 16px;
+  }
 
-    &__nav {
-      gap: 16px;
-    }
-
-    &__nav-link {
-      font-size: 14px;
-    }
+  .d-header .robotime-header__nav-link {
+    font-size: 14px;
   }
 
   .robotime-carousel {

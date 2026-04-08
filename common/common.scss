@@ -42,16 +42,8 @@ body {
 }
 
 // ============================================================
-// 1. HEADER — final refactor
-//    Use Discourse core header for all interactive tools/menus.
-//    Keep custom header markup non-interactive/off to avoid stacking & menu positioning conflicts.
+// 1. HEADER — core .d-header + theme nav in before-header-panel outlet
 // ============================================================
-.robotime-above-header,
-.robotime-mobile-nav {
-  display: none !important;
-}
-
-// Core header skin (stable interaction, Robotime visual style)
 .d-header-wrap {
   z-index: 1300;
 }
@@ -64,6 +56,33 @@ body {
   .wrap {
     max-width: 1400px;
     padding: 0 24px;
+  }
+
+  .contents {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    row-gap: 8px;
+  }
+
+  .before-header-panel-outlet {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1 1 auto;
+    min-width: 0;
+    order: 0;
+  }
+
+  .robotime-core-header-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 32px;
+    row-gap: 8px;
+    min-width: 0;
   }
 
   .title a {
@@ -82,7 +101,8 @@ body {
   }
 
   .title .logo-big,
-  .title .logo-small {
+  .title .logo-small,
+  .title .robotime-header__logo-img {
     max-height: 20px;
     width: auto;
   }
@@ -147,73 +167,20 @@ body {
       width: 100%;
     }
   }
-}
 
-.robotime-above-header {
-  background-color: $robotime-black;
-  width: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1200;
-}
-
-.robotime-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 0 24px;
-  height: 60px;
-  position: relative;
-  z-index: 1;
-
-  &__logo {
-    flex-shrink: 0;
-    a {
-      display: inline-flex;
-      align-items: center;
-      background: $robotime-blue;
-      color: $robotime-white;
-      font-weight: 700;
-      font-size: 13px;
-      letter-spacing: 1.5px;
-      padding: 8px 22px;
-      border-radius: 20px;
-      text-decoration: none;
-      transition: opacity 0.2s;
-      &:hover { opacity: 0.9; }
-    }
-
-    .robotime-header__logo-img {
-      display: block;
-      max-height: 40px;
-      max-width: 180px;
-      width: auto;
-      height: auto;
-      object-fit: contain;
-    }
-  }
-
-  &__nav {
-    display: flex;
+  // Theme-configured links (robotime_nav_links → RobotimeCoreHeaderNav)
+  .robotime-header__nav-link {
+    position: relative;
+    display: inline-flex;
     align-items: center;
-    gap: 32px;
-    flex: 1;
-    justify-content: center;
-  }
-
-  &__nav-link {
+    padding-bottom: 4px;
+    font-family: $font-primary;
     font-size: 16px;
+    font-weight: 500;
     color: $robotime-white;
     text-decoration: none;
-    position: relative;
-    padding-bottom: 4px;
-    transition: color 0.3s ease;
     white-space: nowrap;
+    transition: color 0.25s ease;
 
     &::after {
       content: "";
@@ -222,79 +189,17 @@ body {
       bottom: 0;
       width: 0;
       height: 2px;
-      background: $robotime-white;
-      transition: width 0.3s ease;
+      background: currentColor;
+      transition: width 0.25s ease;
     }
+
     &:hover {
       color: $robotime-hover-white;
-      &::after { width: 100%; }
-    }
-  }
-
-  &__user {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    background: $robotime-header-user-bg;
-    border-radius: 20px;
-    padding: 6px 16px;
-    flex-shrink: 0;
-    min-height: 40px;
-
-    // Native header tools (moved from .d-header)
-    .panel,
-    .d-header-icons {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin: 0;
     }
 
-    .d-icon {
-      color: $robotime-white;
+    &:hover::after {
+      width: 100%;
     }
-
-    .header-dropdown-toggle {
-      color: $robotime-white;
-    }
-  }
-
-  &__mobile-menu-btn {
-    display: none;
-    color: $robotime-white;
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 4px;
-    svg {
-      width: 24px;
-      height: 24px;
-      fill: currentColor;
-    }
-  }
-}
-
-// Mobile nav overlay
-.robotime-mobile-nav {
-  display: none;
-  position: fixed;
-  top: var(--robotime-topbar-height, 60px);
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.95);
-  z-index: 1220;
-  flex-direction: column;
-  padding: 20px;
-
-  &--open { display: flex; }
-
-  a {
-    font-size: 20px;
-    color: $robotime-white;
-    text-decoration: none;
-    padding: 16px 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   }
 }
 

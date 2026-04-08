@@ -21,75 +21,28 @@ html {
     padding: 4px 10px;
     gap: 6px;
   }
-}
 
-// --- Mobile header ---
-.robotime-header {
-  padding: 0 12px;
-  height: 52px;
+  .before-header-panel-outlet {
+    flex: 1 1 100%;
+    justify-content: flex-start;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
 
-  &__logo a {
-    font-size: 12px;
-    padding: 6px 14px;
-  }
-
-  &__nav {
-    display: none;
-  }
-
-  &__user {
-    padding: 4px 10px;
-    gap: 8px;
-  }
-
-  &__mobile-menu-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #fff;
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 4px;
-
-    svg {
-      width: 24px;
-      height: 24px;
-      fill: currentColor;
+    &::-webkit-scrollbar {
+      display: none;
     }
   }
-}
 
-// Mobile navigation overlay
-.robotime-mobile-nav {
-  display: none;
-  position: fixed;
-  top: var(--robotime-topbar-height, 52px);
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.95);
-  z-index: 1220;
-  flex-direction: column;
-  padding: 20px;
-  overflow-y: auto;
-
-  &--open {
-    display: flex;
+  .robotime-core-header-nav {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    gap: 14px;
+    padding: 4px 0;
   }
 
-  &__link {
-    font-family: "Google Sans Flex", "Google Sans", sans-serif;
-    font-size: 20px;
-    color: #fff;
-    text-decoration: none;
-    padding: 16px 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    transition: color 0.2s ease;
-
-    &:hover {
-      color: #cccccc;
-    }
+  .robotime-header__nav-link {
+    font-size: 14px;
   }
 }
 
