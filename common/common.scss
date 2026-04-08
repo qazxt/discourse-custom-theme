@@ -144,9 +144,11 @@ body {
     flex-shrink: 0;
     min-height: 40px;
 
-    // Native header tools (moved from .d-header)
-    .panel,
-    .d-header-icons {
+    // Native header tools (moved from .d-header): scope to icon rows only.
+    // Avoid generic `.panel` here — it collides with user menu panel internals.
+    .d-header-icons,
+    .header-icons,
+    .panel .icon {
       display: flex;
       align-items: center;
       gap: 8px;
@@ -477,6 +479,17 @@ body {
 .user-menu.revamped.menu-panel.drop-down,
 .user-card {
   z-index: 1215 !important;
+}
+
+// Restore user menu visual container (some theme rules can accidentally leave it transparent).
+.user-menu.revamped.menu-panel.drop-down,
+.user-menu.revamped.menu-panel.drop-down .panel-body {
+  background: var(--secondary) !important;
+}
+
+.user-menu.revamped.menu-panel.drop-down {
+  border: 1px solid var(--primary-low) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18) !important;
 }
 
 // Also prevent carousel from swallowing clicks while any top menu/popover is open.
