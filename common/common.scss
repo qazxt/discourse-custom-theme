@@ -210,7 +210,7 @@ body {
 // 2. CAROUSEL — unified full-bleed photo style
 //    hero_banners populated by plugin
 // ============================================================
-.robotime-carousel {
+#robotime-carousel {
   background: $robotime-white;
   padding: 14px 0 18px;
   overflow: hidden;
@@ -501,7 +501,8 @@ body:has(.menu-panel.drop-down),
 body:has(.fk-d-menu__content),
 body:has(.d-menu__content),
 body:has(.user-card) {
-  #robotime-carousel {
+  #robotime-carousel,
+  .below-site-header-outlet.robotime-carousel {
     z-index: 1000 !important;
     pointer-events: none;
   }
