@@ -461,16 +461,31 @@ body {
   }
 }
 
-// Keep header menus interactable over the fixed carousel.
-// Root cause: menu DOM can be portaled / wrapped, and raising only inner panel z-index is unreliable.
-// Instead, when any top menu/popover is present, the carousel yields hit-testing and sits lower.
+// Header popovers are often rendered in portal wrappers. Lift wrappers + panels above carousel.
+// Keep this below mobile overlay (1220) so mobile menu still wins.
+#d-menu-portal,
+#d-popper-root,
+[data-float-kit-portal],
+.fk-d-menu,
+.fk-d-menu__inner-content,
+.fk-d-menu__content,
+.d-menu,
+.d-menu__content,
+.menu-panel,
+.menu-panel.drop-down,
+.menu-panel.slide-out,
+.user-menu.revamped.menu-panel.drop-down,
+.user-card {
+  z-index: 1215 !important;
+}
+
+// Also prevent carousel from swallowing clicks while any top menu/popover is open.
 body:has(.menu-panel.drop-down),
 body:has(.fk-d-menu__content),
 body:has(.d-menu__content),
 body:has(.user-card) {
   #robotime-carousel {
     pointer-events: none;
-    z-index: 1100;
   }
 }
 
