@@ -7,30 +7,6 @@ export default apiInitializer((api) => {
     "#d-sidebar .sidebar-section-link-wrapper :is(a, button).sidebar-section-link, " +
     ".sidebar-wrapper .sidebar-section-link-wrapper :is(a, button).sidebar-section-link";
 
-  /**
-   * Move Discourse header actions (search, hamburger, user menu) into the
-   * custom bar, then CSS hides .d-header-wrap entirely.
-   */
-  function relocateNativeHeaderTools() {
-    const slot = document.querySelector(".robotime-header__user");
-    const header = document.querySelector(".d-header");
-    if (!slot || !header) {
-      return;
-    }
-
-    const tools =
-      header.querySelector(".d-header-icons") ||
-      header.querySelector(".header-icons") ||
-      header.querySelector(".panel") ||
-      header.querySelector(".header-buttons");
-
-    if (!tools || slot.contains(tools)) {
-      return;
-    }
-
-    slot.appendChild(tools);
-  }
-
   function getThemeSettings() {
     try {
       // `settings` is injected by Discourse when building theme JS from settings.yml
@@ -610,7 +586,6 @@ export default apiInitializer((api) => {
   }
 
   function runRobotimeLayoutPass() {
-    relocateNativeHeaderTools();
     applyRobotimeHeaderLogo();
     updateRobotimeHeaderOffset();
     ensureSidebarNewTopicLabel();

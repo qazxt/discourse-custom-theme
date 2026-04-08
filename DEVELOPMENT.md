@@ -135,11 +135,11 @@ quaternary (橙):  #ffb93e    danger:            #e45735
 - **模板**: `javascripts/robotime/connectors/above-site-header/robotime-header.hbs`（`common/header.html` 仅为占位说明）
 - **样式**: `common/common.scss`（`.robotime-above-header`、`.robotime-header`）、`mobile/mobile.scss`（52px 顶栏高度）
 - **定位**: `.robotime-above-header` 为 **`position: fixed`**，贴视口顶；z-index **1200**，高于分类轮播
-- **原生顶栏**: `.d-header-wrap` 由 CSS 隐藏；`robotime-hub.js` 将 **`.d-header` 内搜索/用户区** 移到 `.robotime-header__user`，避免功能丢失
+- **原生顶栏**: 保持可见并由 Discourse 核心托管（用户菜单/通知/搜索不再搬运 DOM）
 - **背景**: `#000000`，Logo 为蓝色圆角按钮 (`#66cbff`) 或由 `robotime_logo_url` 换图
 - **菜单**: 文案与 URL 来自 **`settings.yml` → `robotime_nav_links`**（非 hub-config）；默认多帮助链，可按运营改
 - **Hover 动效**: 白色下划线从左向右展开 `width 0.3s ease`，文字色变为 `#cccccc`
-- **右侧图标**: 以 Discourse 原生图标为主；静态素材见 `Icon/misc/`（`notification.png`、`gift.png`）
+- **右侧图标**: 由 Discourse 原生顶栏提供；本主题自定义 Header 仅承载品牌 Logo + 导航
 - **移动端**: 主导航隐藏，汉堡按钮打开 **全屏遮罩** `.robotime-mobile-nav`（`position: fixed`，`top: var(--robotime-topbar-height)`，`z-index: 1220`）
 
 ### 4.2 分类卡片轮播（Carousel）
