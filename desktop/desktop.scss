@@ -15,7 +15,8 @@
 // --- Carousel desktop sizing ---
 .robotime-carousel {
   &__card {
-    width: 160px;
+    width: 245px;
+    height: 155px;
   }
 
   // Image is full-bleed inside the card (do not set height — breaks inset:0 overlay layout).
@@ -24,8 +25,8 @@
 // Ensure collapsed carousel still shrinks on desktop overrides
 .robotime-carousel--collapsed {
   .robotime-carousel__card {
-    width: 140px;
-    height: 60px;
+    width: 245px;
+    height: 80px;
   }
 }
 

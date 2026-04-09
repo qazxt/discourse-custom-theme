@@ -201,6 +201,13 @@ body {
       width: 100%;
     }
   }
+
+  // Keep Robotime header stable: hide core topic extra info row
+  // (e.g. PM glyph, topic participants) that appears on topic pages.
+  .extra-info,
+  .topic-info {
+    display: none !important;
+  }
 }
 
 // ============================================================
@@ -245,7 +252,7 @@ body {
   &__card {
     flex-shrink: 0;
     width: 245px;
-    height: 140px;
+    height: 155px;
     border-radius: 10px;
     overflow: hidden;
     cursor: pointer;
@@ -375,8 +382,8 @@ body {
     }
 
     .robotime-carousel__card {
-      width: 140px;
-      height: 60px;
+      width: 245px;
+      height: 80px;
       border-radius: 8px;
 
       &:hover {
@@ -593,6 +600,7 @@ body {
 
   &__card {
     display: block;
+    position: relative;
     border: 1px solid $robotime-border-gray;
     border-radius: 12px;
     overflow: hidden;
@@ -611,13 +619,38 @@ body {
       object-fit: cover;
       display: block;
     }
+
+    &::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 56px;
+      background: linear-gradient(
+        to top,
+        rgba(0, 0, 0, 0.58) 0%,
+        rgba(0, 0, 0, 0.22) 55%,
+        rgba(0, 0, 0, 0) 100%
+      );
+      pointer-events: none;
+    }
   }
 
   &__title {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
     padding: 10px 12px;
     font-size: 14px;
     font-weight: 500;
-    color: $robotime-gray;
+    color: $robotime-white;
+    text-align: center;
+    line-height: 1.25;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+    pointer-events: none;
   }
 
   &__dots {
@@ -809,11 +842,11 @@ body {
   align-items: center;
   gap: 12px;
   border-radius: 12px;
-  padding: 12px 20px;
+  padding: 10px 20px;
   font-family: $font-primary;
   font-size: 16px;
   line-height: 1.3;
-  min-height: 0;
+  min-height: 50px;
   box-sizing: border-box;
 }
 
@@ -892,9 +925,6 @@ body {
     filter: none;
   }
 
-  .robotime-sidebar-menu-icon {
-    filter: brightness(0) invert(1);
-  }
 }
 
 .sidebar-section-link-wrapper:not(.active) :is(a, button).sidebar-section-link:hover,
@@ -917,10 +947,48 @@ body {
 .robotime-sidebar-menu-icon {
   width: 20px;
   height: 20px;
-  object-fit: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 20px 20px;
   flex-shrink: 0;
   display: block;
   pointer-events: none;
+}
+
+.robotime-sidebar-menu-icon--topics {
+  background-image: url($robotime_sidebar_topics_black);
+}
+
+.robotime-sidebar-menu-icon--posts {
+  background-image: url($robotime_sidebar_posts_black);
+}
+
+.robotime-sidebar-menu-icon--messages {
+  background-image: url($robotime_sidebar_messages_black);
+}
+
+.robotime-sidebar-menu-icon--invite {
+  background-image: url($robotime_sidebar_invite_black);
+}
+
+.sidebar-section-link-wrapper.active .robotime-sidebar-menu-icon--topics,
+.sidebar-section-link-wrapper .sidebar-section-link.active .robotime-sidebar-menu-icon--topics {
+  background-image: url($robotime_sidebar_topics_white);
+}
+
+.sidebar-section-link-wrapper.active .robotime-sidebar-menu-icon--posts,
+.sidebar-section-link-wrapper .sidebar-section-link.active .robotime-sidebar-menu-icon--posts {
+  background-image: url($robotime_sidebar_posts_white);
+}
+
+.sidebar-section-link-wrapper.active .robotime-sidebar-menu-icon--messages,
+.sidebar-section-link-wrapper .sidebar-section-link.active .robotime-sidebar-menu-icon--messages {
+  background-image: url($robotime_sidebar_messages_white);
+}
+
+.sidebar-section-link-wrapper.active .robotime-sidebar-menu-icon--invite,
+.sidebar-section-link-wrapper .sidebar-section-link.active .robotime-sidebar-menu-icon--invite {
+  background-image: url($robotime_sidebar_invite_white);
 }
 
 .navigation-container .nav-pills > li {
@@ -1286,11 +1354,31 @@ $robotime-topic-placeholder-icon-fill: url("data:image/svg+xml,%3Csvg xmlns='htt
       }
 
       .d-icon,
-      svg {
+      svg,
+      .robotime-topic-meta__icon {
         width: 18px;
         height: 18px;
         color: $robotime-gray;
         flex-shrink: 0;
+      }
+
+      .robotime-topic-meta__icon {
+        display: inline-block;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 18px 18px;
+      }
+
+      .robotime-topic-meta__icon--views {
+        background-image: url($robotime_topic_stats_views);
+      }
+
+      .robotime-topic-meta__icon--likes {
+        background-image: url($robotime_topic_stats_likes);
+      }
+
+      .robotime-topic-meta__icon--comments {
+        background-image: url($robotime_topic_stats_comments);
       }
 
       .number {
@@ -1620,7 +1708,8 @@ $robotime-topic-placeholder-icon-fill: url("data:image/svg+xml,%3Csvg xmlns='htt
         }
 
         svg.d-icon.svg-icon,
-        .robotime-topic-meta__item > svg {
+        .robotime-topic-meta__item > svg,
+        .robotime-topic-meta__icon {
           width: 24px !important;
           height: 24px !important;
           min-width: 24px;
@@ -1724,7 +1813,8 @@ $robotime-topic-placeholder-icon-fill: url("data:image/svg+xml,%3Csvg xmlns='htt
 
         // Core uses SVG width/height=1em; force visual size to match avatar scale
         svg.d-icon.svg-icon,
-        .robotime-topic-meta__item > svg {
+        .robotime-topic-meta__item > svg,
+        .robotime-topic-meta__icon {
           width: 24px !important;
           height: 24px !important;
           min-width: 24px;

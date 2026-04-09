@@ -5,7 +5,19 @@
   "component": false,
   "minimum_discourse_version": "3.0.0",
   "maximum_discourse_version": null,
-  "assets": {},
+  "assets": {
+    "robotime_sidebar_topics_black": "Icon/sidebar/black/topics.png",
+    "robotime_sidebar_topics_white": "Icon/sidebar/white/topics.png",
+    "robotime_sidebar_posts_black": "Icon/sidebar/black/my-posts.png",
+    "robotime_sidebar_posts_white": "Icon/sidebar/white/my-posts.png",
+    "robotime_sidebar_messages_black": "Icon/sidebar/black/my-messages.png",
+    "robotime_sidebar_messages_white": "Icon/sidebar/white/my-messages.png",
+    "robotime_sidebar_invite_black": "Icon/sidebar/black/invite-friends.png",
+    "robotime_sidebar_invite_white": "Icon/sidebar/white/invite-friends.png",
+    "robotime_topic_stats_views": "Icon/topic-stats/views.png",
+    "robotime_topic_stats_likes": "Icon/topic-stats/likes.png",
+    "robotime_topic_stats_comments": "Icon/topic-stats/comments.png"
+  },
   "color_schemes": {
     "Robotime": {
       "primary": "000000",

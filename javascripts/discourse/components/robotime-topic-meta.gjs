@@ -1,5 +1,4 @@
 import Component from "@glimmer/component";
-import dIcon from "discourse/helpers/d-icon";
 
 export default class RobotimeTopicMeta extends Component {
   get topic() {
@@ -26,15 +25,24 @@ export default class RobotimeTopicMeta extends Component {
     {{#if this.hasAnyStat}}
       <div class="robotime-topic-meta">
         <span class="robotime-topic-meta__item">
-          {{dIcon "far-eye"}}
+          <span
+            class="robotime-topic-meta__icon robotime-topic-meta__icon--views"
+            aria-hidden="true"
+          ></span>
           <span class="number">{{this.views}}</span>
         </span>
         <span class="robotime-topic-meta__item">
-          {{dIcon "far-heart"}}
+          <span
+            class="robotime-topic-meta__icon robotime-topic-meta__icon--likes"
+            aria-hidden="true"
+          ></span>
           <span class="number">{{this.likes}}</span>
         </span>
         <span class="robotime-topic-meta__item">
-          {{dIcon "far-comment"}}
+          <span
+            class="robotime-topic-meta__icon robotime-topic-meta__icon--comments"
+            aria-hidden="true"
+          ></span>
           <span class="number">{{this.replies}}</span>
         </span>
       </div>
