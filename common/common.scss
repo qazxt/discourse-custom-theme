@@ -272,6 +272,12 @@ body {
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
     }
 
+    &.robotime-carousel__card--active {
+      z-index: 5;
+      transform: scale(1.1);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+    }
+
     &.is-pressed,
     &:active {
       transform: scale(0.96);
@@ -390,6 +396,11 @@ body {
         transform: scale(1.05);
         box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
       }
+
+      &.robotime-carousel__card--active {
+        transform: scale(1.05);
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+      }
     }
 
     .robotime-carousel__card-img {
@@ -419,7 +430,7 @@ body {
       display: flex;
       align-items: center;
       justify-content: center;
-      font-weight: 700;
+      font-weight: 400;
       text-shadow: 0 1px 0 rgba(0, 0, 0, 0.15);
       line-height: 1.1;
       pointer-events: none;
@@ -1242,19 +1253,27 @@ $robotime-topic-placeholder-icon-fill: url("data:image/svg+xml,%3Csvg xmlns='htt
       padding: 0 16px 12px;
 
       &::before {
-        content: "";
+        content: attr(data-robotime-topic-title);
         order: -1;
         align-self: stretch;
         width: calc(100% + 32px);
         margin-left: -16px;
         margin-right: -16px;
         aspect-ratio: 1 / 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 18px;
         flex-shrink: 0;
-        background-color: #eeeeee;
-        background-image: $robotime-topic-placeholder-icon-fill;
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: 64px 64px;
+        background: linear-gradient(135deg, #f3f5f8 0%, #eceff3 100%);
+        color: #6f7680;
+        font-family: $font-primary;
+        font-size: 24px;
+        font-weight: 500;
+        line-height: 1.35;
+        text-align: center;
+        white-space: normal;
+        overflow: hidden;
         box-sizing: border-box;
         pointer-events: none;
       }
@@ -1941,18 +1960,25 @@ $robotime-topic-placeholder-icon-fill: url("data:image/svg+xml,%3Csvg xmlns='htt
         grid-template-rows: auto auto auto;
 
         &::before {
-          content: "";
+          content: attr(data-robotime-topic-title);
           grid-row: 1;
           grid-column: 1 / -1;
-          display: block;
+          display: flex;
           width: 100%;
           aspect-ratio: 1 / 1;
+          align-items: center;
+          justify-content: center;
+          padding: 22px;
           flex-shrink: 0;
-          background-color: #eeeeee;
-          background-image: $robotime-topic-placeholder-icon-fill;
-          background-repeat: no-repeat;
-          background-position: center;
-          background-size: 64px 64px;
+          background: linear-gradient(135deg, #f3f5f8 0%, #eceff3 100%);
+          color: #6f7680;
+          font-family: $font-primary;
+          font-size: 24px;
+          font-weight: 500;
+          line-height: 1.35;
+          text-align: center;
+          white-space: normal;
+          overflow: hidden;
           box-sizing: border-box;
           pointer-events: none;
         }

@@ -214,6 +214,26 @@ export default apiInitializer((api) => {
     if (!track || !heroBanners) return;
     track.innerHTML = "";
 
+    function isCurrentPageLink(rawUrl) {
+      const s = String(rawUrl || "").trim();
+      if (!s || s === "#") {
+        return false;
+      }
+      try {
+        const u = new URL(s, window.location.origin);
+        if (u.origin !== window.location.origin) {
+          return false;
+        }
+        const herePath = window.location.pathname.replace(/\/$/, "") || "/";
+        const therePath = u.pathname.replace(/\/$/, "") || "/";
+        const hereQs = window.location.search || "";
+        const thereQs = u.search || "";
+        return herePath === therePath && hereQs === thereQs;
+      } catch (e) {
+        return false;
+      }
+    }
+
     function isDark(hex) {
       const c = String(hex || "").replace("#", "");
       if (c.length !== 6) return false;
@@ -227,6 +247,9 @@ export default apiInitializer((api) => {
       const el = document.createElement("a");
       el.href = card.link_url || "#";
       el.className = "robotime-carousel__card";
+      if (isCurrentPageLink(card.link_url)) {
+        el.classList.add("robotime-carousel__card--active");
+      }
       const bgClass = isDark(card.bg_color || "#f6ebe3")
         ? "dark-bg"
         : "light-bg";
@@ -666,6 +689,16 @@ export default apiInitializer((api) => {
 
   function markRobotimeTopicRowCoverLayout() {
     document.querySelectorAll("tr.topic-list-item").forEach((row) => {
+      const titleEl = row.querySelector(
+        ".main-link .link-top-line .title, .main-link a.title, .main-link .topic-link"
+      );
+      const titleText = (titleEl?.textContent || "").trim();
+      if (titleText) {
+        row.setAttribute("data-robotime-topic-title", titleText);
+      } else {
+        row.removeAttribute("data-robotime-topic-title");
+      }
+
       if (
         row.querySelector("td.topic-thumbnails") ||
         row.querySelector(":scope > .robotime-topic-list-thumbnail-link")
