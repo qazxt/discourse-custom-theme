@@ -1,4 +1,5 @@
 import { apiInitializer } from "discourse/lib/api";
+import I18n from "discourse-i18n";
 import RobotimeCoreHeaderNav from "../components/robotime-core-header-nav";
 
 /* global settings — injected by Discourse when compiling theme JS from settings.yml */
@@ -534,12 +535,195 @@ export default apiInitializer((api) => {
     });
   }
 
+  const ROBOTIME_TOPIC_LIST_NAV_PILLS =
+    ".list-controls .navigation-container .nav-pills";
+
+  let robotimeNavPillsEnhanceTimer = null;
+
+  function scheduleRobotimeNavPillsEnhance() {
+    if (robotimeNavPillsEnhanceTimer) {
+      clearTimeout(robotimeNavPillsEnhanceTimer);
+    }
+    robotimeNavPillsEnhanceTimer = setTimeout(() => {
+      robotimeNavPillsEnhanceTimer = null;
+      robotimeEnhanceTopicListNavPills();
+    }, 60);
+  }
+
+  function robotimeNavHrefIsNew(href) {
+    const path = (href || "").split(/[?#]/)[0].replace(/\/+$/, "").toLowerCase();
+    return /(^|\/)new$/i.test(path);
+  }
+
+  function robotimeNavHrefIsBookmarks(href) {
+    const path = (href || "").split(/[?#]/)[0].toLowerCase();
+    return /(^|\/)bookmarks(\/|$)/i.test(path);
+  }
+
+  function resolveNewTopicsCountFromTracker() {
+    try {
+      const tts = api.container?.lookup?.("service:topic-tracking-state");
+      if (!tts) {
+        return null;
+      }
+      if (typeof tts.newTopicsCount === "number") {
+        return tts.newTopicsCount;
+      }
+      if (typeof tts.newTopicsCount === "function") {
+        const n = tts.newTopicsCount();
+        return typeof n === "number" ? n : null;
+      }
+      if (typeof tts.countNew === "function") {
+        const n = tts.countNew();
+        return typeof n === "number" ? n : null;
+      }
+      const inner = tts.topicTrackingState;
+      if (inner && typeof inner.newTopicsCount === "function") {
+        const n = inner.newTopicsCount();
+        return typeof n === "number" ? n : null;
+      }
+      if (inner && typeof inner.countNew === "function") {
+        const n = inner.countNew();
+        return typeof n === "number" ? n : null;
+      }
+    } catch (e) {
+      /* topic-tracking-state API differs by Discourse version */
+    }
+    return null;
+  }
+
+  function parseCountFromCoreNavBadge(link) {
+    const badge = link.querySelector(
+      ".badge-notification, .badge-notification--new, .badge-new"
+    );
+    if (!badge) {
+      return null;
+    }
+    const raw = (badge.textContent || "").replace(/[^\d]/g, "");
+    const n = parseInt(raw, 10);
+    return Number.isFinite(n) ? n : null;
+  }
+
+  function robotimeBookmarksNavLabel() {
+    try {
+      return I18n.t("filters.bookmarks.title");
+    } catch (e) {
+      const lang = (document.documentElement.lang || "").toLowerCase();
+      return lang.startsWith("zh") ? "书签" : "Bookmarks";
+    }
+  }
+
+  function robotimeEnsureBookmarksNavItem(ul) {
+    if ([...ul.querySelectorAll("li > a")].some((a) => robotimeNavHrefIsBookmarks(a.getAttribute("href")))) {
+      return;
+    }
+    if (!api.getCurrentUser?.()) {
+      return;
+    }
+
+    let li = ul.querySelector('li[data-robotime-nav="bookmarks"]');
+    if (!li) {
+      li = document.createElement("li");
+      li.setAttribute("data-robotime-nav", "bookmarks");
+      const a = document.createElement("a");
+      a.href = "/bookmarks";
+      a.textContent = robotimeBookmarksNavLabel();
+      li.appendChild(a);
+      ul.appendChild(li);
+    }
+
+    const path = window.location.pathname;
+    const active = path === "/bookmarks" || path.startsWith("/bookmarks/");
+    li.classList.toggle("active", active);
+  }
+
+  function robotimeFormatNewNavCount(ul) {
+    const newLink = [...ul.querySelectorAll("li > a")].find((a) =>
+      robotimeNavHrefIsNew(a.getAttribute("href"))
+    );
+    if (!newLink) {
+      return;
+    }
+
+    newLink.querySelectorAll(".robotime-nav-pill__count").forEach((el) => el.remove());
+
+    const user = api.getCurrentUser?.();
+    if (!user) {
+      return;
+    }
+
+    let count = resolveNewTopicsCountFromTracker();
+    if (count === null) {
+      count = parseCountFromCoreNavBadge(newLink);
+    }
+
+    if (count === null) {
+      return;
+    }
+
+    newLink
+      .querySelectorAll(
+        ".badge-notification, .badge-notification--new, .badge-new"
+      )
+      .forEach((b) => {
+        b.classList.add("robotime-nav-pill__core-badge--hidden");
+      });
+
+    if (count > 0) {
+      const span = document.createElement("span");
+      span.className = "robotime-nav-pill__count";
+      span.textContent = ` (${count})`;
+      newLink.appendChild(span);
+    }
+  }
+
+  function robotimeEnhanceTopicListNavPills() {
+    const ul = document.querySelector(ROBOTIME_TOPIC_LIST_NAV_PILLS);
+    if (!ul) {
+      return;
+    }
+    robotimeEnsureBookmarksNavItem(ul);
+    robotimeFormatNewNavCount(ul);
+  }
+
+  function setupRobotimeNavPillsMutationObserverOnce() {
+    if (window.__robotimeNavPillsMO) {
+      return;
+    }
+    window.__robotimeNavPillsMO = true;
+    const root = document.querySelector("#main") || document.body;
+    const mo = new MutationObserver(() => scheduleRobotimeNavPillsEnhance());
+    mo.observe(root, { childList: true, subtree: true });
+  }
+
+  function setupRobotimeNavPillsTrackingHookOnce() {
+    if (window.__robotimeNavPillsTrackingHook) {
+      return;
+    }
+    window.__robotimeNavPillsTrackingHook = true;
+    try {
+      const tts = api.container?.lookup?.("service:topic-tracking-state");
+      if (!tts) {
+        return;
+      }
+      const run = () => scheduleRobotimeNavPillsEnhance();
+      if (typeof tts.onStateChange === "function") {
+        tts.onStateChange(run);
+      } else if (typeof tts.addOnStateChangeCallback === "function") {
+        tts.addOnStateChangeCallback(run);
+      }
+    } catch (e) {
+      /* optional hook */
+    }
+  }
+
   function runRobotimeLayoutPass() {
     applyRobotimeHeaderLogo();
     updateRobotimeHeaderOffset();
     ensureSidebarNewTopicLabel();
     injectRobotimeSidebarMenuIcons();
     scheduleRobotimeTopicThumbnails();
+    scheduleRobotimeNavPillsEnhance();
   }
 
   /**
@@ -739,6 +923,8 @@ export default apiInitializer((api) => {
     requestAnimationFrame(() => {
       setupRobotimeHeaderOffsetObserverOnce();
       setupRobotimeTopicThumbnailObserverOnce();
+      setupRobotimeNavPillsMutationObserverOnce();
+      setupRobotimeNavPillsTrackingHookOnce();
       runRobotimeLayoutPass();
       requestAnimationFrame(runRobotimeLayoutPass);
 
