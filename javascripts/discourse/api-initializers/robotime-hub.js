@@ -871,8 +871,25 @@ export default apiInitializer((api) => {
     }
   }
 
+  /** Stable pastel index from topic id (0..ROBOTIME_COVER_TINT_COUNT-1). */
+  const ROBOTIME_COVER_TINT_COUNT = 8;
+
+  function robotimeTopicCoverTintFromId(topicId) {
+    const id = parseInt(String(topicId || ""), 10);
+    if (!Number.isFinite(id) || id < 1) {
+      return 0;
+    }
+    return Math.abs(id) % ROBOTIME_COVER_TINT_COUNT;
+  }
+
   function markRobotimeTopicRowCoverLayout() {
     document.querySelectorAll("tr.topic-list-item").forEach((row) => {
+      const topicId = row.getAttribute("data-topic-id");
+      row.setAttribute(
+        "data-robotime-cover-tint",
+        String(robotimeTopicCoverTintFromId(topicId))
+      );
+
       const titleEl = row.querySelector(
         ".main-link .link-top-line .title, .main-link a.title, .main-link .topic-link"
       );
@@ -883,6 +900,19 @@ export default apiInitializer((api) => {
         row.removeAttribute("data-robotime-topic-title");
       }
 
+      row
+        .querySelectorAll(
+          'td.topic-thumbnails[data-robotime-thumb-state="placeholder"], ' +
+            'a.robotime-topic-list-thumbnail-link[data-robotime-thumb-state="placeholder"]'
+        )
+        .forEach((el) => {
+          if (titleText) {
+            el.setAttribute("data-robotime-topic-title", titleText);
+          } else {
+            el.removeAttribute("data-robotime-topic-title");
+          }
+        });
+
       if (
         row.querySelector("td.topic-thumbnails") ||
         row.querySelector(":scope > .robotime-topic-list-thumbnail-link")
@@ -890,6 +920,48 @@ export default apiInitializer((api) => {
         row.setAttribute("data-robotime-topic-row", "has-thumb");
       } else {
         row.setAttribute("data-robotime-topic-row", "no-cover");
+      }
+    });
+  }
+
+  function decorateRobotimeTopicCardThumbnails() {
+    document.querySelectorAll(".robotime-topic-card__thumbnail").forEach((wrap) => {
+      let topicId = null;
+      const row = wrap.closest("tr.topic-list-item");
+      if (row) {
+        topicId = row.getAttribute("data-topic-id");
+      }
+      if (!topicId) {
+        const host =
+          wrap.closest("a.robotime-topic-card") ||
+          wrap.closest(".robotime-topic-card") ||
+          wrap.closest("[data-topic-id]");
+        topicId = host?.getAttribute?.("data-topic-id") || null;
+      }
+      wrap.setAttribute(
+        "data-robotime-cover-tint",
+        String(robotimeTopicCoverTintFromId(topicId))
+      );
+
+      if (wrap.getAttribute("data-robotime-thumb-state") === "placeholder") {
+        let t = "";
+        const card = wrap.closest("a.robotime-topic-card, .robotime-topic-card");
+        const titleEl = card?.querySelector?.(".robotime-topic-card__title");
+        t = (titleEl?.textContent || "").trim();
+        if (!t && row) {
+          t = (
+            row.querySelector(
+              ".main-link .link-top-line .title, .main-link a.title, .main-link .raw-topic-link"
+            )?.textContent || ""
+          ).trim();
+        }
+        if (t) {
+          wrap.setAttribute("data-robotime-topic-title", t);
+        } else {
+          wrap.removeAttribute("data-robotime-topic-title");
+        }
+      } else {
+        wrap.removeAttribute("data-robotime-topic-title");
       }
     });
   }
@@ -907,6 +979,7 @@ export default apiInitializer((api) => {
       robotimeProcessCustomTopicThumb(wrap);
     });
     markRobotimeTopicRowCoverLayout();
+    decorateRobotimeTopicCardThumbnails();
   }
 
   function setupRobotimeTopicThumbnailObserverOnce() {

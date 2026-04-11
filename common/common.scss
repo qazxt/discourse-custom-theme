@@ -1046,36 +1046,58 @@ body {
 
 // ============================================================
 // 5. TOPIC CARDS — topic list as cards (homepage + theme-overview placeholder demo)
-//    Layout: tall media band (~#eee) + white body; title; footer row = stats left, avatars right.
+//    Layout: tall media band + white body; title; footer row = stats left, avatars right.
 //    Cover ratio: JS sets data-robotime-thumb-ratio — w/h > 0.85 → square 1:1, else 3:4.
-//    Placeholder / no-cover: gray band 1:1 + centered icon (mixin).
+//    No image: pastel band from data-robotime-cover-tint (topic id % 8, robotime-hub.js) + centered title.
 // ============================================================
 
-$robotime-topic-no-cover-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm0 2v14h14V5H5zm2 2h10v8.5l-2.5-3-2.2 2.8L9 13.3 7 11V7zm2 1.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z'/%3E%3C/svg%3E");
+$robotime-cover-palette: (
+  (#ede7f6, #4a4459),
+  (#e3f2fd, #37474f),
+  (#e8f5e9, #2e4a32),
+  (#fff3e0, #5d4037),
+  (#fce4ec, #6a1b3d),
+  (#e0f7fa, #006064),
+  (#f3e5f5, #4a148c),
+  (#efebe9, #3e2723)
+);
 
-// Centered gallery placeholder (no-cover band + td.topic-thumbnails placeholder)
-$robotime-topic-placeholder-icon-fill: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23999999' fill-opacity='0.4' d='M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm0 2v14h14V5H5zm2 2h10v8.5l-2.5-3-2.2 2.8L9 13.3 7 11V7zm2 1.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z'/%3E%3C/svg%3E");
+@for $i from 0 through length($robotime-cover-palette) - 1 {
+  $pair: nth($robotime-cover-palette, $i + 1);
 
-@mixin robotime-topic-thumb-placeholder-icon {
-  &::after {
-    content: "";
+  tr.topic-list-item[data-robotime-cover-tint="#{$i}"],
+  .robotime-topic-card__thumbnail[data-robotime-cover-tint="#{$i}"] {
+    --robotime-cover-bg: #{nth($pair, 1)};
+    --robotime-cover-fg: #{nth($pair, 2)};
+  }
+}
+
+@mixin robotime-topic-cover-placeholder-title-pseudo {
+  &::before {
+    content: attr(data-robotime-topic-title);
     position: absolute;
-    left: 50%;
-    top: 50%;
-    width: 64px;
-    height: 64px;
-    transform: translate(-50%, -50%);
-    opacity: 0.28;
-    background-color: #777777;
-    -webkit-mask-image: $robotime-topic-no-cover-mask;
-    mask-image: $robotime-topic-no-cover-mask;
-    -webkit-mask-size: contain;
-    mask-size: contain;
-    -webkit-mask-repeat: no-repeat;
-    mask-repeat: no-repeat;
-    -webkit-mask-position: center;
-    mask-position: center;
+    inset: 0;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 18px;
+    box-sizing: border-box;
+    font-family: $font-primary;
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 1.35;
+    text-align: center;
+    white-space: normal;
+    overflow: hidden;
+    color: var(--robotime-cover-fg, #4a4459);
+    background: transparent;
     pointer-events: none;
+  }
+
+  &:not([data-robotime-topic-title])::before {
+    content: none;
+    display: none;
   }
 }
 
@@ -1179,11 +1201,10 @@ $robotime-topic-placeholder-icon-fill: url("data:image/svg+xml,%3Csvg xmlns='htt
 
       &[data-robotime-thumb-state="placeholder"] {
         aspect-ratio: 1 / 1;
-        background-color: #eeeeee;
-        background-image: $robotime-topic-placeholder-icon-fill;
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: 64px 64px;
+        background-color: var(--robotime-cover-bg, #eceff3);
+        background-image: none;
+
+        @include robotime-topic-cover-placeholder-title-pseudo;
 
         img {
           display: none !important;
@@ -1273,8 +1294,8 @@ $robotime-topic-placeholder-icon-fill: url("data:image/svg+xml,%3Csvg xmlns='htt
         justify-content: center;
         padding: 18px;
         flex-shrink: 0;
-        background: linear-gradient(135deg, #f3f5f8 0%, #eceff3 100%);
-        color: #6f7680;
+        background: var(--robotime-cover-bg, #eceff3);
+        color: var(--robotime-cover-fg, #4a4459);
         font-family: $font-primary;
         font-size: 24px;
         font-weight: 500;
@@ -1978,8 +1999,8 @@ $robotime-topic-placeholder-icon-fill: url("data:image/svg+xml,%3Csvg xmlns='htt
           justify-content: center;
           padding: 22px;
           flex-shrink: 0;
-          background: linear-gradient(135deg, #f3f5f8 0%, #eceff3 100%);
-          color: #6f7680;
+          background: var(--robotime-cover-bg, #eceff3);
+          color: var(--robotime-cover-fg, #4a4459);
           font-family: $font-primary;
           font-size: 24px;
           font-weight: 500;
@@ -2060,7 +2081,9 @@ $robotime-topic-placeholder-icon-fill: url("data:image/svg+xml,%3Csvg xmlns='htt
     }
 
     &[data-robotime-thumb-state="placeholder"] {
-      @include robotime-topic-thumb-placeholder-icon;
+      background-color: var(--robotime-cover-bg, #eceff3);
+
+      @include robotime-topic-cover-placeholder-title-pseudo;
 
       img {
         display: none !important;
