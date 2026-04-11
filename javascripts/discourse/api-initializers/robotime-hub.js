@@ -727,7 +727,7 @@ export default apiInitializer((api) => {
   }
 
   /**
-   * Topic list cover: intrinsic w/h > this → 1:1 crop, else 3:4 (AGENTS.md / design).
+   * Topic list cover: intrinsic w/h > this → 1:1 crop, else 3:4.
    * No image / load error → square placeholder.
    */
   const ROBOTIME_THUMB_WH_RATIO_SPLIT = 0.85;
