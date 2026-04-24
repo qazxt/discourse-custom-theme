@@ -503,11 +503,14 @@ body {
 // 3. SIDEBAR — matches preview.html .sidebar / .sidebar-menu / widget / .new-topic-btn
 // ============================================================
 .sidebar-wrapper {
-  background-color: $robotime-sidebar-canvas;
+  background-color: $robotime-white;
+  border: none !important;
 }
 
 .sidebar-wrapper .sidebar-container {
   background: transparent;
+  border: none !important;
+  box-shadow: none !important;
 }
 
 // Core lays out #d-sidebar as column flex; .sidebar-sections often gets flex-grow: 1, which
@@ -796,6 +799,17 @@ body {
   box-sizing: border-box;
 }
 
+// Remove stray divider line between quick tags and topic cards.
+#main-outlet .list-container,
+#main-outlet .container.list-container,
+#main-outlet .topic-list,
+#main-outlet .topic-list tbody,
+#main-outlet .topic-list-body,
+#main-outlet .latest-topic-list {
+  border-top: none !important;
+  box-shadow: none !important;
+}
+
 // --- Hide welcome banner + search strip above the topic list (core / search-banner theme components) ---
 #main-outlet > .welcome-banner,
 #main-outlet .welcome-banner,
@@ -995,19 +1009,19 @@ body {
   }
 }
 
-// Sidebar "More" section: hide Tags/Search entries per product requirement.
-#d-sidebar .sidebar-more-section .sidebar-section-link-wrapper:has(
-    [data-link-name="tags"],
-    [data-link-name="search"],
-    a[href^="/tags"],
-    a[href^="/search"]
-  ),
-.sidebar-wrapper .sidebar-more-section .sidebar-section-link-wrapper:has(
-    [data-link-name="tags"],
-    [data-link-name="search"],
-    a[href^="/tags"],
-    a[href^="/search"]
-  ) {
+// Sidebar links: hide Tags / Search Chat regardless of section grouping.
+#d-sidebar .sidebar-section-link-wrapper:has([data-link-name="tags"]),
+#d-sidebar .sidebar-section-link-wrapper:has([data-link-name="search"]),
+#d-sidebar .sidebar-section-link-wrapper:has([data-link-name="chat-search"]),
+#d-sidebar .sidebar-section-link-wrapper:has(a[href^="/tags"]),
+#d-sidebar .sidebar-section-link-wrapper:has(a[href^="/search"]),
+#d-sidebar .sidebar-section-link-wrapper:has(a[href^="/chat/search"]),
+.sidebar-wrapper .sidebar-section-link-wrapper:has([data-link-name="tags"]),
+.sidebar-wrapper .sidebar-section-link-wrapper:has([data-link-name="search"]),
+.sidebar-wrapper .sidebar-section-link-wrapper:has([data-link-name="chat-search"]),
+.sidebar-wrapper .sidebar-section-link-wrapper:has(a[href^="/tags"]),
+.sidebar-wrapper .sidebar-section-link-wrapper:has(a[href^="/search"]),
+.sidebar-wrapper .sidebar-section-link-wrapper:has(a[href^="/chat/search"]) {
   display: none !important;
 }
 
@@ -1279,7 +1293,7 @@ $robotime-cover-palette: (
     border-radius: 18px;
     overflow: hidden;
     background: $robotime-white;
-    border: 1px solid rgba(0, 0, 0, 0.06);
+    border: none;
     box-shadow: none;
     transition: border-color 0.25s;
     cursor: pointer;
@@ -1292,7 +1306,7 @@ $robotime-cover-palette: (
     position: relative;
 
     &:hover {
-      border-color: rgba(0, 0, 0, 0.08);
+      border-color: transparent;
       box-shadow: none;
       transform: none;
     }
