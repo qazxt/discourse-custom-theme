@@ -487,8 +487,8 @@ body {
     }
 
     svg {
-      width: 24px;
-      height: 24px;
+      width: 30px;
+      height: 30px;
       fill: $robotime-white;
     }
 
@@ -919,7 +919,7 @@ body {
   flex-wrap: wrap;
   align-items: center;
   gap: 30px;
-  margin-top: 10px;
+  margin: 20px 0;
   padding: 0;
   width: 100%;
   font-family: $font-primary;
@@ -1020,6 +1020,24 @@ body {
     svg {
       fill: currentColor;
     }
+  }
+
+  .badge-notification,
+  .sidebar-section-link-badge,
+  .sidebar-section-link-suffix .badge-notification,
+  .sidebar-section-link-suffix .badge {
+    color: $robotime-white !important;
+    background: $robotime-black !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  // Some sidebar items render unread as a tiny dot (without number).
+  .sidebar-section-link-suffix .badge-notification--dot,
+  .sidebar-section-link-suffix .sidebar-section-link-dot,
+  .sidebar-section-link-suffix .dot {
+    background: $robotime-black !important;
+    border-color: $robotime-black !important;
   }
 }
 
