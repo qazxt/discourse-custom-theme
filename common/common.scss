@@ -1039,6 +1039,15 @@ body {
     background: $robotime-black !important;
     border-color: $robotime-black !important;
   }
+
+  // Native unread dot rendered as icon <use href="#circle"> in sidebar suffix.
+  .sidebar-section-link-suffix.icon.unread,
+  .sidebar-section-link-suffix.icon.unread .d-icon,
+  .sidebar-section-link-suffix.icon.unread .d-icon-circle,
+  .sidebar-section-link-suffix.icon.unread svg {
+    color: $robotime-black !important;
+    fill: currentColor !important;
+  }
 }
 
 // Sidebar links: hide Tags / Search Chat regardless of section grouping.
@@ -1153,6 +1162,14 @@ body {
     border-radius: 0;
     background: transparent;
     transition: color 0.2s, border-color 0.3s;
+
+    &::before,
+    &::after {
+      display: none !important;
+      content: none !important;
+    }
+
+    box-shadow: none !important;
     &:hover {
       color: $robotime-black;
       background: transparent;
@@ -1163,7 +1180,14 @@ body {
     font-weight: 400;
     border-bottom-color: $robotime-black;
     background: transparent;
+    box-shadow: none !important;
   }
+}
+
+.list-controls .navigation-container .nav-pills > li > a:focus,
+.list-controls .navigation-container .nav-pills > li > a:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
 }
 
 // Topic list nav: "New (N)" count (injected / normalized by robotime-hub.js)
