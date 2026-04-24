@@ -12,14 +12,26 @@ html {
   }
 
   .title a {
-    min-height: 28px;
-    padding: 4px 12px;
-    font-size: 12px;
+    min-height: 30px;
+    min-width: 144px;
+    padding: 0;
+    border-radius: 0;
+    background: transparent;
+  }
+
+  .title .logo-big,
+  .title .logo-small,
+  .title .robotime-header__logo-img {
+    width: 144px;
+    height: 30px;
+    max-width: 144px;
+    max-height: 30px;
+    object-fit: contain;
   }
 
   .d-header-icons {
-    padding: 4px 10px;
-    gap: 6px;
+    padding: 0;
+    gap: 12px;
   }
 
   .before-header-panel-outlet {
