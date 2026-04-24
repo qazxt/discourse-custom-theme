@@ -301,6 +301,10 @@ export default apiInitializer((api) => {
     carousel.className = "robotime-sidebar-widget__carousel";
     wrapper.appendChild(carousel);
 
+    const viewport = document.createElement("div");
+    viewport.className = "robotime-sidebar-widget__viewport";
+    carousel.appendChild(viewport);
+
     function buildCard(w) {
       const a = document.createElement("a");
       a.href = w.link_url || "#";
@@ -329,18 +333,56 @@ export default apiInitializer((api) => {
     }
 
     if (widgets.length === 1) {
-      carousel.appendChild(buildCard(widgets[0]));
+      viewport.appendChild(buildCard(widgets[0]));
     } else {
       let idx = 0;
+      const prevBtn = document.createElement("button");
+      prevBtn.type = "button";
+      prevBtn.className =
+        "robotime-sidebar-widget__arrow robotime-sidebar-widget__arrow--prev";
+      prevBtn.setAttribute("aria-label", "Previous event");
+      prevBtn.innerHTML = `
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M15.5 4.5a1 1 0 0 1 0 1.4L9.4 12l6.1 6.1a1 1 0 1 1-1.4 1.4l-6.8-6.8a1 1 0 0 1 0-1.4l6.8-6.8a1 1 0 0 1 1.4 0z"></path>
+        </svg>`;
+
+      const nextBtn = document.createElement("button");
+      nextBtn.type = "button";
+      nextBtn.className =
+        "robotime-sidebar-widget__arrow robotime-sidebar-widget__arrow--next";
+      nextBtn.setAttribute("aria-label", "Next event");
+      nextBtn.innerHTML = `
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M8.5 4.5a1 1 0 0 1 1.4 0l6.8 6.8a1 1 0 0 1 0 1.4l-6.8 6.8a1 1 0 1 1-1.4-1.4l6.1-6.1-6.1-6.1a1 1 0 0 1 0-1.4z"></path>
+        </svg>`;
+
       const renderMulti = () => {
-        carousel.innerHTML = "";
-        carousel.appendChild(buildCard(widgets[idx]));
+        viewport.innerHTML = "";
+        viewport.appendChild(buildCard(widgets[idx]));
+        const oldDots = carousel.querySelector(".robotime-sidebar-widget__dots");
+        if (oldDots) {
+          oldDots.remove();
+        }
         carousel.appendChild(buildDots(idx));
       };
       renderMulti();
-      window.__robotimeSidebarInterval = setInterval(() => {
+
+      carousel.appendChild(prevBtn);
+      carousel.appendChild(nextBtn);
+
+      const goPrev = () => {
+        idx = (idx - 1 + widgets.length) % widgets.length;
+        renderMulti();
+      };
+      const goNext = () => {
         idx = (idx + 1) % widgets.length;
         renderMulti();
+      };
+      prevBtn.addEventListener("click", goPrev);
+      nextBtn.addEventListener("click", goNext);
+
+      window.__robotimeSidebarInterval = setInterval(() => {
+        goNext();
       }, 5000);
     }
 
@@ -649,6 +691,13 @@ export default apiInitializer((api) => {
 
     const user = api.getCurrentUser?.();
     if (!user) {
+      return;
+    }
+
+    // Some Discourse versions/themes already render "New (N)" in the label text.
+    // If we append another count span, it becomes duplicated: "New (N)(N)".
+    const linkText = (newLink.textContent || "").replace(/\s+/g, " ").trim();
+    if (/\(\d+\)\s*$/.test(linkText)) {
       return;
     }
 
