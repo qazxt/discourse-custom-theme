@@ -61,16 +61,14 @@
 
 ---
 
-## 推荐与依赖说明
+## 组件依赖说明
 
 | 类型 | 说明 |
 |------|------|
 | **Discourse** | 版本不低于 `about.json` 中 `minimum_discourse_version`（当前为 3.0.0）。 |
-| **话题缩略图** | 若要在列表中稳定显示话题封面图，建议使用社区成熟的 **Topic Thumbnails** 类主题组件/插件，并为分类等开启缩略图；本主题通过 `robotime_topic_thumbnails_enabled` 控制是否插入封面列与自定义话题单元格。 |
+| **[话题缩略图](https://github.com/discourse/discourse-topic-thumbnails)** | 若要在列表中稳定显示话题封面图，建议使用社区成熟的 **Topic Thumbnails** 类主题组件/插件，并为分类等开启缩略图；本主题通过 `robotime_topic_thumbnails_enabled` 控制是否插入封面列与自定义话题单元格。 |
 | **列表 Tab（Latest / New / Bookmarks 等）** | 由 Discourse **站点设置**（如 `top menu`）控制出现哪些链接；本主题主要做样式与少量增强脚本。 |
-| **`/hub-config.json`** | 非 Discourse 核心自带；需要轮播或侧栏图卡数据时，由你们用插件或运维提供。 |
 
-本仓库 **不强制** 安装某一指定插件；按上表按需组合即可。
 
 ---
 
