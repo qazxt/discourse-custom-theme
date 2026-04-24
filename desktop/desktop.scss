@@ -72,6 +72,12 @@ $robotime-layout-gap: 51px;
     calc(100vh - var(--robotime-header-offset, 120px) - 16px)
   );
   overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.sidebar-wrapper::-webkit-scrollbar {
+  display: none;
 }
 
 // Discovery layout target: 1600 total = 270 sidebar + 51 gap + 1279 main.
