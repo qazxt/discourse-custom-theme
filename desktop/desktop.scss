@@ -2,6 +2,11 @@
 // Robotime Community Theme - Desktop Styles (≥1200px)
 // ============================================================
 
+$robotime-layout-total-width: 1600px;
+$robotime-layout-sidebar-width: 270px;
+$robotime-layout-main-width: 1279px;
+$robotime-layout-gap: 51px;
+
 // --- Layout ---
 .wrap {
   max-width: 1400px;
@@ -40,23 +45,25 @@
   align-items: stretch;
   gap: 16px;
   padding-top: 16px;
-  width: 100%;
-  max-width: 100%;
+  width: $robotime-layout-main-width;
+  max-width: $robotime-layout-main-width;
   min-width: 0;
+  flex: 0 0 $robotime-layout-main-width;
 }
 
 .robotime-page-layout {
   display: flex;
-  gap: 24px;
+  gap: $robotime-layout-gap;
   width: 100%;
-  max-width: 1400px;
+  max-width: $robotime-layout-total-width;
   margin: 0 auto;
 }
 
 // --- Sidebar desktop (sibling of #main-outlet in #main-outlet-wrapper, not a child) ---
 .sidebar-wrapper {
-  width: 270px;
-  flex-shrink: 0;
+  width: $robotime-layout-sidebar-width;
+  max-width: $robotime-layout-sidebar-width;
+  flex: 0 0 $robotime-layout-sidebar-width;
   position: sticky;
   top: calc(var(--robotime-header-offset, 120px) + 8px);
   align-self: flex-start;
@@ -65,6 +72,16 @@
     calc(100vh - var(--robotime-header-offset, 120px) - 16px)
   );
   overflow-y: auto;
+}
+
+// Discovery layout target: 1600 total = 270 sidebar + 51 gap + 1279 main.
+#main-outlet-wrapper {
+  max-width: $robotime-layout-total-width;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  align-items: flex-start;
+  column-gap: $robotime-layout-gap;
 }
 
 // Ensure desktop never inherits a leaked `display: none` on .sidebar-wrapper
