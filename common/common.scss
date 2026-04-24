@@ -370,7 +370,7 @@ body {
     text-overflow: ellipsis;
     line-height: 1.2;
     text-align: center;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
+    text-shadow: none;
     pointer-events: none;
   }
 
@@ -448,14 +448,13 @@ body {
       align-items: center;
       justify-content: center;
       font-weight: 400;
-      text-shadow: 0 1px 0 rgba(0, 0, 0, 0.15);
+      text-shadow: none;
       line-height: 1.1;
       pointer-events: none;
     }
 
     .robotime-carousel__card-label.light-bg {
       color: $robotime-black;
-      text-shadow: none;
     }
 
     .robotime-carousel__card-label.dark-bg {
@@ -579,7 +578,7 @@ body {
   margin-top: 12px;
   box-sizing: border-box;
   min-height: 44px;
-  padding: 0 16px;
+  padding: 0;
   background: $robotime-blue;
   color: $robotime-white;
   border: none;
@@ -609,12 +608,13 @@ body {
 }
 
 .robotime-sidebar-widget {
-  padding: 10px;
+  padding: 0;
   border: none;
   border-radius: 14px;
   background: $robotime-white;
   box-shadow: none;
   box-sizing: border-box;
+  width: 100%;
 
   &__section-title {
     font-family: "Google Sans Flex", "Google Sans", "Noto Sans", "Helvetica Neue",
@@ -742,8 +742,8 @@ body {
     width: 30px;
     height: 30px;
     border: none;
-    border-radius: 50%;
-    background: rgba(0, 0, 0, 0.4);
+    border-radius: 0;
+    background: transparent;
     color: $robotime-white;
     display: inline-flex;
     align-items: center;
@@ -761,7 +761,7 @@ body {
     }
 
     &:hover {
-      background: rgba(0, 0, 0, 0.65);
+      background: transparent;
     }
   }
 
