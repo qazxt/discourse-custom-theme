@@ -828,9 +828,11 @@ body {
 #d-sidebar .sidebar-sections > [data-section-name="chat-channels"],
 #d-sidebar .sidebar-sections > [data-section-name="chat-dms"],
 .sidebar-wrapper .sidebar-sections > [data-section-name="categories"],
+.sidebar-wrapper .sidebar-sections > [data-section-name="tags"],
 .sidebar-wrapper .sidebar-sections > [data-section-name="chat-channels"],
 .sidebar-wrapper .sidebar-sections > [data-section-name="chat-dms"],
-.sidebar-custom-sections .sidebar-section[data-section-name="categories"] {
+.sidebar-custom-sections .sidebar-section[data-section-name="categories"],
+.sidebar-custom-sections .sidebar-section[data-section-name="tags"] {
   display: none !important;
 }
 
@@ -846,12 +848,16 @@ body {
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 .list-controls .navigation-container {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+  margin: 0;
+  padding: 0;
   row-gap: 10px;
   column-gap: 10px;
 }
@@ -907,7 +913,7 @@ body {
   align-items: center;
   gap: 30px;
   margin-top: 10px;
-  padding: 0 0 4px;
+  padding: 0;
   width: 100%;
   font-family: $font-primary;
 
@@ -1156,7 +1162,7 @@ body {
 #create-topic {
   background: #f7f7f7 !important;
   color: #777777 !important;
-  border: 1px solid #dddddd !important;
+  border: none !important;
   border-radius: 10px 0 0 10px !important;
   font-family: "Google Sans Flex", "Google Sans", "Noto Sans", "Helvetica Neue",
     Arial, sans-serif;
@@ -1182,8 +1188,7 @@ body {
 .list-controls .topic-list-header .bulk-select {
   background: #f7f7f7 !important;
   color: #777777 !important;
-  border: 1px solid #dddddd !important;
-  border-left: 0 !important;
+  border: none !important;
   border-radius: 0 10px 10px 0 !important;
   min-height: 51px;
   min-width: 44px;
@@ -1839,6 +1844,8 @@ $robotime-cover-palette: (
 
         > .link-top-line {
           order: 2;
+          margin: 0;
+          padding: 0;
         }
 
         > .link-bottom-line {
@@ -1893,8 +1900,9 @@ $robotime-cover-palette: (
         min-width: 40px;
         min-height: 40px;
         border-radius: 50%;
-        border: 2px solid $robotime-light-gray;
+        border: none;
         object-fit: cover;
+        display: block;
       }
 
       .main-link .link-top-line .badge-category,
@@ -1910,12 +1918,14 @@ $robotime-cover-palette: (
 
       .main-link .robotime-topic-meta {
         margin-top: 0;
+        margin-bottom: 0;
+        padding: 0;
         font-family: "Google Sans Flex", "Google Sans", "Noto Sans", "Helvetica Neue",
           Arial, sans-serif;
         font-size: 24px;
         font-weight: 400;
         color: #000000;
-        line-height: 1.2;
+        line-height: 1;
         background: transparent;
         border: none;
         box-shadow: none;
@@ -1925,13 +1935,22 @@ $robotime-cover-palette: (
         }
 
         svg.d-icon.svg-icon,
-        .robotime-topic-meta__item > svg,
-        .robotime-topic-meta__icon {
+        .robotime-topic-meta__item > svg {
           width: 24px !important;
           height: 24px !important;
           min-width: 24px;
           min-height: 24px;
           color: #000000 !important;
+        }
+
+        .robotime-topic-meta__icon {
+          width: 24px !important;
+          height: 24px !important;
+          min-width: 24px;
+          min-height: 24px;
+          background-size: contain !important;
+          background-repeat: no-repeat;
+          background-position: center;
         }
       }
 
@@ -1941,7 +1960,9 @@ $robotime-cover-palette: (
           Arial, sans-serif;
         font-size: 24px !important;
         font-weight: 400 !important;
-        line-height: 1.2 !important;
+        line-height: 1 !important;
+        margin: 0 !important;
+        padding: 0 !important;
         color: #000000 !important;
       }
 
@@ -2046,13 +2067,22 @@ $robotime-cover-palette: (
 
         // Core uses SVG width/height=1em; force visual size to match avatar scale
         svg.d-icon.svg-icon,
-        .robotime-topic-meta__item > svg,
-        .robotime-topic-meta__icon {
+        .robotime-topic-meta__item > svg {
           width: 24px !important;
           height: 24px !important;
           min-width: 24px;
           min-height: 24px;
           color: #000000 !important;
+        }
+
+        .robotime-topic-meta__icon {
+          width: 24px !important;
+          height: 24px !important;
+          min-width: 24px;
+          min-height: 24px;
+          background-size: contain !important;
+          background-repeat: no-repeat;
+          background-position: center;
         }
       }
 
