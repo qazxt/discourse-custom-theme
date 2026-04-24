@@ -545,7 +545,7 @@ body {
 // Match preview.html: ~20px between nav pills and event carousel (not core’s large section gap).
 .robotime-sidebar-hub {
   margin-top: 20px;
-  padding: 0 var(--d-sidebar-horizontal-padding, 0.65em) 1rem;
+  padding: 0 0 1rem;
   width: 100%;
   box-sizing: border-box;
 }
@@ -899,12 +899,19 @@ body {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+  justify-content: flex-start !important;
   gap: 30px;
   margin: 0;
   margin-left: 20px;
   padding: 0;
   list-style: none;
   border: none;
+}
+
+.list-controls .navigation-container .nav-pills > li {
+  flex: 0 0 auto;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 .robotime-filter-quick-tags {
@@ -918,7 +925,7 @@ body {
   font-family: $font-primary;
 
   &__link {
-    font-size: 16px;
+    font-size: 20px;
     font-weight: 400;
     color: $robotime-gray;
     text-decoration: none;
@@ -1124,7 +1131,7 @@ body {
     font-weight: 400;
     color: $robotime-gray;
     border-bottom: 3px solid transparent;
-    padding-bottom: 4px;
+    padding: 0 0 4px !important;
     border-radius: 0;
     background: transparent;
     transition: color 0.2s, border-color 0.3s;
@@ -1163,7 +1170,7 @@ body {
   background: #f7f7f7 !important;
   color: #777777 !important;
   border: none !important;
-  border-radius: 10px 0 0 10px !important;
+  border-radius: 10px !important;
   font-family: "Google Sans Flex", "Google Sans", "Noto Sans", "Helvetica Neue",
     Arial, sans-serif;
   font-size: 24px;
@@ -1189,7 +1196,8 @@ body {
   background: #f7f7f7 !important;
   color: #777777 !important;
   border: none !important;
-  border-radius: 0 10px 10px 0 !important;
+  border-radius: 10px !important;
+  margin-left: 8px;
   min-height: 51px;
   min-width: 44px;
   box-shadow: none !important;
@@ -1840,12 +1848,18 @@ $robotime-cover-palette: (
 
         .robotime-topic-preview-content__outlet--before-link {
           order: 1;
+          display: none !important;
         }
 
         > .link-top-line {
           order: 2;
           margin: 0;
           padding: 0;
+
+          > * {
+            margin-top: 0 !important;
+            margin-bottom: 0 !important;
+          }
         }
 
         > .link-bottom-line {
@@ -1966,6 +1980,12 @@ $robotime-cover-palette: (
         color: #000000 !important;
       }
 
+      .main-link .link-top-line,
+      .main-link .link-top-line > * {
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+      }
+
       td.num.topic-list-data,
       td.activity.topic-list-data {
         display: none !important;
@@ -2036,6 +2056,13 @@ $robotime-cover-palette: (
       .main-link .link-top-line {
         position: relative;
         z-index: 0;
+        margin: 0 !important;
+        padding: 0 !important;
+
+        > * {
+          margin-top: 0 !important;
+          margin-bottom: 0 !important;
+        }
       }
 
       .main-link a.title,
