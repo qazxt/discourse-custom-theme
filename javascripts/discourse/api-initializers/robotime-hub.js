@@ -244,6 +244,26 @@ export default apiInitializer((api) => {
       return r * 0.299 + g * 0.587 + b * 0.114 < 160;
     }
 
+    function normalizeCarouselTextColor(raw) {
+      const s = String(raw || "").trim();
+      if (!s) {
+        return null;
+      }
+      // Allow common safe CSS color formats only.
+      if (
+        /^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(s) ||
+        /^rgba?\(\s*\d+\s*,\s*\d+\s*,\s*\d+(\s*,\s*(0|1|0?\.\d+))?\s*\)$/i.test(
+          s
+        ) ||
+        /^hsla?\(\s*\d+\s*,\s*\d+%\s*,\s*\d+%(\s*,\s*(0|1|0?\.\d+))?\s*\)$/i.test(
+          s
+        )
+      ) {
+        return s;
+      }
+      return null;
+    }
+
     heroBanners.forEach((card) => {
       const el = document.createElement("a");
       el.href = card.link_url || "#";
@@ -255,10 +275,14 @@ export default apiInitializer((api) => {
         ? "dark-bg"
         : "light-bg";
       const normalBg = card.bg_color || "#f6ebe3";
+      const labelColor = normalizeCarouselTextColor(
+        card.text_color || card.title_color || card.label_color || card.font_color
+      );
+      const labelStyle = labelColor ? ` style="color: ${labelColor}"` : "";
       el.innerHTML = `
       <div class="robotime-carousel__card-body" style="background-color: ${normalBg}">
         <div class="robotime-carousel__card-img" style="background-image: url('${card.image_url}')"></div>
-        <div class="robotime-carousel__card-label ${bgClass}">${card.title}</div>
+        <div class="robotime-carousel__card-label ${bgClass}"${labelStyle}>${card.title}</div>
       </div>`;
 
       el.addEventListener("mousedown", () => el.classList.add("is-pressed"));
