@@ -69,8 +69,8 @@ body {
   .before-header-panel-outlet {
     display: flex;
     align-items: center;
-    justify-content: center;
-    flex: 1 1 auto;
+    justify-content: flex-start;
+    flex: 0 0 auto;
     min-width: 0;
     order: 0;
   }
@@ -615,7 +615,7 @@ body {
 
 .robotime-sidebar-widget {
   padding: 0;
-  border: none;
+  border: 1px solid $robotime-border-gray;
   border-radius: 14px;
   background: $robotime-white;
   box-shadow: none;
@@ -830,14 +830,13 @@ body {
 
 // --- Hide categories + chat channel/DM blocks (empty shells still eat flex height in .sidebar-sections) ---
 // `>` matches Discourse’s flat section list; #d-sidebar + .sidebar-wrapper cover id / legacy markup.
-#d-sidebar .sidebar-sections > [data-section-name="categories"],
 #d-sidebar .sidebar-sections > [data-section-name="chat-channels"],
 #d-sidebar .sidebar-sections > [data-section-name="chat-dms"],
-.sidebar-wrapper .sidebar-sections > [data-section-name="categories"],
+#d-sidebar .sidebar-sections > [data-section-name="chat-search"],
 .sidebar-wrapper .sidebar-sections > [data-section-name="tags"],
 .sidebar-wrapper .sidebar-sections > [data-section-name="chat-channels"],
 .sidebar-wrapper .sidebar-sections > [data-section-name="chat-dms"],
-.sidebar-custom-sections .sidebar-section[data-section-name="categories"],
+.sidebar-wrapper .sidebar-sections > [data-section-name="chat-search"],
 .sidebar-custom-sections .sidebar-section[data-section-name="tags"] {
   display: none !important;
 }
@@ -1060,14 +1059,18 @@ body {
 #d-sidebar .sidebar-section-link-wrapper:has([data-link-name="tags"]),
 #d-sidebar .sidebar-section-link-wrapper:has([data-link-name="search"]),
 #d-sidebar .sidebar-section-link-wrapper:has([data-link-name="chat-search"]),
+#d-sidebar .sidebar-section-link-wrapper:has([data-link-name="my-threads"]),
 #d-sidebar .sidebar-section-link-wrapper:has(a[href^="/tags"]),
 #d-sidebar .sidebar-section-link-wrapper:has(a[href^="/search"]),
+#d-sidebar .sidebar-section-link-wrapper:has(a[href^="/my/threads"]),
 #d-sidebar .sidebar-section-link-wrapper:has(a[href^="/chat/search"]),
 .sidebar-wrapper .sidebar-section-link-wrapper:has([data-link-name="tags"]),
 .sidebar-wrapper .sidebar-section-link-wrapper:has([data-link-name="search"]),
 .sidebar-wrapper .sidebar-section-link-wrapper:has([data-link-name="chat-search"]),
+.sidebar-wrapper .sidebar-section-link-wrapper:has([data-link-name="my-threads"]),
 .sidebar-wrapper .sidebar-section-link-wrapper:has(a[href^="/tags"]),
 .sidebar-wrapper .sidebar-section-link-wrapper:has(a[href^="/search"]),
+.sidebar-wrapper .sidebar-section-link-wrapper:has(a[href^="/my/threads"]),
 .sidebar-wrapper .sidebar-section-link-wrapper:has(a[href^="/chat/search"]) {
   display: none !important;
 }

@@ -601,6 +601,23 @@ export default apiInitializer((api) => {
     });
   }
 
+  function applyRobotimeSidebarCategoryVisibility() {
+    const isAdmin = !!api.getCurrentUser?.()?.admin;
+    const selectors = [
+      "#d-sidebar .sidebar-sections > [data-section-name='categories']",
+      ".sidebar-wrapper .sidebar-sections > [data-section-name='categories']",
+      ".sidebar-custom-sections .sidebar-section[data-section-name='categories']",
+    ];
+
+    document.querySelectorAll(selectors.join(", ")).forEach((el) => {
+      if (isAdmin) {
+        el.style.removeProperty("display");
+      } else {
+        el.style.setProperty("display", "none", "important");
+      }
+    });
+  }
+
   const ROBOTIME_TOPIC_LIST_NAV_PILLS =
     ".list-controls .navigation-container .nav-pills";
 
@@ -794,6 +811,7 @@ export default apiInitializer((api) => {
     applyRobotimeHeaderLogo();
     updateRobotimeHeaderOffset();
     ensureSidebarNewTopicLabel();
+    applyRobotimeSidebarCategoryVisibility();
     injectRobotimeSidebarMenuIcons();
     scheduleRobotimeTopicThumbnails();
     scheduleRobotimeNavPillsEnhance();
