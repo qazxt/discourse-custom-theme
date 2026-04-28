@@ -2663,55 +2663,100 @@ $robotime-cover-palette: (
   gap: 32px;
   grid-template-columns: 1fr 1fr 1fr;
   width: 100%;
+  margin-bottom: 32px;
 
   .category-box {
-    display: flex;
+    display: block;
     flex-grow: 1;
     background-color: var(--secondary);
-    border-left-width: 0;
+    border: 1px solid rgba(119, 119, 119, 0.12);
     border-radius: 12px;
     margin: 0;
-    max-height: 160px;
+    min-height: 78px;
+    max-height: 78px;
     overflow: hidden;
-    transition: all ease-out 0.2s;
-    width: initial;
-    box-shadow:
-      0 24px 40px rgb(0, 0, 0, 0.07),
-      0 10.8529px 24.1177px rgb(0, 0, 0, 0.0456112),
-      0 4.50776px 10.0172px rgb(0, 0, 0, 0.035),
-      0 1.63037px 3.62304px rgb(0, 0, 0, 0.0243888);
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+    width: auto;
+    box-shadow: 0 6px 14px rgb(0, 0, 0, 0.06);
   }
 
   .category-box-inner {
     border: 0;
     display: grid;
     grid-auto-flow: column;
-    grid-template-columns: 0fr 1fr 0fr;
-    column-gap: 24px;
+    grid-template-columns: 78px minmax(0, 1fr);
+    column-gap: 20px;
     padding: 0;
     width: 100%;
+    min-height: 78px;
+    align-items: center;
   }
 
   .category-logo {
-    align-self: center;
-    display: inline-block;
-    width: 80px;
-    height: 80px;
-    margin: 0;
+    align-self: stretch;
+    display: block;
+    width: 78px;
+    height: 78px;
+    margin: 0 !important;
+    padding: 0 !important;
+    border-radius: 12px 0 0 12px;
+    overflow: hidden;
 
     img {
       width: 100%;
       height: 100%;
       object-fit: cover;
+      display: block;
     }
   }
 
   .category-box-heading {
-    margin-bottom: 4px;
+    margin: 0;
+  }
+
+  .category-details {
+    min-width: 0;
+    padding-right: 18px;
+  }
+
+  .parent-box-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 32px;
+    text-decoration: none;
   }
 
   .description {
     display: none;
+  }
+
+  h3 {
+    margin: 0;
+    line-height: 1.2;
+    font-size: 30px;
+    font-weight: 600;
+    color: var(--primary);
+  }
+
+  .badge-category__wrapper,
+  .badge-category {
+    background: transparent !important;
+    border: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+  }
+
+  .badge-category .d-icon,
+  .badge-category .emoji {
+    display: none !important;
+  }
+
+  .badge-category__name {
+    color: var(--primary) !important;
+    font-size: 30px;
+    font-weight: 600;
+    line-height: 1.2;
   }
 }
 
