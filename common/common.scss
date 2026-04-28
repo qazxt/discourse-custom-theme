@@ -487,6 +487,24 @@ body {
     }
   }
 
+
+// Uncollapsed carousel: force black base to visually hide corner seam on dark images.
+.robotime-carousel:not(.robotime-carousel--collapsed) {
+  .robotime-carousel__card,
+  .robotime-carousel__card-body {
+    background: #000000;
+  }
+
+  .robotime-carousel__card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 3;
+    box-shadow: inset 0 0 0 1px #000000;
+  }
+}
+
   &__arrow {
     position: absolute;
     top: 50%;
