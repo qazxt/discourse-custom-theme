@@ -508,7 +508,7 @@ body {
   &.robotime-carousel--collapsed {
     .robotime-carousel__card,
     .robotime-carousel__card-body {
-      background: transparent;
+      background: var(--robotime-card-bg, transparent);
     }
 
     .robotime-carousel__card::after {
