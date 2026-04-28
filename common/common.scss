@@ -2621,6 +2621,27 @@ $robotime-cover-palette: (
 
 #header-list-area .custom-category-boxes:not(.above-discovery-categories-outlet) {
   grid-template-columns: 1fr 1fr 1fr;
+
+  .category-box-inner {
+    column-gap: 24px;
+
+    .category-logo {
+      width: 80px;
+      height: 80px;
+    }
+  }
+
+  .category-box-heading {
+    margin-bottom: 4px;
+  }
+
+  h3 {
+    font-size: 1em;
+  }
+
+  .description {
+    display: none;
+  }
 }
 
 @media (max-width: 1250px) {
