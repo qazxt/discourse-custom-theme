@@ -1345,6 +1345,22 @@ $robotime-cover-palette: (
     column-fill: balance;
   }
 
+  // JS masonry (shortest-column placement) replaces CSS multicol flow.
+  tbody.robotime-topic-list--js-masonry {
+    column-count: initial !important;
+    column-gap: 0 !important;
+    column-fill: auto !important;
+    position: relative;
+    width: 100%;
+  }
+
+  tbody.robotime-topic-list--js-masonry > tr.topic-list-item {
+    position: absolute;
+    margin: 0 !important;
+    break-inside: auto;
+    page-break-inside: auto;
+  }
+
   tbody > tr:not(.topic-list-item) {
     display: none !important;
   }

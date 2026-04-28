@@ -814,6 +814,7 @@ export default apiInitializer((api) => {
     applyRobotimeSidebarCategoryVisibility();
     injectRobotimeSidebarMenuIcons();
     scheduleRobotimeTopicThumbnails();
+    scheduleRobotimeTopicMasonry();
     scheduleRobotimeNavPillsEnhance();
   }
 
@@ -824,6 +825,7 @@ export default apiInitializer((api) => {
   const ROBOTIME_THUMB_WH_RATIO_SPLIT = 0.85;
 
   let robotimeThumbApplyTimer = null;
+  let robotimeMasonryApplyTimer = null;
 
   function scheduleRobotimeTopicThumbnails() {
     if (robotimeThumbApplyTimer) {
@@ -833,6 +835,100 @@ export default apiInitializer((api) => {
       robotimeThumbApplyTimer = null;
       applyRobotimeTopicListThumbnails();
     }, 80);
+  }
+
+  function robotimeMasonryColumns() {
+    const w = window.innerWidth || document.documentElement.clientWidth || 0;
+    if (w < 768) return 1;
+    if (w < 1200) return 2;
+    return 3;
+  }
+
+  function clearRobotimeMasonryStyles(tbody, rows) {
+    tbody.classList.remove("robotime-topic-list--js-masonry");
+    tbody.style.removeProperty("height");
+    rows.forEach((row) => {
+      row.style.removeProperty("position");
+      row.style.removeProperty("left");
+      row.style.removeProperty("top");
+      row.style.removeProperty("width");
+      row.style.removeProperty("margin");
+      row.style.removeProperty("transform");
+      row.style.removeProperty("break-inside");
+      row.style.removeProperty("page-break-inside");
+    });
+  }
+
+  function applyRobotimeTopicListMasonry() {
+    document.querySelectorAll(".topic-list tbody").forEach((tbody) => {
+      const rows = [...tbody.querySelectorAll(":scope > tr.topic-list-item")];
+      if (!rows.length) {
+        tbody.classList.remove("robotime-topic-list--js-masonry");
+        tbody.style.removeProperty("height");
+        return;
+      }
+
+      const cols = robotimeMasonryColumns();
+      if (cols <= 1) {
+        clearRobotimeMasonryStyles(tbody, rows);
+        return;
+      }
+
+      const gap = 20;
+      const width = tbody.clientWidth;
+      if (!width || width <= gap * (cols - 1)) {
+        return;
+      }
+
+      const colWidth = (width - gap * (cols - 1)) / cols;
+      const colHeights = new Array(cols).fill(0);
+      tbody.classList.add("robotime-topic-list--js-masonry");
+
+      rows.forEach((row) => {
+        row.style.position = "absolute";
+        row.style.left = "0";
+        row.style.top = "0";
+        row.style.width = `${colWidth}px`;
+        row.style.margin = "0";
+        row.style.breakInside = "auto";
+        row.style.pageBreakInside = "auto";
+
+        let col = 0;
+        for (let i = 1; i < cols; i += 1) {
+          if (colHeights[i] < colHeights[col]) {
+            col = i;
+          }
+        }
+
+        const x = col * (colWidth + gap);
+        const y = colHeights[col];
+        row.style.transform = `translate(${Math.round(x)}px, ${Math.round(y)}px)`;
+        colHeights[col] = y + row.offsetHeight + gap;
+      });
+
+      const maxHeight = Math.max(...colHeights, 0);
+      tbody.style.height = `${Math.max(0, Math.round(maxHeight - gap))}px`;
+    });
+  }
+
+  function scheduleRobotimeTopicMasonry() {
+    if (robotimeMasonryApplyTimer) {
+      clearTimeout(robotimeMasonryApplyTimer);
+    }
+    robotimeMasonryApplyTimer = setTimeout(() => {
+      robotimeMasonryApplyTimer = null;
+      applyRobotimeTopicListMasonry();
+    }, 90);
+  }
+
+  function setupRobotimeMasonryResizeHookOnce() {
+    if (window.__robotimeMasonryResizeHook) {
+      return;
+    }
+    window.__robotimeMasonryResizeHook = true;
+    window.addEventListener("resize", scheduleRobotimeTopicMasonry, {
+      passive: true,
+    });
   }
 
   function robotimeClearThumbCellDataset(cell) {
@@ -1071,6 +1167,7 @@ export default apiInitializer((api) => {
     });
     markRobotimeTopicRowCoverLayout();
     decorateRobotimeTopicCardThumbnails();
+    scheduleRobotimeTopicMasonry();
   }
 
   function setupRobotimeTopicThumbnailObserverOnce() {
@@ -1087,6 +1184,7 @@ export default apiInitializer((api) => {
     requestAnimationFrame(() => {
       setupRobotimeHeaderOffsetObserverOnce();
       setupRobotimeTopicThumbnailObserverOnce();
+      setupRobotimeMasonryResizeHookOnce();
       setupRobotimeNavPillsMutationObserverOnce();
       setupRobotimeNavPillsTrackingHookOnce();
       runRobotimeLayoutPass();
