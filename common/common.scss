@@ -562,6 +562,30 @@ body {
   box-shadow: none !important;
 }
 
+// Remove sidebar section divider lines (top/bottom) from wrappers and pseudo-elements.
+#d-sidebar .sidebar-sections > .sidebar-section,
+#d-sidebar .sidebar-sections > .sidebar-section-wrapper,
+#d-sidebar .sidebar-sections > .sidebar-more-section,
+#d-sidebar .sidebar-custom-sections .sidebar-section,
+#d-sidebar .sidebar-custom-sections .sidebar-section-wrapper {
+  border: none !important;
+  border-top: none !important;
+  border-bottom: none !important;
+  box-shadow: none !important;
+}
+
+#d-sidebar .sidebar-sections > .sidebar-section::before,
+#d-sidebar .sidebar-sections > .sidebar-section::after,
+#d-sidebar .sidebar-sections > .sidebar-section-wrapper::before,
+#d-sidebar .sidebar-sections > .sidebar-section-wrapper::after,
+#d-sidebar .sidebar-custom-sections .sidebar-section::before,
+#d-sidebar .sidebar-custom-sections .sidebar-section::after,
+#d-sidebar .sidebar-custom-sections .sidebar-section-wrapper::before,
+#d-sidebar .sidebar-custom-sections .sidebar-section-wrapper::after {
+  content: none !important;
+  display: none !important;
+}
+
 // Core lays out #d-sidebar as column flex; .sidebar-sections often gets flex-grow: 1, which
 // stretches the block and pushes .robotime-sidebar-hub (connector sibling) to the bottom with a huge gap.
 #d-sidebar.sidebar-container {
