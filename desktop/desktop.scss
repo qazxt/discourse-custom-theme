@@ -13,6 +13,14 @@ $robotime-layout-gap: 51px;
 }
 
 // --- Theme nav (before-header-panel) ---
+.d-header .title {
+  margin-right: 36px;
+}
+
+.d-header .robotime-core-header-nav {
+  gap: 30px;
+}
+
 .d-header .robotime-header__nav-link {
   font-size: 16px;
 }
