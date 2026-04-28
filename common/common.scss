@@ -301,13 +301,13 @@ body {
     &:hover {
       z-index: 5;
       transform: scale(1.05) translateZ(0);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.14);
     }
 
     &.robotime-carousel__card--active {
       z-index: 5;
       transform: scale(1.05) translateZ(0);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.14);
     }
 
     &.is-pressed,
@@ -495,7 +495,12 @@ body {
       inset: 0;
       pointer-events: none;
       z-index: 3;
-      box-shadow: inset 0 0 0 2px #000000;
+      box-shadow: inset 0 0 0 1px #000000;
+    }
+
+    .robotime-carousel__card:hover::after,
+    .robotime-carousel__card.robotime-carousel__card--active::after {
+      opacity: 0;
     }
   }
 
