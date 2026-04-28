@@ -580,15 +580,16 @@ body {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  width: 100%;
-  margin-top: 12px;
+  width: 270px;
+  max-width: 100%;
+  margin-top: 10px;
   box-sizing: border-box;
-  min-height: 44px;
+  min-height: 50px;
   padding: 0;
   background: $robotime-blue;
   color: $robotime-white;
   border: none;
-  border-radius: 22px;
+  border-radius: 25px;
   font-family: $font-primary;
   font-size: 16px;
   font-weight: 500;
@@ -614,31 +615,34 @@ body {
 }
 
 .robotime-sidebar-widget {
-  padding: 0;
-  border: 1px solid $robotime-border-gray;
+  width: 270px;
+  max-width: 100%;
+  min-height: 290px;
+  padding: 10px 15px;
+  border: 1px solid #777777;
   border-radius: 14px;
   background: $robotime-white;
   box-shadow: none;
   box-sizing: border-box;
-  width: 100%;
 
   &__section-title {
     font-family: "Google Sans Flex", "Google Sans", "Noto Sans", "Helvetica Neue",
       Arial, sans-serif;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 500;
     color: $robotime-white;
     background: $robotime-blue;
     border-radius: 16px;
     min-height: 40px;
-    padding: 0 12px;
+    width: 240px;
+    max-width: 100%;
+    margin: 0 auto 10px;
+    padding: 0 10px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 10px;
     text-align: center;
     line-height: 1.2;
-    width: 100%;
     box-sizing: border-box;
   }
 
@@ -730,7 +734,7 @@ body {
     color: #111111;
     background: transparent;
     border: none;
-    border-top: 1px solid $robotime-border-gray;
+    border-top: 1px solid #777777;
     border-radius: 0;
     text-decoration: none;
     text-align: center;
