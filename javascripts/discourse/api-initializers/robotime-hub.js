@@ -274,13 +274,12 @@ export default apiInitializer((api) => {
       const bgClass = isDark(card.bg_color || "#f6ebe3")
         ? "dark-bg"
         : "light-bg";
-      const normalBg = card.bg_color || "#f6ebe3";
       const labelColor = normalizeCarouselTextColor(
         card.text_color || card.title_color || card.label_color || card.font_color
       );
       const labelStyle = labelColor ? ` style="color: ${labelColor}"` : "";
       el.innerHTML = `
-      <div class="robotime-carousel__card-body" style="background-color: ${normalBg}">
+      <div class="robotime-carousel__card-body">
         <div class="robotime-carousel__card-img" style="background-image: url('${card.image_url}')"></div>
         <div class="robotime-carousel__card-label ${bgClass}"${labelStyle}>${card.title}</div>
       </div>`;
