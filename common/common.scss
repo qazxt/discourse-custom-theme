@@ -290,7 +290,8 @@ body {
     position: relative;
     text-decoration: none;
     color: inherit;
-    transition: box-shadow 0.3s ease,
+    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+      box-shadow 0.3s ease,
       width var(--robotime-hub-transition),
       height var(--robotime-hub-transition);
     box-shadow: none;
@@ -299,17 +300,19 @@ body {
 
     &:hover {
       z-index: 5;
+      transform: scale(1.05) translateZ(0);
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
     }
 
     &.robotime-carousel__card--active {
       z-index: 5;
+      transform: scale(1.05) translateZ(0);
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
     }
 
     &.is-pressed,
     &:active {
-      transform: translateZ(0);
+      transform: scale(0.96) translateZ(0);
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
       transition-duration: 0.1s;
     }
@@ -343,15 +346,6 @@ body {
     }
   }
 
-  &__card:hover &__card-body,
-  &__card.robotime-carousel__card--active &__card-body {
-    transform: scale(1.05) translateZ(0);
-  }
-
-  &__card.is-pressed &__card-body,
-  &__card:active &__card-body {
-    transform: scale(0.96) translateZ(0);
-  }
 
   &__card-img {
     position: absolute;
