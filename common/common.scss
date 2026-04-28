@@ -69,8 +69,8 @@ body {
   .before-header-panel-outlet {
     display: flex;
     align-items: center;
-    justify-content: center;
-    flex: 1 1 auto;
+    justify-content: flex-start;
+    flex: 0 0 auto;
     min-width: 0;
     order: 0;
   }
@@ -279,8 +279,13 @@ body {
     flex-shrink: 0;
     width: 245px;
     height: 154px;
-    border-radius: 10px;
+    border-radius: 0;
     overflow: hidden;
+    clip-path: inset(0 round 10px);
+    -webkit-clip-path: inset(0 round 10px);
+    background-clip: padding-box;
+    -webkit-background-clip: padding-box;
+    isolation: isolate;
     cursor: pointer;
     position: relative;
     text-decoration: none;
@@ -288,25 +293,26 @@ body {
     transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
       box-shadow 0.3s ease,
       width var(--robotime-hub-transition),
-      height var(--robotime-hub-transition),
-      border-radius var(--robotime-hub-transition);
-    will-change: transform;
+      height var(--robotime-hub-transition);
+    box-shadow: none;
+    backface-visibility: hidden;
+    transform: translateZ(0);
 
     &:hover {
       z-index: 5;
-      transform: scale(1.1);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+      transform: scale(1.05) translateZ(0);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.14);
     }
 
     &.robotime-carousel__card--active {
       z-index: 5;
-      transform: scale(1.1);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+      transform: scale(1.05) translateZ(0);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.14);
     }
 
     &.is-pressed,
     &:active {
-      transform: scale(0.96);
+      transform: scale(0.96) translateZ(0);
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
       transition-duration: 0.1s;
     }
@@ -316,34 +322,42 @@ body {
   &__card-body {
     width: 100%;
     height: 100%;
-    border-radius: 10px;
+    border-radius: 0;
     position: relative;
     overflow: hidden;
+    background-clip: padding-box;
+    -webkit-background-clip: padding-box;
+    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    will-change: transform;
+    transform: scale(1) translateZ(0);
+    backface-visibility: hidden;
 
     &::after {
-      content: "";
+      content: none;
       position: absolute;
       left: 0;
       right: 0;
       bottom: 0;
       height: 55%;
-      background: linear-gradient(to top, rgba(0, 0, 0, 0.55), transparent);
-      border-radius: 0 0 10px 10px;
+      background: none;
+      border-radius: 0;
       z-index: 1;
       pointer-events: none;
     }
   }
 
+
   &__card-img {
     position: absolute;
-    inset: 0;
+    inset: -3px;
     z-index: 0;
     background-size: cover;
     background-position: center;
-    border-radius: 10px;
+    border-radius: 0;
     opacity: 1;
     visibility: visible;
     transition: opacity 0.3s ease, visibility 0.3s ease;
+    transform: translateZ(0);
   }
 
   &__card-label {
@@ -382,6 +396,11 @@ body {
     color: $robotime-white;
   }
 
+  &__card:hover &__card-label,
+  &__card.robotime-carousel__card--active &__card-label {
+    color: #a6a6a6 !important;
+  }
+
   // --- Collapsed state (scroll) ---
   &--collapsed {
     padding: 45px 0;
@@ -404,15 +423,15 @@ body {
     .robotime-carousel__card {
       width: 245px;
       height: 80px;
-      border-radius: 10px;
+      border-radius: 0;
+      clip-path: inset(0 round 10px);
+      -webkit-clip-path: inset(0 round 10px);
 
       &:hover {
-        transform: scale(1.05);
         box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
       }
 
       &.robotime-carousel__card--active {
-        transform: scale(1.05);
         box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
       }
     }
@@ -423,7 +442,7 @@ body {
     }
 
     .robotime-carousel__card-body {
-      border-radius: 10px;
+      border-radius: 0;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -459,6 +478,23 @@ body {
 
     .robotime-carousel__card-label.dark-bg {
       color: $robotime-white;
+    }
+  }
+
+
+  // Uncollapsed state: force black base to hide corner seam on dark images.
+  &:not(.robotime-carousel--collapsed) {
+    .robotime-carousel__card,
+    .robotime-carousel__card-body {
+      background: #000000;
+    }
+  }
+
+  // Collapsed state: restore original background.
+  &.robotime-carousel--collapsed {
+    .robotime-carousel__card,
+    .robotime-carousel__card-body {
+      background: var(--robotime-card-bg, transparent);
     }
   }
 
@@ -510,6 +546,30 @@ body {
   background: transparent;
   border: none !important;
   box-shadow: none !important;
+}
+
+// Remove sidebar section divider lines (top/bottom) from wrappers and pseudo-elements.
+#d-sidebar .sidebar-sections > .sidebar-section,
+#d-sidebar .sidebar-sections > .sidebar-section-wrapper,
+#d-sidebar .sidebar-sections > .sidebar-more-section,
+#d-sidebar .sidebar-custom-sections .sidebar-section,
+#d-sidebar .sidebar-custom-sections .sidebar-section-wrapper {
+  border: none !important;
+  border-top: none !important;
+  border-bottom: none !important;
+  box-shadow: none !important;
+}
+
+#d-sidebar .sidebar-sections > .sidebar-section::before,
+#d-sidebar .sidebar-sections > .sidebar-section::after,
+#d-sidebar .sidebar-sections > .sidebar-section-wrapper::before,
+#d-sidebar .sidebar-sections > .sidebar-section-wrapper::after,
+#d-sidebar .sidebar-custom-sections .sidebar-section::before,
+#d-sidebar .sidebar-custom-sections .sidebar-section::after,
+#d-sidebar .sidebar-custom-sections .sidebar-section-wrapper::before,
+#d-sidebar .sidebar-custom-sections .sidebar-section-wrapper::after {
+  content: none !important;
+  display: none !important;
 }
 
 // Core lays out #d-sidebar as column flex; .sidebar-sections often gets flex-grow: 1, which
@@ -574,15 +634,16 @@ body {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  width: 100%;
-  margin-top: 12px;
+  width: 270px;
+  max-width: 100%;
+  margin-top: 10px;
   box-sizing: border-box;
-  min-height: 44px;
+  min-height: 50px;
   padding: 0;
   background: $robotime-blue;
   color: $robotime-white;
   border: none;
-  border-radius: 22px;
+  border-radius: 25px;
   font-family: $font-primary;
   font-size: 16px;
   font-weight: 500;
@@ -608,31 +669,34 @@ body {
 }
 
 .robotime-sidebar-widget {
-  padding: 0;
-  border: none;
+  width: 270px;
+  max-width: 100%;
+  min-height: 290px;
+  padding: 10px 15px;
+  border: 1px solid rgba(119, 119, 119, 0.2);
   border-radius: 14px;
   background: $robotime-white;
   box-shadow: none;
   box-sizing: border-box;
-  width: 100%;
 
   &__section-title {
     font-family: "Google Sans Flex", "Google Sans", "Noto Sans", "Helvetica Neue",
       Arial, sans-serif;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 500;
     color: $robotime-white;
     background: $robotime-blue;
     border-radius: 16px;
     min-height: 40px;
-    padding: 0 12px;
+    width: 240px;
+    max-width: 100%;
+    margin: 0 auto 10px;
+    padding: 0 10px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 10px;
     text-align: center;
     line-height: 1.2;
-    width: 100%;
     box-sizing: border-box;
   }
 
@@ -684,8 +748,8 @@ body {
     font-family: "Google Sans Flex", "Google Sans", "Noto Sans", "Helvetica Neue",
       Arial, sans-serif;
     font-size: 14px;
-    font-weight: 400;
-    color: #777777;
+    font-weight: 500;
+    color: #6a6a6a;
     text-align: center;
     line-height: 1.25;
     text-shadow: none;
@@ -721,10 +785,10 @@ body {
       Arial, sans-serif;
     font-size: 16px;
     font-weight: 400;
-    color: #111111;
+    color: #000000;
     background: transparent;
     border: none;
-    border-top: 1px solid $robotime-border-gray;
+    border-top: 1px solid rgba(119, 119, 119, 0.2);
     border-radius: 0;
     text-decoration: none;
     text-align: center;
@@ -824,14 +888,13 @@ body {
 
 // --- Hide categories + chat channel/DM blocks (empty shells still eat flex height in .sidebar-sections) ---
 // `>` matches Discourse’s flat section list; #d-sidebar + .sidebar-wrapper cover id / legacy markup.
-#d-sidebar .sidebar-sections > [data-section-name="categories"],
 #d-sidebar .sidebar-sections > [data-section-name="chat-channels"],
 #d-sidebar .sidebar-sections > [data-section-name="chat-dms"],
-.sidebar-wrapper .sidebar-sections > [data-section-name="categories"],
+#d-sidebar .sidebar-sections > [data-section-name="chat-search"],
 .sidebar-wrapper .sidebar-sections > [data-section-name="tags"],
 .sidebar-wrapper .sidebar-sections > [data-section-name="chat-channels"],
 .sidebar-wrapper .sidebar-sections > [data-section-name="chat-dms"],
-.sidebar-custom-sections .sidebar-section[data-section-name="categories"],
+.sidebar-wrapper .sidebar-sections > [data-section-name="chat-search"],
 .sidebar-custom-sections .sidebar-section[data-section-name="tags"] {
   display: none !important;
 }
@@ -1054,14 +1117,18 @@ body {
 #d-sidebar .sidebar-section-link-wrapper:has([data-link-name="tags"]),
 #d-sidebar .sidebar-section-link-wrapper:has([data-link-name="search"]),
 #d-sidebar .sidebar-section-link-wrapper:has([data-link-name="chat-search"]),
+#d-sidebar .sidebar-section-link-wrapper:has([data-link-name="my-threads"]),
 #d-sidebar .sidebar-section-link-wrapper:has(a[href^="/tags"]),
 #d-sidebar .sidebar-section-link-wrapper:has(a[href^="/search"]),
+#d-sidebar .sidebar-section-link-wrapper:has(a[href^="/my/threads"]),
 #d-sidebar .sidebar-section-link-wrapper:has(a[href^="/chat/search"]),
 .sidebar-wrapper .sidebar-section-link-wrapper:has([data-link-name="tags"]),
 .sidebar-wrapper .sidebar-section-link-wrapper:has([data-link-name="search"]),
 .sidebar-wrapper .sidebar-section-link-wrapper:has([data-link-name="chat-search"]),
+.sidebar-wrapper .sidebar-section-link-wrapper:has([data-link-name="my-threads"]),
 .sidebar-wrapper .sidebar-section-link-wrapper:has(a[href^="/tags"]),
 .sidebar-wrapper .sidebar-section-link-wrapper:has(a[href^="/search"]),
+.sidebar-wrapper .sidebar-section-link-wrapper:has(a[href^="/my/threads"]),
 .sidebar-wrapper .sidebar-section-link-wrapper:has(a[href^="/chat/search"]) {
   display: none !important;
 }
@@ -1332,10 +1399,24 @@ $robotime-cover-palette: (
     column-fill: balance;
   }
 
-  tbody > tr:not(.topic-list-item) {
-    column-span: all;
-    display: block;
+  // JS masonry (shortest-column placement) replaces CSS multicol flow.
+  tbody.robotime-topic-list--js-masonry {
+    column-count: initial !important;
+    column-gap: 0 !important;
+    column-fill: auto !important;
+    position: relative;
     width: 100%;
+  }
+
+  tbody.robotime-topic-list--js-masonry > tr.topic-list-item {
+    position: absolute;
+    margin: 0 !important;
+    break-inside: auto;
+    page-break-inside: auto;
+  }
+
+  tbody > tr:not(.topic-list-item) {
+    display: none !important;
   }
 
   tr.topic-list-item {
@@ -1428,6 +1509,21 @@ $robotime-cover-palette: (
         inset: 0;
         line-height: 0;
         z-index: 2;
+      }
+
+      &::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.2);
+        opacity: 0;
+        transition: opacity 0.2s ease;
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      &:hover::after {
+        opacity: 1;
       }
 
       img,
@@ -2449,5 +2545,289 @@ $robotime-cover-palette: (
     object-fit: cover;
     border: 2px solid $robotime-light-gray;
     flex-shrink: 0;
+  }
+}
+
+// ============================================================
+// 6. CATEGORY BOXES — custom subcategory cards
+// ============================================================
+.custom-category-boxes:not(.above-discovery-categories-outlet) {
+  display: grid;
+  grid-auto-flow: row;
+  gap: 32px;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr;
+  width: 100%;
+
+  .category-box {
+    display: flex;
+    flex-grow: 1;
+    background-color: var(--secondary);
+    border-left-width: 0;
+    max-height: 160px;
+    overflow: hidden;
+    transition: all ease-out 0.2s;
+    width: initial;
+    margin: 0;
+    border-radius: 12px;
+    box-shadow:
+      0 24px 40px rgb(0, 0, 0, 0.07),
+      0 10.8529px 24.1177px rgb(0, 0, 0, 0.0456112),
+      0 4.50776px 10.0172px rgb(0, 0, 0, 0.035),
+      0 1.63037px 3.62304px rgb(0, 0, 0, 0.0243888);
+
+    &:hover {
+      background-color: var(--secondary-very-high);
+    }
+
+    &.muted {
+      .category-details {
+        grid-column: 2;
+      }
+    }
+  }
+
+  .category-box-inner {
+    border: 0;
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-columns: 0fr 1fr 0fr;
+    column-gap: 48px;
+    width: 100%;
+    padding: 0;
+  }
+
+  .category-logo {
+    align-self: center;
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+    margin: 0;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .category-abbreviation {
+      display: none;
+    }
+
+    &.no-logo-present {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100px;
+      height: 100%;
+      min-height: 100px;
+
+      .category-abbreviation {
+        display: block;
+        color: white;
+        font-weight: bold;
+        font-size: 2em;
+      }
+    }
+  }
+
+  .category-details {
+    align-self: center;
+    min-width: 0;
+    padding-right: 1em;
+  }
+
+  .category-box-heading {
+    margin-bottom: 8px;
+  }
+
+  h3 {
+    align-items: baseline;
+    color: var(--primary);
+    display: inline-flex;
+    margin: 0;
+    font-size: 1.125em;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    line-height: 140%;
+    text-align: left;
+  }
+
+  .description {
+    color: var(--primary-high);
+    font-size: 1em;
+    font-weight: 400;
+    line-height: 140%;
+    letter-spacing: 0.03em;
+    margin-bottom: 0;
+    max-height: 3em;
+    text-align: left;
+
+    p {
+      margin: 0;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+  }
+}
+
+#header-list-area .custom-category-boxes:not(.above-discovery-categories-outlet) {
+  grid-template-columns: 1fr 1fr 1fr;
+
+  .category-box-inner {
+    column-gap: 24px;
+
+    .category-logo {
+      width: 80px;
+      height: 80px;
+    }
+  }
+
+  .category-box-heading {
+    margin-bottom: 4px;
+  }
+
+  h3 {
+    font-size: 1em;
+  }
+
+  .description {
+    display: none;
+  }
+}
+
+@media (max-width: 1250px) {
+  .custom-category-boxes:not(.above-discovery-categories-outlet) {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 800px) {
+  .custom-category-boxes:not(.above-discovery-categories-outlet) {
+    grid-template-columns: 1fr;
+  }
+}
+
+// Mirror the same card style for native header list category boxes.
+#header-list-area .category-boxes.with-logos {
+  display: grid;
+  grid-auto-flow: row;
+  gap: 32px;
+  grid-template-columns: 1fr 1fr 1fr;
+  width: 100%;
+  margin-bottom: 32px;
+
+  .category-box {
+    display: block;
+    flex-grow: 1;
+    background-color: var(--secondary);
+    border: 1px solid rgba(119, 119, 119, 0.12);
+    border-radius: 12px;
+    margin: 0;
+    aspect-ratio: 4 / 1;
+    min-height: 0;
+    max-height: none;
+    overflow: hidden;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+    width: auto;
+    box-shadow:
+      0 28px 48px rgb(0, 0, 0, 0.12),
+      0 12px 28px rgb(0, 0, 0, 0.08),
+      0 4px 10px rgb(0, 0, 0, 0.06);
+  }
+
+  .category-box-inner {
+    border: 0;
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-columns: 25% minmax(0, 1fr);
+    column-gap: 20px;
+    padding: 0;
+    width: 100%;
+    min-height: 100%;
+    align-items: center;
+  }
+
+  .category-logo {
+    align-self: stretch;
+    display: block;
+    width: 100%;
+    height: 100%;
+    margin: 0 !important;
+    padding: 0 !important;
+    border-radius: 12px 0 0 12px;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+  }
+
+  .category-box-heading {
+    margin: 0;
+  }
+
+  .category-details {
+    min-width: 0;
+    padding-right: 18px;
+  }
+
+  .parent-box-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 32px;
+    text-decoration: none;
+  }
+
+  .description {
+    display: none;
+  }
+
+  h3 {
+    margin: 0;
+    line-height: 1.2;
+    font-family: Poppins, Arial, sans-serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--primary);
+  }
+
+  .badge-category__wrapper,
+  .badge-category {
+    background: transparent !important;
+    border: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+  }
+
+  .badge-category .d-icon,
+  .badge-category .emoji {
+    display: none !important;
+  }
+
+  .badge-category__name {
+    font-family: Poppins, Arial, sans-serif;
+    color: var(--primary) !important;
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 1.2;
+  }
+}
+
+@media (max-width: 1250px) {
+  #header-list-area .category-boxes.with-logos {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 800px) {
+  #header-list-area .category-boxes.with-logos {
+    grid-template-columns: 1fr;
   }
 }
