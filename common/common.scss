@@ -355,7 +355,7 @@ body {
 
   &__card-img {
     position: absolute;
-    inset: -1px;
+    inset: -2px;
     z-index: 0;
     background-size: cover;
     background-position: center;
@@ -429,15 +429,15 @@ body {
     .robotime-carousel__card {
       width: 245px;
       height: 80px;
-      border-radius: 10px;
+      border-radius: 0;
+      clip-path: inset(0 round 10px);
+      -webkit-clip-path: inset(0 round 10px);
 
       &:hover {
-        transform: scale(1.05);
         box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
       }
 
       &.robotime-carousel__card--active {
-        transform: scale(1.05);
         box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
       }
     }
@@ -448,7 +448,7 @@ body {
     }
 
     .robotime-carousel__card-body {
-      border-radius: 10px;
+      border-radius: 0;
       display: flex;
       align-items: center;
       justify-content: center;
