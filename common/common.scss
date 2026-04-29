@@ -43,7 +43,7 @@ body {
 
 // Keep docked Discourse topic timeline below fixed header/carousel.
 .timeline-container.timeline-docked {
-  position: fixed !important;
+  position: sticky !important;
   top: calc(var(--robotime-header-offset) + 8px) !important;
   max-height: calc(100vh - var(--robotime-header-offset) - 16px) !important;
 }
