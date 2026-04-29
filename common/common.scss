@@ -258,6 +258,8 @@ body {
 
   // Keep Robotime header stable: hide core topic extra info row
   // (e.g. PM glyph, topic participants) that appears on topic pages.
+  .extra-info-wrapper,
+  .title--minimized,
   .extra-info,
   .topic-info {
     display: none !important;
