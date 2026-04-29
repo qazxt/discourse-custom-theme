@@ -8,7 +8,7 @@ html {
 
 .d-header {
   .wrap {
-    padding: 0 12px;
+    padding: 0 10px;
   }
 
   .title a {
@@ -35,15 +35,7 @@ html {
   }
 
   .before-header-panel-outlet {
-    flex: 1 1 100%;
-    justify-content: flex-start;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-
-    &::-webkit-scrollbar {
-      display: none;
-    }
+    display: none !important;
   }
 
   .robotime-core-header-nav {
@@ -58,32 +50,58 @@ html {
   }
 }
 
-// --- Mobile carousel ---
+// --- Mobile carousel: single-card viewport ---
 .robotime-carousel {
-  padding: 10px 0;
+  padding: 8px 0;
+
+  &__container {
+    padding: 0 10px;
+  }
+
+  &__track-wrapper {
+    overflow: hidden;
+  }
+
+  &__track {
+    gap: 0 !important;
+    padding: 0 !important;
+  }
 
   &__card {
-    width: 120px;
+    flex: 0 0 calc(100vw - 20px) !important;
+    width: calc(100vw - 20px) !important;
+    height: 180px !important;
+  }
+
+  &__card-label {
+    font-size: 20px !important;
+    line-height: 1.2 !important;
   }
 
   &__arrow {
-    width: 28px;
-    height: 28px;
+    width: 32px;
+    height: 32px;
+    opacity: 1 !important;
+    pointer-events: auto !important;
 
     svg {
-      width: 12px;
-      height: 12px;
+      width: 16px;
+      height: 16px;
     }
   }
 
+  &__arrow--left { left: 6px; }
+  &__arrow--right { right: 6px; }
+
   &--collapsed {
     .robotime-carousel__card {
-      width: 100px;
-      height: 40px;
+      flex: 0 0 calc(100vw - 20px) !important;
+      width: calc(100vw - 20px) !important;
+      height: 88px !important;
     }
 
     .robotime-carousel__track {
-      gap: 10px;
+      gap: 0 !important;
     }
 
   }
@@ -97,11 +115,21 @@ html {
 }
 
 // --- Mobile content full width ---
+#main-outlet-wrapper,
+#main-outlet-wrapper > .robotime-page-layout,
+#main-outlet,
+#main-outlet > #main-container,
+#main-outlet > .list-controls,
+#main-outlet > .container.list-container {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
 #main-outlet {
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  padding: 8px;
+  padding: 8px 10px !important;
 }
 
 .list-container,
@@ -112,12 +140,49 @@ html {
 
 // --- Mobile topic cards: single-column masonry strip ---
 .topic-list tbody {
-  column-count: 1;
-  column-gap: 0;
+  column-count: 1 !important;
+  column-gap: 0 !important;
 }
 
 .topic-list .topic-list-item {
-  margin-bottom: 16px;
+  width: 100% !important;
+  margin: 0 0 14px !important;
+}
+
+// Keep native mobile topic structure, only add light visual polish.
+.topic-list tr.topic-list-item td.topic-thumbnails {
+  padding: 0 !important;
+}
+
+.topic-list tr.topic-list-item td.topic-thumbnails :is(a, .topic-thumbnail) {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+}
+
+.topic-list tr.topic-list-item td.topic-thumbnails img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  display: block;
+}
+
+.topic-list tr.topic-list-item td.topic-list-data {
+  padding-top: 10px !important;
+}
+
+// JS masonry fallback on mobile: keep normal single-column flow.
+.topic-list tbody.robotime-topic-list--js-masonry {
+  position: static !important;
+  height: auto !important;
+}
+
+.topic-list tbody.robotime-topic-list--js-masonry > tr.topic-list-item {
+  position: static !important;
+  width: 100% !important;
+  transform: none !important;
+  margin: 0 0 14px !important;
 }
 
 .robotime-topic-card {
