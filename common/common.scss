@@ -654,6 +654,8 @@ body {
   align-items: center;
   justify-items: start;
   column-gap: 12px;
+  padding-left: 20px !important;
+  padding-right: 20px !important;
 }
 
 #d-sidebar [data-section-name="categories"] :is(.sidebar-section-header-text, .sidebar-section-link-content-text),
@@ -663,6 +665,23 @@ body {
   color: $robotime-black !important;
   text-align: left;
   font-weight: 400;
+}
+
+#d-sidebar [data-section-name="categories"] .sidebar-section-header-caret,
+.sidebar-wrapper [data-section-name="categories"] .sidebar-section-header-caret {
+  grid-column: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 20px;
+  min-width: 20px;
+}
+
+#d-sidebar [data-section-name="categories"] .sidebar-section-header-text,
+.sidebar-wrapper [data-section-name="categories"] .sidebar-section-header-text {
+  grid-column: 2;
 }
 
 #d-sidebar [data-section-name="categories"] :is(.sidebar-section-header .d-icon, .sidebar-section-header svg, .sidebar-section-header-button .d-icon, .sidebar-section-header-button svg),
