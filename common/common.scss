@@ -613,31 +613,20 @@ body {
   color: $robotime-black;
 }
 
-// Make "Categories" collapsible header look like other sidebar menu pills.
-#d-sidebar [data-section-name="categories"] :is(.sidebar-section-header-wrapper, .sidebar-section-header, .sidebar-section-header-button),
-.sidebar-wrapper [data-section-name="categories"] :is(.sidebar-section-header-wrapper, .sidebar-section-header, .sidebar-section-header-button) {
-  background: $robotime-light-gray !important;
-  color: $robotime-black !important;
-  border: none !important;
-  border-radius: 12px !important;
-  box-shadow: none !important;
-  min-height: 50px;
-  padding: 10px 20px;
-  display: flex;
-  align-items: center;
-  box-sizing: border-box;
-}
-
 #d-sidebar [data-section-name="categories"] .sidebar-section-header-wrapper,
 .sidebar-wrapper [data-section-name="categories"] .sidebar-section-header-wrapper {
   margin-bottom: 6px;
+  gap: 8px;
+  align-items: center;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
 }
 
 #d-sidebar [data-section-name="categories"] :is(.sidebar-section-header, .sidebar-section-header-button),
 .sidebar-wrapper [data-section-name="categories"] :is(.sidebar-section-header, .sidebar-section-header-button) {
-  width: 100%;
   justify-content: flex-start !important;
-  gap: 12px;
   font-family: $font-primary;
   font-size: 16px;
   font-weight: 400;
@@ -649,14 +638,24 @@ body {
 
 #d-sidebar [data-section-name="categories"] button.sidebar-section-header.sidebar-section-header-collapsable,
 .sidebar-wrapper [data-section-name="categories"] button.sidebar-section-header.sidebar-section-header-collapsable {
+  flex: 1 1 auto;
+  min-width: 0;
   display: grid !important;
   grid-template-columns: 20px minmax(0, 1fr);
   align-items: center;
   justify-items: start;
   column-gap: 12px;
+  background: $robotime-light-gray !important;
+  color: $robotime-black !important;
+  border: none !important;
+  border-radius: 12px !important;
+  box-shadow: none !important;
+  min-height: 50px;
   padding-left: 20px !important;
   padding-right: 20px !important;
-  width: 100%;
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
+  width: auto;
   text-align: left;
 }
 
