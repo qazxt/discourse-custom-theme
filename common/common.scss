@@ -44,20 +44,20 @@ body {
 // Keep docked Discourse topic timeline below fixed header/carousel.
 @media (min-width: 1200px) {
   .container.posts .topic-navigation.with-timeline {
-    position: fixed !important;
-    top: calc(var(--robotime-header-offset) + 8px) !important;
-    right: max(0px, calc((100vw - 1600px) / 2)) !important;
-    z-index: 1100;
+    position: sticky !important;
+    top: var(--robotime-header-offset) !important;
+    align-self: flex-start;
+    z-index: 1000;
   }
 
   .container.posts .topic-navigation.with-timeline .timeline-container.timeline-docked {
     position: static !important;
     top: auto !important;
-    max-height: calc(100vh - var(--robotime-header-offset) - 16px) !important;
+    max-height: calc(100vh - var(--robotime-header-offset) - 24px) !important;
   }
 
   .container.posts .topic-navigation.with-timeline .timeline-scrollarea {
-    max-height: calc(100vh - var(--robotime-header-offset) - 120px) !important;
+    max-height: calc(100vh - var(--robotime-header-offset) - 128px) !important;
   }
 }
 
