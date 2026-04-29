@@ -1167,7 +1167,83 @@ export default apiInitializer((api) => {
     });
     markRobotimeTopicRowCoverLayout();
     decorateRobotimeTopicCardThumbnails();
+    applyRobotimeMobileTopicCards();
     scheduleRobotimeTopicMasonry();
+  }
+
+  function isMobileViewport() {
+    const w = window.innerWidth || document.documentElement.clientWidth || 0;
+    return w < 768;
+  }
+
+  function extractMobileTopicImage(item) {
+    const img = item.querySelector(
+      [
+        "img.topic-list-thumbnail",
+        "img.topic-thumbnail",
+        ".topic-thumbnail img",
+        ".cooked img",
+        "img:not(.avatar):not(.emoji):not(.d-icon)"
+      ].join(",")
+    );
+    const src = (img?.getAttribute("src") || "").trim();
+    return src || "";
+  }
+
+  function extractMobileTopicLink(item) {
+    const a = item.querySelector(
+      "a.title, a.raw-topic-link, .link-top-line a, a[href*='/t/']"
+    );
+    return (a?.getAttribute("href") || "").trim();
+  }
+
+  function extractMobileTopicTitle(item) {
+    const t = item.querySelector(".title, .raw-topic-link, .link-top-line a");
+    return (t?.textContent || "").trim();
+  }
+
+  function applyRobotimeMobileTopicCards() {
+    if (!isMobileViewport()) {
+      return;
+    }
+
+    document.querySelectorAll(".topic-list-item").forEach((item) => {
+      // Desktop/table rows already have dedicated cover/card implementation.
+      if (item.tagName === "TR") {
+        return;
+      }
+
+      const href = extractMobileTopicLink(item);
+      if (!href) {
+        return;
+      }
+
+      item.classList.add("robotime-mobile-topic-card");
+      const title = extractMobileTopicTitle(item);
+      const img = extractMobileTopicImage(item);
+
+      let cover = item.querySelector(":scope > .robotime-mobile-topic-card__cover");
+      if (!cover) {
+        cover = document.createElement("a");
+        cover.className = "robotime-mobile-topic-card__cover";
+        cover.setAttribute("aria-hidden", "true");
+        item.prepend(cover);
+      }
+
+      cover.setAttribute("href", href);
+      if (img) {
+        cover.style.setProperty("background-image", `url('${img}')`);
+        cover.classList.remove("is-placeholder");
+      } else {
+        cover.style.removeProperty("background-image");
+        cover.classList.add("is-placeholder");
+        if (title) {
+          cover.setAttribute("data-robotime-topic-title", title);
+        } else {
+          cover.removeAttribute("data-robotime-topic-title");
+        }
+      }
+    });
   }
 
   function setupRobotimeTopicThumbnailObserverOnce() {
