@@ -84,6 +84,11 @@ body {
     gap: 12px;
     flex-wrap: wrap;
     row-gap: 8px;
+    width: 100%;
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 0;
+    box-sizing: border-box;
   }
 
   .before-header-panel-outlet {
