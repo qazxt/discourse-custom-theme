@@ -54,8 +54,4 @@ export default apiInitializer((api) => {
     return applyRobotimeTopicColumns(columns);
   });
 
-  // Some mobile routes use a dedicated transformer key.
-  api.registerValueTransformer("mobile-topic-list-columns", ({ value: columns }) => {
-    return applyRobotimeTopicColumns(columns);
-  });
 });
