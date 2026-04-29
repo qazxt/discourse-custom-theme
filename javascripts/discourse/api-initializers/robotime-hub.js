@@ -1176,9 +1176,7 @@ export default apiInitializer((api) => {
     return w < 768;
   }
 
-  function extractMobileTopicImage(cell) {
-    const row = cell.closest("tr");
-    const root = row || cell;
+  function extractMobileTopicImage(root) {
     const img = root.querySelector(
       [
         "td.topic-thumbnails img",
@@ -1247,8 +1245,9 @@ export default apiInitializer((api) => {
       return;
     }
 
-    document.querySelectorAll("td.topic-list-data, td.main-link").forEach((cell) => {
-      if (!cell.querySelector(".title, .raw-topic-link, .link-top-line a")) {
+    document.querySelectorAll("tr").forEach((row) => {
+      const cell = row.querySelector("td.topic-list-data, td.main-link");
+      if (!cell || !cell.querySelector(".title, .raw-topic-link, .link-top-line a")) {
         return;
       }
 
@@ -1257,10 +1256,11 @@ export default apiInitializer((api) => {
         return;
       }
 
-      cell.classList.add("robotime-mobile-topic-card-cell");
+      row.classList.add("robotime-mobile-topic-row-card");
       const title = extractMobileTopicTitle(cell);
-      const img = extractMobileTopicImage(cell);
+      const img = extractMobileTopicImage(row);
       const topicId = extractMobileTopicId(cell, href);
+      const hasThumbCell = !!row.querySelector("td.topic-thumbnails");
 
       let cover = cell.querySelector(".robotime-mobile-topic-card__cover");
       if (!cover) {
@@ -1271,6 +1271,12 @@ export default apiInitializer((api) => {
       }
 
       cover.setAttribute("href", href);
+      if (img && hasThumbCell) {
+        // Row already has native thumbnail cell: keep it as the real cover.
+        cover.remove();
+        return;
+      }
+
       if (img) {
         cover.style.setProperty("background-image", `url('${img}')`);
         cover.classList.remove("is-placeholder");
