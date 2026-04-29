@@ -1135,6 +1135,10 @@ body {
 }
 
 .sidebar-section-link-wrapper .sidebar-section-link {
+  .sidebar-section-link-prefix .prefix-badge {
+    display: none !important;
+  }
+
   .sidebar-section-link-content,
   .sidebar-section-link-content-text {
     flex: 1;
