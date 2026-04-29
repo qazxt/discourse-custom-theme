@@ -149,45 +149,55 @@ html {
   margin: 0 0 14px !important;
 }
 
-// Mobile-native list fallback: non-table topic items become single-column cover cards.
-.topic-list-item.robotime-mobile-topic-card:not(tr) {
-  display: block;
+// Mobile-native list fallback on real DOM: build cover inside topic content cell.
+td.topic-list-data.robotime-mobile-topic-card-cell,
+td.main-link.robotime-mobile-topic-card-cell {
+  display: block !important;
+  width: 100% !important;
+  padding: 0 !important;
   border-radius: 14px;
   overflow: hidden;
   background: #ffffff;
-  box-shadow: none;
   border: 1px solid rgba(0, 0, 0, 0.06);
+  box-sizing: border-box;
 }
 
-.topic-list-item.robotime-mobile-topic-card:not(tr)
-  > .robotime-mobile-topic-card__cover {
+td.topic-list-data.robotime-mobile-topic-card-cell .robotime-mobile-topic-card__cover,
+td.main-link.robotime-mobile-topic-card-cell .robotime-mobile-topic-card__cover {
   display: block;
   width: 100%;
-  height: 180px;
+  aspect-ratio: 1 / 1;
   background-color: #eceff3;
   background-size: cover;
   background-position: center;
   text-decoration: none;
 }
 
-.topic-list-item.robotime-mobile-topic-card:not(tr)
-  > .robotime-mobile-topic-card__cover.is-placeholder {
+td.topic-list-data.robotime-mobile-topic-card-cell .robotime-mobile-topic-card__cover.is-placeholder,
+td.main-link.robotime-mobile-topic-card-cell .robotime-mobile-topic-card__cover.is-placeholder {
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 12px;
   box-sizing: border-box;
+  background: var(--robotime-mobile-cover-bg, #eceff3);
 }
 
-.topic-list-item.robotime-mobile-topic-card:not(tr)
-  > .robotime-mobile-topic-card__cover.is-placeholder::before {
+td.topic-list-data.robotime-mobile-topic-card-cell .robotime-mobile-topic-card__cover.is-placeholder::before,
+td.main-link.robotime-mobile-topic-card-cell .robotime-mobile-topic-card__cover.is-placeholder::before {
   content: attr(data-robotime-topic-title);
   font-family: "Google Sans Flex-Regular", "Google Sans Flex", "Google Sans", "Noto Sans", "Helvetica Neue", Arial, sans-serif;
-  font-size: 22px;
+  font-size: 24px;
   line-height: 1.2;
   font-weight: 500;
-  color: #333333;
+  color: var(--robotime-mobile-cover-fg, #333333);
   text-align: center;
+}
+
+td.topic-list-data.robotime-mobile-topic-card-cell > :not(.robotime-mobile-topic-card__cover),
+td.main-link.robotime-mobile-topic-card-cell > :not(.robotime-mobile-topic-card__cover) {
+  padding-left: 12px;
+  padding-right: 12px;
 }
 
 // JS masonry fallback on mobile: keep normal single-column flow.

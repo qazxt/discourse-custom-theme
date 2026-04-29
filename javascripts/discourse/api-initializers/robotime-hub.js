@@ -1176,30 +1176,70 @@ export default apiInitializer((api) => {
     return w < 768;
   }
 
-  function extractMobileTopicImage(item) {
-    const img = item.querySelector(
+  function extractMobileTopicImage(cell) {
+    const row = cell.closest("tr");
+    const root = row || cell;
+    const img = root.querySelector(
       [
+        "td.topic-thumbnails img",
         "img.topic-list-thumbnail",
         "img.topic-thumbnail",
         ".topic-thumbnail img",
         ".cooked img",
-        "img:not(.avatar):not(.emoji):not(.d-icon)"
+        "img[data-original]",
+        "img[data-src]",
+        "img:not(.avatar):not(.emoji):not(.d-icon):not([class*='avatar'])"
       ].join(",")
     );
-    const src = (img?.getAttribute("src") || "").trim();
+    const src = (
+      img?.getAttribute("src") ||
+      img?.getAttribute("data-src") ||
+      img?.getAttribute("data-original") ||
+      img?.currentSrc ||
+      ""
+    ).trim();
+    if (src) {
+      return src;
+    }
+
+    // Fallback: some mobile lists render cover as background-image.
+    const bgHost =
+      root.querySelector("td.topic-thumbnails a, td.topic-thumbnails .topic-thumbnail") ||
+      root.querySelector(".topic-thumbnail, .topic-list-thumbnail");
+    if (bgHost) {
+      const bg = window.getComputedStyle(bgHost).backgroundImage || "";
+      const m = bg.match(/url\((['"]?)(.*?)\1\)/i);
+      if (m?.[2]) {
+        return m[2].trim();
+      }
+    }
     return src || "";
   }
 
-  function extractMobileTopicLink(item) {
-    const a = item.querySelector(
+  function extractMobileTopicLink(cell) {
+    const a = cell.querySelector(
       "a.title, a.raw-topic-link, .link-top-line a, a[href*='/t/']"
     );
     return (a?.getAttribute("href") || "").trim();
   }
 
-  function extractMobileTopicTitle(item) {
-    const t = item.querySelector(".title, .raw-topic-link, .link-top-line a");
+  function extractMobileTopicTitle(cell) {
+    const t = cell.querySelector(".title, .raw-topic-link, .link-top-line a");
     return (t?.textContent || "").trim();
+  }
+
+  function extractMobileTopicId(cell, href) {
+    const row = cell.closest("tr");
+    const fromRow = parseInt(row?.getAttribute("data-topic-id") || "", 10);
+    if (Number.isFinite(fromRow) && fromRow > 0) {
+      return fromRow;
+    }
+    const m = String(href || "").match(/\/t\/[^/]*\/(\d+)/);
+    const fromHref = parseInt(m?.[1] || "", 10);
+    if (Number.isFinite(fromHref) && fromHref > 0) {
+      return fromHref;
+    }
+    return 0;
   }
 
   function applyRobotimeMobileTopicCards() {
@@ -1207,36 +1247,53 @@ export default apiInitializer((api) => {
       return;
     }
 
-    document.querySelectorAll(".topic-list-item").forEach((item) => {
-      // Desktop/table rows already have dedicated cover/card implementation.
-      if (item.tagName === "TR") {
+    document.querySelectorAll("td.topic-list-data, td.main-link").forEach((cell) => {
+      if (!cell.querySelector(".title, .raw-topic-link, .link-top-line a")) {
         return;
       }
 
-      const href = extractMobileTopicLink(item);
+      const href = extractMobileTopicLink(cell);
       if (!href) {
         return;
       }
 
-      item.classList.add("robotime-mobile-topic-card");
-      const title = extractMobileTopicTitle(item);
-      const img = extractMobileTopicImage(item);
+      cell.classList.add("robotime-mobile-topic-card-cell");
+      const title = extractMobileTopicTitle(cell);
+      const img = extractMobileTopicImage(cell);
+      const topicId = extractMobileTopicId(cell, href);
 
-      let cover = item.querySelector(":scope > .robotime-mobile-topic-card__cover");
+      let cover = cell.querySelector(".robotime-mobile-topic-card__cover");
       if (!cover) {
         cover = document.createElement("a");
         cover.className = "robotime-mobile-topic-card__cover";
         cover.setAttribute("aria-hidden", "true");
-        item.prepend(cover);
+        cell.prepend(cover);
       }
 
       cover.setAttribute("href", href);
       if (img) {
         cover.style.setProperty("background-image", `url('${img}')`);
         cover.classList.remove("is-placeholder");
+        cover.style.removeProperty("--robotime-mobile-cover-bg");
+        cover.style.removeProperty("--robotime-mobile-cover-fg");
       } else {
         cover.style.removeProperty("background-image");
         cover.classList.add("is-placeholder");
+        const tint = robotimeTopicCoverTintFromId(topicId);
+        cover.setAttribute("data-robotime-cover-tint", String(tint));
+        const palette = [
+          ["#ede7f6", "#4a4459"],
+          ["#e3f2fd", "#37474f"],
+          ["#e8f5e9", "#2e4a32"],
+          ["#fff3e0", "#5d4037"],
+          ["#fce4ec", "#6a1b3d"],
+          ["#e0f7fa", "#006064"],
+          ["#f3e5f5", "#4a148c"],
+          ["#efebe9", "#3e2723"],
+        ];
+        const pair = palette[tint] || palette[0];
+        cover.style.setProperty("--robotime-mobile-cover-bg", pair[0]);
+        cover.style.setProperty("--robotime-mobile-cover-fg", pair[1]);
         if (title) {
           cover.setAttribute("data-robotime-topic-title", title);
         } else {
