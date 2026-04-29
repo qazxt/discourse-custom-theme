@@ -41,21 +41,19 @@ body {
   box-sizing: border-box;
 }
 
-// Keep Discourse topic timeline below fixed header/carousel.
-#topic-progress-wrapper,
-#topic-progress,
-.topic-timeline,
-.timeline-container,
-.timeline-scrollarea-wrapper {
-  top: var(--robotime-header-offset) !important;
+// Keep docked Discourse topic timeline below fixed header/carousel.
+.timeline-container.timeline-docked {
+  position: fixed !important;
+  top: calc(var(--robotime-header-offset) + 8px) !important;
+  max-height: calc(100vh - var(--robotime-header-offset) - 16px) !important;
 }
 
-#topic-progress-wrapper .timeline-scrollarea,
-#topic-progress .timeline-scrollarea,
-.topic-timeline .timeline-scrollarea,
-.timeline-container .timeline-scrollarea,
-.timeline-scrollarea-wrapper .timeline-scrollarea {
-  max-height: calc(100vh - var(--robotime-header-offset) - 24px) !important;
+.timeline-container.timeline-docked .topic-timeline {
+  max-height: inherit;
+}
+
+.timeline-container.timeline-docked .timeline-scrollarea {
+  max-height: calc(100vh - var(--robotime-header-offset) - 120px) !important;
 }
 
 // ============================================================
