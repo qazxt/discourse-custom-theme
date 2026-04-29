@@ -47,7 +47,7 @@ body {
     position: sticky !important;
     top: calc(var(--robotime-header-offset) + 12px) !important;
     align-self: flex-start;
-    z-index: 1000;
+    z-index: 800;
   }
 
   .container.posts .topic-navigation.with-timeline .timeline-container.timeline-docked {
