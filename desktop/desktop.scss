@@ -25,6 +25,13 @@ $robotime-layout-gap: 51px;
   font-size: 16px;
 }
 
+// Align header nav with the main content column (270 sidebar + 51 gap).
+@media (min-width: 1200px) {
+  .d-header .before-header-panel-outlet {
+    margin-left: 321px;
+  }
+}
+
 // --- Carousel desktop sizing ---
 .robotime-carousel {
   &__card {
