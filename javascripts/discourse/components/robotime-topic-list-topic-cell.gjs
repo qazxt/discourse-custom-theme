@@ -25,6 +25,23 @@ export default class RobotimeTopicListTopicCell extends Component {
   @service currentUser;
   @service messageBus;
 
+  get topicAuthor() {
+    return (
+      this.args.topic?.creator ||
+      this.args.topic?.details?.created_by ||
+      this.args.topic?.lastPosterUser ||
+      null
+    );
+  }
+
+  get topicAuthorPath() {
+    const user = this.topicAuthor;
+    if (!user) {
+      return null;
+    }
+    return user.path || (user.username ? `/u/${user.username}` : null);
+  }
+
   get metaEnabled() {
     try {
       // eslint-disable-next-line no-undef
@@ -158,12 +175,12 @@ export default class RobotimeTopicListTopicCell extends Component {
           {{#if this.metaEnabled}}
             <RobotimeTopicMeta @topic={{@topic}} />
           {{/if}}
-          {{#if @topic.lastPosterUser}}
+          {{#if this.topicAuthor}}
             <a
-              href={{@topic.lastPosterUser.path}}
-              data-user-card={{@topic.lastPosterUser.username}}
+              href={{this.topicAuthorPath}}
+              data-user-card={{this.topicAuthor.username}}
               class="robotime-topic-content__poster"
-            >{{avatar @topic.lastPosterUser imageSize="large"}}</a>
+            >{{avatar this.topicAuthor imageSize="large"}}</a>
           {{/if}}
         </div>
 

@@ -1,4 +1,4 @@
-// ============================================================
+﻿// ============================================================
 // Robotime Community Theme - Common Styles
 // All dynamic data driven by plugin API (/hub-config.json)
 // ============================================================
@@ -15,7 +15,7 @@ $robotime-hover-white: #cccccc;
 $robotime-header-user-bg: rgba(255, 255, 255, 0.1);
 $robotime-sidebar-canvas: #f5f5f5; // design mockup: column behind menu + widget
 
-$font-primary: "Google Sans Flex", "Google Sans", "Noto Sans", "Helvetica Neue",
+$font-primary: "Google Sans Flex-Regular", "Google Sans Flex", "Google Sans", "Noto Sans", "Helvetica Neue",
   Arial, sans-serif;
 
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap");
@@ -41,8 +41,25 @@ body {
   box-sizing: border-box;
 }
 
+// Keep Discourse topic timeline below fixed header/carousel.
+#topic-progress-wrapper,
+#topic-progress,
+.topic-timeline,
+.timeline-container,
+.timeline-scrollarea-wrapper {
+  top: var(--robotime-header-offset) !important;
+}
+
+#topic-progress-wrapper .timeline-scrollarea,
+#topic-progress .timeline-scrollarea,
+.topic-timeline .timeline-scrollarea,
+.timeline-container .timeline-scrollarea,
+.timeline-scrollarea-wrapper .timeline-scrollarea {
+  max-height: calc(100vh - var(--robotime-header-offset) - 24px) !important;
+}
+
 // ============================================================
-// 1. HEADER — core .d-header + theme nav in before-header-panel outlet
+// 1. HEADER 鈥?core .d-header + theme nav in before-header-panel outlet
 // ============================================================
 .d-header-wrap {
   z-index: 1300;
@@ -54,8 +71,8 @@ body {
   border-bottom: none;
 
   .wrap {
-    max-width: 1400px;
-    padding: 0 24px;
+    max-width: 1600px;
+    padding: 0;
   }
 
   .contents {
@@ -190,7 +207,7 @@ body {
     }
   }
 
-  // Theme-configured links (robotime_nav_links → RobotimeCoreHeaderNav)
+  // Theme-configured links (robotime_nav_links 鈫?RobotimeCoreHeaderNav)
   .robotime-header__nav-link {
     position: relative;
     display: inline-flex;
@@ -233,7 +250,7 @@ body {
 }
 
 // ============================================================
-// 2. CAROUSEL — unified full-bleed photo style
+// 2. CAROUSEL 鈥?unified full-bleed photo style
 //    hero_banners populated by plugin
 // ============================================================
 .robotime-carousel {
@@ -374,7 +391,7 @@ body {
     align-items: flex-end;
     justify-content: center;
     padding: 8px 10px 10px;
-    font-family: "Google Sans Flex", "Google Sans", "Noto Sans", "Helvetica Neue",
+    font-family: "Google Sans Flex-Regular", "Google Sans Flex", "Google Sans", "Noto Sans", "Helvetica Neue",
       Arial, sans-serif;
     font-size: 24px;
     font-weight: 400;
@@ -394,11 +411,6 @@ body {
 
   &__card-label.dark-bg {
     color: $robotime-white;
-  }
-
-  &__card:hover &__card-label,
-  &__card.robotime-carousel__card--active &__card-label {
-    color: #a6a6a6 !important;
   }
 
   // --- Collapsed state (scroll) ---
@@ -453,7 +465,7 @@ body {
     }
 
     .robotime-carousel__card-label {
-      font-family: "Google Sans Flex", "Google Sans", "Noto Sans", "Helvetica Neue",
+      font-family: "Google Sans Flex-Regular", "Google Sans Flex", "Google Sans", "Noto Sans", "Helvetica Neue",
         Arial, sans-serif;
       font-size: 24px;
       position: relative;
@@ -535,7 +547,7 @@ body {
 // Core header menus keep their own stacking/positioning; do not override here.
 
 // ============================================================
-// 3. SIDEBAR — matches preview.html .sidebar / .sidebar-menu / widget / .new-topic-btn
+// 3. SIDEBAR 鈥?matches preview.html .sidebar / .sidebar-menu / widget / .new-topic-btn
 // ============================================================
 .sidebar-wrapper {
   background-color: $robotime-white;
@@ -591,7 +603,7 @@ body {
   }
 }
 
-// Native sidebar links — preview: light-gray pills; active = black pill + white icons
+// Native sidebar links 鈥?preview: light-gray pills; active = black pill + white icons
 .sidebar-wrapper .sidebar-section-link-wrapper {
   margin-bottom: 6px;
 }
@@ -601,7 +613,27 @@ body {
   color: $robotime-black;
 }
 
-// Match preview.html: ~20px between nav pills and event carousel (not core’s large section gap).
+// Make "Categories" collapsible header look like other sidebar menu pills.
+#d-sidebar [data-section-name="categories"] :is(.sidebar-section-header-wrapper, .sidebar-section-header, .sidebar-section-header-button),
+.sidebar-wrapper [data-section-name="categories"] :is(.sidebar-section-header-wrapper, .sidebar-section-header, .sidebar-section-header-button) {
+  background: $robotime-light-gray !important;
+  color: $robotime-black !important;
+  border: none !important;
+  border-radius: 12px !important;
+  box-shadow: none !important;
+  min-height: 50px;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+#d-sidebar [data-section-name="categories"] .sidebar-section-header-wrapper,
+.sidebar-wrapper [data-section-name="categories"] .sidebar-section-header-wrapper {
+  margin-bottom: 6px;
+}
+
+// Match preview.html: ~20px between nav pills and event carousel (not core鈥檚 large section gap).
 .robotime-sidebar-hub {
   margin-top: 20px;
   padding: 0 0 1rem;
@@ -628,7 +660,7 @@ body {
   box-sizing: border-box;
 }
 
-// preview.html .new-topic-btn — below hub widget (connector)
+// preview.html .new-topic-btn 鈥?below hub widget (connector)
 .robotime-sidebar-new-topic {
   display: flex;
   align-items: center;
@@ -680,7 +712,7 @@ body {
   box-sizing: border-box;
 
   &__section-title {
-    font-family: "Google Sans Flex", "Google Sans", "Noto Sans", "Helvetica Neue",
+    font-family: "Google Sans Flex-Regular", "Google Sans Flex", "Google Sans", "Noto Sans", "Helvetica Neue",
       Arial, sans-serif;
     font-size: 16px;
     font-weight: 500;
@@ -745,7 +777,7 @@ body {
     position: static;
     margin-top: 10px;
     padding: 0;
-    font-family: "Google Sans Flex", "Google Sans", "Noto Sans", "Helvetica Neue",
+    font-family: "Google Sans Flex-Regular", "Google Sans Flex", "Google Sans", "Noto Sans", "Helvetica Neue",
       Arial, sans-serif;
     font-size: 14px;
     font-weight: 500;
@@ -781,7 +813,7 @@ body {
     box-sizing: border-box;
     margin-top: 10px;
     padding: 10px 0 0;
-    font-family: "Google Sans Flex", "Google Sans", "Noto Sans", "Helvetica Neue",
+    font-family: "Google Sans Flex-Regular", "Google Sans Flex", "Google Sans", "Noto Sans", "Helvetica Neue",
       Arial, sans-serif;
     font-size: 16px;
     font-weight: 400;
@@ -844,7 +876,7 @@ body {
 }
 
 // ============================================================
-// 4. DISCOURSE OVERRIDES — list controls, sidebar, nav pills, buttons
+// 4. DISCOURSE OVERRIDES 鈥?list controls, sidebar, nav pills, buttons
 // ============================================================
 
 // --- Main outlet: fill grid column next to sidebar; min-width avoids flex/grid blowout ---
@@ -887,7 +919,7 @@ body {
 }
 
 // --- Hide categories + chat channel/DM blocks (empty shells still eat flex height in .sidebar-sections) ---
-// `>` matches Discourse’s flat section list; #d-sidebar + .sidebar-wrapper cover id / legacy markup.
+// `>` matches Discourse鈥檚 flat section list; #d-sidebar + .sidebar-wrapper cover id / legacy markup.
 #d-sidebar .sidebar-sections > [data-section-name="chat-channels"],
 #d-sidebar .sidebar-sections > [data-section-name="chat-dms"],
 #d-sidebar .sidebar-sections > [data-section-name="chat-search"],
@@ -925,13 +957,13 @@ body {
   column-gap: 10px;
 }
 
-// Bordered “dropdown” look for category / tag select-kits (gray #777, rounded)
+// Bordered 鈥渄ropdown鈥?look for category / tag select-kits (gray #777, rounded)
 .list-controls .navigation-container .select-kit .select-kit-header {
   background: $robotime-white !important;
   border: 1px solid $robotime-gray !important;
   border-radius: 10px !important;
   color: $robotime-gray !important;
-  font-family: "Google Sans Flex", "Google Sans", "Noto Sans", "Helvetica Neue",
+  font-family: "Google Sans Flex-Regular", "Google Sans Flex", "Google Sans", "Noto Sans", "Helvetica Neue",
     Arial, sans-serif;
   font-size: 24px;
   font-weight: 400;
@@ -1006,7 +1038,7 @@ body {
   }
 }
 
-// preview.html .sidebar-menu — flex, gap 12px; Discourse uses .sidebar-section-link-content-text (not …-content)
+// preview.html .sidebar-menu 鈥?flex, gap 12px; Discourse uses .sidebar-section-link-content-text (not 鈥?content)
 .sidebar-section-link-wrapper a.sidebar-section-link,
 .sidebar-section-link-wrapper button.sidebar-section-link {
   display: flex;
@@ -1162,7 +1194,7 @@ body {
   background: $robotime-black !important;
 }
 
-// Injected menu icons (preview.html .menu-icon — 20×20, object-fit)
+// Injected menu icons (preview.html .menu-icon 鈥?20脳20, object-fit)
 .robotime-sidebar-link-prefix--robotime-icon {
   .d-icon,
   svg:not(.robotime-sidebar-menu-icon) {
@@ -1219,7 +1251,7 @@ body {
 
 .navigation-container .nav-pills > li {
   > a {
-    font-family: "Google Sans Flex", "Google Sans", "Noto Sans", "Helvetica Neue",
+    font-family: "Google Sans Flex-Regular", "Google Sans Flex", "Google Sans", "Noto Sans", "Helvetica Neue",
       Arial, sans-serif;
     font-size: 24px;
     font-weight: 400;
@@ -1280,7 +1312,7 @@ body {
   color: #777777 !important;
   border: none !important;
   border-radius: 10px !important;
-  font-family: "Google Sans Flex", "Google Sans", "Noto Sans", "Helvetica Neue",
+  font-family: "Google Sans Flex-Regular", "Google Sans Flex", "Google Sans", "Noto Sans", "Helvetica Neue",
     Arial, sans-serif;
   font-size: 24px;
   font-weight: 400;
@@ -1322,9 +1354,9 @@ body {
 }
 
 // ============================================================
-// 5. TOPIC CARDS — topic list as cards (homepage + theme-overview placeholder demo)
+// 5. TOPIC CARDS 鈥?topic list as cards (homepage + theme-overview placeholder demo)
 //    Layout: tall media band + white body; title; footer row = stats left, avatars right.
-//    Cover ratio: JS sets data-robotime-thumb-ratio — w/h > 0.85 → square 1:1, else 3:4.
+//    Cover ratio: JS sets data-robotime-thumb-ratio 鈥?w/h > 0.85 鈫?square 1:1, else 3:4.
 //    No image: pastel band from data-robotime-cover-tint (topic id % 8, robotime-hub.js) + centered title.
 // ============================================================
 
@@ -1421,7 +1453,7 @@ $robotime-cover-palette: (
 
   tr.topic-list-item {
     display: inline-grid;
-    // Meta: (A) table cells td.num / td.activity or (B) native .topic-meta inside main-link — see &:has(.topic-meta) below.
+    // Meta: (A) table cells td.num / td.activity or (B) native .topic-meta inside main-link 鈥?see &:has(.topic-meta) below.
     grid-template-columns: auto auto auto minmax(0, 1fr) auto;
     align-items: center;
     column-gap: 8px;
@@ -1469,7 +1501,7 @@ $robotime-cover-palette: (
       max-width: none;
     }
 
-    // Topic thumbnails — aspect + crop from data-* (set in robotime-hub.js)
+    // Topic thumbnails 鈥?aspect + crop from data-* (set in robotime-hub.js)
     td.topic-thumbnails,
     > .robotime-topic-list-thumbnail-link {
       align-self: stretch;
@@ -1578,7 +1610,7 @@ $robotime-cover-palette: (
       z-index: 2;
     }
 
-    // Default list has no td.topic-thumbnails — JS sets data-robotime-topic-row (robotime-hub.js)
+    // Default list has no td.topic-thumbnails 鈥?JS sets data-robotime-topic-row (robotime-hub.js)
     &[data-robotime-topic-row="has-thumb"] td.main-link::before {
       content: none !important;
       display: none !important;
@@ -1624,13 +1656,13 @@ $robotime-cover-palette: (
     .main-link .title.raw-link,
     .main-link .link-top-line .title {
       font-family: $font-primary;
-      font-size: 18px !important;
+      font-size: 24px !important;
       font-weight: 500 !important;
-      line-height: 1.35 !important;
+      line-height: 1.2 !important;
       color: $robotime-black !important;
     }
 
-    // Footer row: stats left, avatars right (design mockup — same baseline).
+    // Footer row: stats left, avatars right (design mockup 鈥?same baseline).
     .main-link .topic-item-stats,
     .main-link .topic-list-num {
       position: absolute;
@@ -1741,7 +1773,7 @@ $robotime-cover-palette: (
       }
     }
 
-    // Native Discourse “modern” topic row: views / likes / replies + clock live in .topic-meta (inside main-link).
+    // Native Discourse 鈥渕odern鈥?topic row: views / likes / replies + clock live in .topic-meta (inside main-link).
     .main-link .topic-meta {
       position: relative;
       z-index: 2;
@@ -1819,7 +1851,7 @@ $robotime-cover-palette: (
       object-fit: cover;
     }
 
-    // Core compact list: stats in <td class="num|activity"> — promote children to the row grid via display:contents (table cells as grid items often collapse the 2nd row).
+    // Core compact list: stats in <td class="num|activity"> 鈥?promote children to the row grid via display:contents (table cells as grid items often collapse the 2nd row).
     &:not(:has(.topic-meta), :has(.robotime-topic-meta)) {
       td.num.posts-map.topic-list-data,
       td.num.views.topic-list-data,
@@ -2028,7 +2060,7 @@ $robotime-cover-palette: (
         box-shadow: none;
       }
 
-      // Override `.main-link .robotime-topic-meta { order: 3 }` — that put avatar (order 0) visually first.
+      // Override `.main-link .robotime-topic-meta { order: 3 }` 鈥?that put avatar (order 0) visually first.
       .robotime-topic-content__footer .robotime-topic-meta {
         margin-top: 0;
         flex: 1;
@@ -2072,7 +2104,7 @@ $robotime-cover-palette: (
         margin-top: 0;
         margin-bottom: 0;
         padding: 0;
-        font-family: "Google Sans Flex", "Google Sans", "Noto Sans", "Helvetica Neue",
+        font-family: "Google Sans Flex-Regular", "Google Sans Flex", "Google Sans", "Noto Sans", "Helvetica Neue",
           Arial, sans-serif;
         font-size: 24px;
         font-weight: 400;
@@ -2108,11 +2140,11 @@ $robotime-cover-palette: (
 
       .main-link .link-top-line .title,
       .main-link a.title {
-        font-family: "Google Sans Flex", "Google Sans", "Noto Sans", "Helvetica Neue",
+        font-family: "Google Sans Flex-Regular", "Google Sans Flex", "Google Sans", "Noto Sans", "Helvetica Neue",
           Arial, sans-serif;
         font-size: 24px !important;
         font-weight: 400 !important;
-        line-height: 1 !important;
+        line-height: 1.2 !important;
         margin: 0 !important;
         padding: 0 !important;
         color: #000000 !important;
@@ -2162,7 +2194,7 @@ $robotime-cover-palette: (
       }
     }
 
-    // When core renders .topic-meta, stats live in main-link — hide duplicate <td>s.
+    // When core renders .topic-meta, stats live in main-link 鈥?hide duplicate <td>s.
     // Flatten `td.main-link` (display:contents) so .robotime-topic-meta / .topic-meta and td.posters share one footer row.
     // Three grid rows only: cover | title | (meta + posters). Hidden link-bottom-line must not leave an empty middle track.
     // Meta cards: generous horizontal inset; title / stats / avatar scale as a set (icons ~24px vs 40px avatar).
@@ -2179,7 +2211,7 @@ $robotime-cover-palette: (
       padding-bottom: 20px;
       box-sizing: border-box;
 
-      // Category on the title row / bottom line — product asks to omit on these cards.
+      // Category on the title row / bottom line 鈥?product asks to omit on these cards.
       .main-link .link-top-line .badge-category,
       .main-link .link-top-line a.badge-category,
       .main-link .link-top-line .badge-category__wrapper,
@@ -2206,14 +2238,14 @@ $robotime-cover-palette: (
       .main-link a.title,
       .main-link .title.raw-link,
       .main-link .link-top-line .title {
-        font-size: 20px !important;
-        line-height: 1.4 !important;
+        font-size: 24px !important;
+        line-height: 1.2 !important;
       }
 
       .main-link .robotime-topic-meta {
         align-items: center;
         gap: 10px 20px;
-        font-family: "Google Sans Flex", "Google Sans", "Noto Sans", "Helvetica Neue",
+        font-family: "Google Sans Flex-Regular", "Google Sans Flex", "Google Sans", "Noto Sans", "Helvetica Neue",
           Arial, sans-serif;
         font-size: 24px;
         font-weight: 400;
@@ -2340,7 +2372,7 @@ $robotime-cover-palette: (
           background: $robotime-white;
         }
 
-        // link-bottom-line hidden — do not assign grid-row (avoids blank row between title and footer).
+        // link-bottom-line hidden 鈥?do not assign grid-row (avoids blank row between title and footer).
 
         > .robotime-topic-meta,
         > .topic-meta {
@@ -2495,10 +2527,10 @@ $robotime-cover-palette: (
   }
 
   &__title {
-    font-size: 18px;
+    font-size: 24px;
     font-weight: 500;
     color: $robotime-black;
-    line-height: 1.35;
+    line-height: 1.2;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
@@ -2548,286 +2580,4 @@ $robotime-cover-palette: (
   }
 }
 
-// ============================================================
-// 6. CATEGORY BOXES — custom subcategory cards
-// ============================================================
-.custom-category-boxes:not(.above-discovery-categories-outlet) {
-  display: grid;
-  grid-auto-flow: row;
-  gap: 32px;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr;
-  width: 100%;
 
-  .category-box {
-    display: flex;
-    flex-grow: 1;
-    background-color: var(--secondary);
-    border-left-width: 0;
-    max-height: 160px;
-    overflow: hidden;
-    transition: all ease-out 0.2s;
-    width: initial;
-    margin: 0;
-    border-radius: 12px;
-    box-shadow:
-      0 24px 40px rgb(0, 0, 0, 0.07),
-      0 10.8529px 24.1177px rgb(0, 0, 0, 0.0456112),
-      0 4.50776px 10.0172px rgb(0, 0, 0, 0.035),
-      0 1.63037px 3.62304px rgb(0, 0, 0, 0.0243888);
-
-    &:hover {
-      background-color: var(--secondary-very-high);
-    }
-
-    &.muted {
-      .category-details {
-        grid-column: 2;
-      }
-    }
-  }
-
-  .category-box-inner {
-    border: 0;
-    display: grid;
-    grid-auto-flow: column;
-    grid-template-columns: 0fr 1fr 0fr;
-    column-gap: 48px;
-    width: 100%;
-    padding: 0;
-  }
-
-  .category-logo {
-    align-self: center;
-    display: inline-block;
-    width: 100px;
-    height: 100px;
-    margin: 0;
-
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .category-abbreviation {
-      display: none;
-    }
-
-    &.no-logo-present {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 100px;
-      height: 100%;
-      min-height: 100px;
-
-      .category-abbreviation {
-        display: block;
-        color: white;
-        font-weight: bold;
-        font-size: 2em;
-      }
-    }
-  }
-
-  .category-details {
-    align-self: center;
-    min-width: 0;
-    padding-right: 1em;
-  }
-
-  .category-box-heading {
-    margin-bottom: 8px;
-  }
-
-  h3 {
-    align-items: baseline;
-    color: var(--primary);
-    display: inline-flex;
-    margin: 0;
-    font-size: 1.125em;
-    font-weight: 600;
-    letter-spacing: 0.03em;
-    line-height: 140%;
-    text-align: left;
-  }
-
-  .description {
-    color: var(--primary-high);
-    font-size: 1em;
-    font-weight: 400;
-    line-height: 140%;
-    letter-spacing: 0.03em;
-    margin-bottom: 0;
-    max-height: 3em;
-    text-align: left;
-
-    p {
-      margin: 0;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-  }
-}
-
-#header-list-area .custom-category-boxes:not(.above-discovery-categories-outlet) {
-  grid-template-columns: 1fr 1fr 1fr;
-
-  .category-box-inner {
-    column-gap: 24px;
-
-    .category-logo {
-      width: 80px;
-      height: 80px;
-    }
-  }
-
-  .category-box-heading {
-    margin-bottom: 4px;
-  }
-
-  h3 {
-    font-size: 1em;
-  }
-
-  .description {
-    display: none;
-  }
-}
-
-@media (max-width: 1250px) {
-  .custom-category-boxes:not(.above-discovery-categories-outlet) {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-
-@media (max-width: 800px) {
-  .custom-category-boxes:not(.above-discovery-categories-outlet) {
-    grid-template-columns: 1fr;
-  }
-}
-
-// Mirror the same card style for native header list category boxes.
-#header-list-area .category-boxes.with-logos {
-  display: grid;
-  grid-auto-flow: row;
-  gap: 32px;
-  grid-template-columns: 1fr 1fr 1fr;
-  width: 100%;
-  margin-bottom: 32px;
-
-  .category-box {
-    display: block;
-    flex-grow: 1;
-    background-color: var(--secondary);
-    border: 1px solid rgba(119, 119, 119, 0.12);
-    border-radius: 12px;
-    margin: 0;
-    aspect-ratio: 4 / 1;
-    min-height: 0;
-    max-height: none;
-    overflow: hidden;
-    transition: background-color 0.2s ease, box-shadow 0.2s ease;
-    width: auto;
-    box-shadow:
-      0 28px 48px rgb(0, 0, 0, 0.12),
-      0 12px 28px rgb(0, 0, 0, 0.08),
-      0 4px 10px rgb(0, 0, 0, 0.06);
-  }
-
-  .category-box-inner {
-    border: 0;
-    display: grid;
-    grid-auto-flow: column;
-    grid-template-columns: 25% minmax(0, 1fr);
-    column-gap: 20px;
-    padding: 0;
-    width: 100%;
-    min-height: 100%;
-    align-items: center;
-  }
-
-  .category-logo {
-    align-self: stretch;
-    display: block;
-    width: 100%;
-    height: 100%;
-    margin: 0 !important;
-    padding: 0 !important;
-    border-radius: 12px 0 0 12px;
-    overflow: hidden;
-
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-  }
-
-  .category-box-heading {
-    margin: 0;
-  }
-
-  .category-details {
-    min-width: 0;
-    padding-right: 18px;
-  }
-
-  .parent-box-link {
-    display: inline-flex;
-    align-items: center;
-    min-height: 32px;
-    text-decoration: none;
-  }
-
-  .description {
-    display: none;
-  }
-
-  h3 {
-    margin: 0;
-    line-height: 1.2;
-    font-family: Poppins, Arial, sans-serif;
-    font-size: 22px;
-    font-weight: 600;
-    color: var(--primary);
-  }
-
-  .badge-category__wrapper,
-  .badge-category {
-    background: transparent !important;
-    border: 0 !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    box-shadow: none !important;
-  }
-
-  .badge-category .d-icon,
-  .badge-category .emoji {
-    display: none !important;
-  }
-
-  .badge-category__name {
-    font-family: Poppins, Arial, sans-serif;
-    color: var(--primary) !important;
-    font-size: 22px;
-    font-weight: 600;
-    line-height: 1.2;
-  }
-}
-
-@media (max-width: 1250px) {
-  #header-list-area .category-boxes.with-logos {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-
-@media (max-width: 800px) {
-  #header-list-area .category-boxes.with-logos {
-    grid-template-columns: 1fr;
-  }
-}
