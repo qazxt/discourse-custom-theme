@@ -624,6 +624,11 @@ body {
   padding: 0 !important;
 }
 
+#d-sidebar [data-section-name="categories"] .sidebar-section-header-dropdown,
+.sidebar-wrapper [data-section-name="categories"] .sidebar-section-header-dropdown {
+  display: none !important;
+}
+
 #d-sidebar [data-section-name="categories"] :is(.sidebar-section-header, .sidebar-section-header-button),
 .sidebar-wrapper [data-section-name="categories"] :is(.sidebar-section-header, .sidebar-section-header-button) {
   justify-content: flex-start !important;
@@ -655,7 +660,7 @@ body {
   padding-right: 20px !important;
   padding-top: 10px !important;
   padding-bottom: 10px !important;
-  width: auto;
+  width: 100%;
   text-align: left;
 }
 
