@@ -385,8 +385,9 @@ body {
     position: absolute;
     inset: -3px;
     z-index: 0;
-    background-size: cover;
+    background-size: contain;
     background-position: center;
+    background-repeat: no-repeat;
     border-radius: 0;
     opacity: 1;
     visibility: visible;
