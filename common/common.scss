@@ -45,7 +45,7 @@ body {
 @media (min-width: 1200px) {
   .container.posts .topic-navigation.with-timeline {
     position: sticky !important;
-    top: var(--robotime-header-offset) !important;
+    top: calc(var(--robotime-header-offset) + 12px) !important;
     align-self: flex-start;
     z-index: 1000;
   }
@@ -53,11 +53,11 @@ body {
   .container.posts .topic-navigation.with-timeline .timeline-container.timeline-docked {
     position: static !important;
     top: auto !important;
-    max-height: calc(100vh - var(--robotime-header-offset) - 24px) !important;
+    max-height: calc(100vh - var(--robotime-header-offset) - 36px) !important;
   }
 
   .container.posts .topic-navigation.with-timeline .timeline-scrollarea {
-    max-height: calc(100vh - var(--robotime-header-offset) - 128px) !important;
+    max-height: calc(100vh - var(--robotime-header-offset) - 140px) !important;
   }
 }
 
