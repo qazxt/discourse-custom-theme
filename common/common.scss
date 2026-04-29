@@ -46,7 +46,7 @@ body {
   .container.posts .topic-navigation.with-timeline {
     position: fixed !important;
     top: calc(var(--robotime-header-offset) + 8px) !important;
-    right: 0;
+    right: max(0px, calc((100vw - 1600px) / 2)) !important;
     z-index: 1100;
   }
 
