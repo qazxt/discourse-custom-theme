@@ -1241,9 +1241,9 @@ export default apiInitializer((api) => {
   }
 
   function applyRobotimeMobileTopicCards() {
-    if (!isMobileViewport()) {
-      return;
-    }
+    // Disabled: mobile should use the same topic-list column pipeline
+    // (topic-thumbnails + custom topic cell) as desktop.
+    return;
 
     document.querySelectorAll("tr").forEach((row) => {
       const cell = row.querySelector("td.topic-list-data, td.main-link");

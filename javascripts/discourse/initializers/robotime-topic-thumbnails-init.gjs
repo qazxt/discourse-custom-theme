@@ -18,27 +18,44 @@ export default apiInitializer((api) => {
     return;
   }
 
-  api.registerValueTransformer("topic-list-columns", ({ value: columns }) => {
+  function applyRobotimeTopicColumns(columns) {
+    const topicKey =
+      ["topic", "main_link", "mainLink", "title"].find((k) => columns.has(k)) ||
+      "topic";
+    const repliesKey =
+      ["replies", "activity", "views", "posts"].find((k) => columns.has(k)) ||
+      null;
+
     if (!columns.has("topic-thumbnails")) {
-      columns.add("topic-thumbnails", { item: RobotimeTopicListThumbnail }, { before: "topic" });
+      const opts = topicKey ? { before: topicKey } : undefined;
+      columns.add("topic-thumbnails", { item: RobotimeTopicListThumbnail }, opts);
     }
 
     /* Card body = preview `.topic-content`: title + single footer row (meta + last poster). */
-    if (metaEnabled && columns.has("topic")) {
-      columns.delete("topic");
+    if (metaEnabled && columns.has(topicKey)) {
+      columns.delete(topicKey);
       if (columns.has("posters")) {
         columns.delete("posters");
       }
+      const insertOpts = repliesKey ? { before: repliesKey } : undefined;
       columns.add(
-        "topic",
+        topicKey,
         {
           header: HeaderTopicCell,
           item: RobotimeTopicListTopicCell,
         },
-        { before: "replies" }
+        insertOpts
       );
     }
-
     return columns;
+  }
+
+  api.registerValueTransformer("topic-list-columns", ({ value: columns }) => {
+    return applyRobotimeTopicColumns(columns);
+  });
+
+  // Some mobile routes use a dedicated transformer key.
+  api.registerValueTransformer("mobile-topic-list-columns", ({ value: columns }) => {
+    return applyRobotimeTopicColumns(columns);
   });
 });
