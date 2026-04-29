@@ -42,18 +42,23 @@ body {
 }
 
 // Keep docked Discourse topic timeline below fixed header/carousel.
-.timeline-container.timeline-docked {
-  position: sticky !important;
-  top: calc(var(--robotime-header-offset) + 8px) !important;
-  max-height: calc(100vh - var(--robotime-header-offset) - 16px) !important;
-}
+@media (min-width: 1200px) {
+  .container.posts .topic-navigation.with-timeline {
+    position: fixed !important;
+    top: calc(var(--robotime-header-offset) + 8px) !important;
+    right: 0;
+    z-index: 1100;
+  }
 
-.timeline-container.timeline-docked .topic-timeline {
-  max-height: inherit;
-}
+  .container.posts .topic-navigation.with-timeline .timeline-container.timeline-docked {
+    position: static !important;
+    top: auto !important;
+    max-height: calc(100vh - var(--robotime-header-offset) - 16px) !important;
+  }
 
-.timeline-container.timeline-docked .timeline-scrollarea {
-  max-height: calc(100vh - var(--robotime-header-offset) - 120px) !important;
+  .container.posts .topic-navigation.with-timeline .timeline-scrollarea {
+    max-height: calc(100vh - var(--robotime-header-offset) - 120px) !important;
+  }
 }
 
 // ============================================================
