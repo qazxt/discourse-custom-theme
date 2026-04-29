@@ -14,15 +14,15 @@ $robotime-layout-gap: 51px;
 
 // --- Theme nav (before-header-panel) ---
 .d-header .title {
-  margin-right: 30px;
+  margin-right: 30px !important;
 }
 
 .d-header .robotime-core-header-nav {
-  gap: 30px;
+  gap: 30px !important;
 }
 
 .d-header .before-header-panel-outlet {
-  margin-left: 0;
+  margin-left: 0 !important;
 }
 
 .d-header .robotime-header__nav-link {

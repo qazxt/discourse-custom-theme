@@ -74,8 +74,13 @@ body {
   border-bottom: none;
 
   .wrap {
-    max-width: 1600px;
-    padding: 0;
+    max-width: 1600px !important;
+    width: 100% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    box-sizing: border-box !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
   }
 
   .contents {
@@ -84,11 +89,13 @@ body {
     gap: 12px;
     flex-wrap: wrap;
     row-gap: 8px;
-    width: 100%;
-    max-width: 1600px;
-    margin: 0 auto;
-    padding: 0;
-    box-sizing: border-box;
+    width: 100% !important;
+    max-width: 1600px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    box-sizing: border-box !important;
   }
 
   .before-header-panel-outlet {
