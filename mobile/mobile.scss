@@ -182,7 +182,7 @@ html {
 .topic-list-item.robotime-mobile-topic-card:not(tr)
   > .robotime-mobile-topic-card__cover.is-placeholder::before {
   content: attr(data-robotime-topic-title);
-  font-family: $font-primary;
+  font-family: "Google Sans Flex-Regular", "Google Sans Flex", "Google Sans", "Noto Sans", "Helvetica Neue", Arial, sans-serif;
   font-size: 22px;
   line-height: 1.2;
   font-weight: 500;
