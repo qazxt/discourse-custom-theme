@@ -639,6 +639,21 @@ body {
   padding: 0 !important;
 }
 
+#d-sidebar [data-section-name="categories"].sidebar-section--expanded,
+.sidebar-wrapper [data-section-name="categories"].sidebar-section--expanded {
+  margin-bottom: 8px;
+}
+
+#d-sidebar [data-section-name="categories"] .sidebar-section-content,
+.sidebar-wrapper [data-section-name="categories"] .sidebar-section-content {
+  padding-top: 6px;
+}
+
+#d-sidebar [data-section-name="categories"] .sidebar-section-content .sidebar-section-link-wrapper:last-child,
+.sidebar-wrapper [data-section-name="categories"] .sidebar-section-content .sidebar-section-link-wrapper:last-child {
+  margin-bottom: 6px;
+}
+
 #d-sidebar [data-section-name="categories"] .sidebar-section-header-dropdown,
 .sidebar-wrapper [data-section-name="categories"] .sidebar-section-header-dropdown {
   display: none !important;
