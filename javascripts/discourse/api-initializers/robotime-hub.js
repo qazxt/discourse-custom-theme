@@ -1178,7 +1178,107 @@ export default apiInitializer((api) => {
     });
     markRobotimeTopicRowCoverLayout();
     decorateRobotimeTopicCardThumbnails();
+    applyRobotimeMobileTopicCardFallback();
     scheduleRobotimeTopicMasonry();
+  }
+
+  function applyRobotimeMobileTopicCardFallback() {
+    const w = window.innerWidth || document.documentElement.clientWidth || 0;
+    const isMobile = w < 768;
+
+    document.querySelectorAll("tr.topic-list-item").forEach((row) => {
+      const existingCover = row.querySelector(".robotime-mobile-fallback-cover");
+      if (!isMobile) {
+        row.classList.remove("robotime-mobile-fallback-row");
+        if (existingCover) {
+          existingCover.remove();
+        }
+        return;
+      }
+
+      // If custom/thumbnail columns are present, keep native card rendering.
+      if (
+        row.querySelector("td.topic-thumbnails") ||
+        row.querySelector(":scope > .robotime-topic-list-thumbnail-link") ||
+        row.querySelector(".robotime-topic-list-topic-cell")
+      ) {
+        row.classList.remove("robotime-mobile-fallback-row");
+        if (existingCover) {
+          existingCover.remove();
+        }
+        return;
+      }
+
+      const mainCell = row.querySelector("td.main-link, td.topic-list-data");
+      if (!mainCell) {
+        row.classList.remove("robotime-mobile-fallback-row");
+        if (existingCover) {
+          existingCover.remove();
+        }
+        return;
+      }
+
+      const titleEl = mainCell.querySelector(".title, .raw-topic-link, .link-top-line a");
+      const href = (titleEl?.getAttribute("href") || "").trim();
+      if (!href) {
+        row.classList.remove("robotime-mobile-fallback-row");
+        if (existingCover) {
+          existingCover.remove();
+        }
+        return;
+      }
+
+      const title = (titleEl?.textContent || "").trim();
+      const topicId = row.getAttribute("data-topic-id");
+      const img =
+        mainCell.querySelector("img.topic-thumbnail, .topic-thumbnail img, .cooked img") ||
+        row.querySelector("img.topic-thumbnail, .topic-thumbnail img");
+      const src = (
+        img?.getAttribute("src") ||
+        img?.getAttribute("data-src") ||
+        img?.getAttribute("data-original") ||
+        ""
+      ).trim();
+
+      let cover = existingCover;
+      if (!cover) {
+        cover = document.createElement("a");
+        cover.className = "robotime-mobile-fallback-cover";
+        mainCell.prepend(cover);
+      }
+      cover.setAttribute("href", href);
+      row.classList.add("robotime-mobile-fallback-row");
+
+      if (src) {
+        cover.classList.remove("is-placeholder");
+        cover.style.setProperty("background-image", `url('${src}')`);
+        cover.removeAttribute("data-robotime-topic-title");
+        cover.style.removeProperty("--robotime-mobile-cover-bg");
+        cover.style.removeProperty("--robotime-mobile-cover-fg");
+      } else {
+        cover.classList.add("is-placeholder");
+        cover.style.removeProperty("background-image");
+        if (title) {
+          cover.setAttribute("data-robotime-topic-title", title);
+        } else {
+          cover.removeAttribute("data-robotime-topic-title");
+        }
+        const tint = robotimeTopicCoverTintFromId(topicId);
+        const palette = [
+          ["#ede7f6", "#4a4459"],
+          ["#e3f2fd", "#37474f"],
+          ["#e8f5e9", "#2e4a32"],
+          ["#fff3e0", "#5d4037"],
+          ["#fce4ec", "#6a1b3d"],
+          ["#e0f7fa", "#006064"],
+          ["#f3e5f5", "#4a148c"],
+          ["#efebe9", "#3e2723"],
+        ];
+        const pair = palette[tint] || palette[0];
+        cover.style.setProperty("--robotime-mobile-cover-bg", pair[0]);
+        cover.style.setProperty("--robotime-mobile-cover-fg", pair[1]);
+      }
+    });
   }
 
   function setupRobotimeTopicThumbnailObserverOnce() {

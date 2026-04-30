@@ -60,8 +60,4 @@ export default apiInitializer((api) => {
     return applyRobotimeTopicColumns(columns);
   });
 
-  api.registerValueTransformer("mobile-topic-list-columns", ({ value: columns }) => {
-    return applyRobotimeTopicColumns(columns);
-  });
-
 });
