@@ -10,10 +10,8 @@ html {
   .contents {
     display: grid;
     grid-template-columns: 1fr auto;
-    grid-template-areas:
-      "logo icons"
-      "nav nav";
-    row-gap: 6px;
+    grid-template-areas: "logo icons";
+    row-gap: 0;
     align-items: center;
   }
 
@@ -54,17 +52,7 @@ html {
   }
 
   .before-header-panel-outlet {
-    grid-area: nav;
-    flex: 0 0 auto;
-    width: 100%;
-    justify-content: flex-start;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-
-    &::-webkit-scrollbar {
-      display: none;
-    }
+    display: none !important;
   }
 
   .robotime-core-header-nav {
@@ -101,7 +89,7 @@ html {
   &__card {
     flex: 0 0 calc(100vw - 24px) !important;
     width: calc(100vw - 24px) !important;
-    height: 180px !important;
+    height: 220px !important;
   }
 
   &__arrow {
@@ -125,10 +113,12 @@ html {
   }
 
   &--collapsed {
+    padding: 16px 0;
+
     .robotime-carousel__card {
       flex: 0 0 calc(100vw - 24px) !important;
       width: calc(100vw - 24px) !important;
-      height: 88px !important;
+      height: 64px !important;
     }
 
     .robotime-carousel__track {
