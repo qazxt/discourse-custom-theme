@@ -130,10 +130,6 @@ body {
     text-decoration: none;
   }
 
-  .title a.robotime-has-custom-logo > :not(.robotime-header__logo-img) {
-    display: none !important;
-  }
-
   .title .logo-big,
   .title .logo-small,
   .title .robotime-header__logo-img {
@@ -262,8 +258,6 @@ body {
 
   // Keep Robotime header stable: hide core topic extra info row
   // (e.g. PM glyph, topic participants) that appears on topic pages.
-  .extra-info-wrapper,
-  .title--minimized,
   .extra-info,
   .topic-info {
     display: none !important;
@@ -389,9 +383,8 @@ body {
     position: absolute;
     inset: -3px;
     z-index: 0;
-    background-size: contain;
+    background-size: cover;
     background-position: center;
-    background-repeat: no-repeat;
     border-radius: 0;
     opacity: 1;
     visibility: visible;

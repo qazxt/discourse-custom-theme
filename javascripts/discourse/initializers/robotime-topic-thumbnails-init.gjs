@@ -18,46 +18,27 @@ export default apiInitializer((api) => {
     return;
   }
 
-  function applyRobotimeTopicColumns(columns) {
-    if (!columns || typeof columns.has !== "function") {
-      return columns;
-    }
-    const topicKey =
-      ["topic", "main_link", "mainLink", "title"].find((k) => columns.has(k)) ||
-      null;
-    if (!topicKey) {
-      return columns;
-    }
-    const repliesKey =
-      ["replies", "activity", "views", "posts"].find((k) => columns.has(k)) ||
-      null;
-
+  api.registerValueTransformer("topic-list-columns", ({ value: columns }) => {
     if (!columns.has("topic-thumbnails")) {
-      const opts = topicKey ? { before: topicKey } : undefined;
-      columns.add("topic-thumbnails", { item: RobotimeTopicListThumbnail }, opts);
+      columns.add("topic-thumbnails", { item: RobotimeTopicListThumbnail }, { before: "topic" });
     }
 
     /* Card body = preview `.topic-content`: title + single footer row (meta + last poster). */
-    if (metaEnabled && columns.has(topicKey)) {
-      columns.delete(topicKey);
+    if (metaEnabled && columns.has("topic")) {
+      columns.delete("topic");
       if (columns.has("posters")) {
         columns.delete("posters");
       }
-      const insertOpts = repliesKey ? { before: repliesKey } : undefined;
       columns.add(
-        topicKey,
+        "topic",
         {
           header: HeaderTopicCell,
           item: RobotimeTopicListTopicCell,
         },
-        insertOpts
+        { before: "replies" }
       );
     }
+
     return columns;
-  }
-
-  api.registerValueTransformer("topic-list-columns", ({ value: columns }) => {
-    return applyRobotimeTopicColumns(columns);
   });
-
 });

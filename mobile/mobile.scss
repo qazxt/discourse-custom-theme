@@ -8,7 +8,7 @@ html {
 
 .d-header {
   .wrap {
-    padding: 0 10px;
+    padding: 0 12px;
   }
 
   .title a {
@@ -35,7 +35,15 @@ html {
   }
 
   .before-header-panel-outlet {
-    display: none !important;
+    flex: 1 1 100%;
+    justify-content: flex-start;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
 
   .robotime-core-header-nav {
@@ -50,58 +58,32 @@ html {
   }
 }
 
-// --- Mobile carousel: single-card viewport ---
+// --- Mobile carousel ---
 .robotime-carousel {
-  padding: 8px 0;
-
-  &__container {
-    padding: 0 10px;
-  }
-
-  &__track-wrapper {
-    overflow: hidden;
-  }
-
-  &__track {
-    gap: 0 !important;
-    padding: 0 !important;
-  }
+  padding: 10px 0;
 
   &__card {
-    flex: 0 0 calc(100vw - 20px) !important;
-    width: calc(100vw - 20px) !important;
-    height: 180px !important;
-  }
-
-  &__card-label {
-    font-size: 20px !important;
-    line-height: 1.2 !important;
+    width: 120px;
   }
 
   &__arrow {
-    width: 32px;
-    height: 32px;
-    opacity: 1 !important;
-    pointer-events: auto !important;
+    width: 28px;
+    height: 28px;
 
     svg {
-      width: 16px;
-      height: 16px;
+      width: 12px;
+      height: 12px;
     }
   }
 
-  &__arrow--left { left: 6px; }
-  &__arrow--right { right: 6px; }
-
   &--collapsed {
     .robotime-carousel__card {
-      flex: 0 0 calc(100vw - 20px) !important;
-      width: calc(100vw - 20px) !important;
-      height: 88px !important;
+      width: 100px;
+      height: 40px;
     }
 
     .robotime-carousel__track {
-      gap: 0 !important;
+      gap: 10px;
     }
 
   }
@@ -115,21 +97,11 @@ html {
 }
 
 // --- Mobile content full width ---
-#main-outlet-wrapper,
-#main-outlet-wrapper > .robotime-page-layout,
-#main-outlet,
-#main-outlet > #main-container,
-#main-outlet > .list-controls,
-#main-outlet > .container.list-container {
-  width: 100% !important;
-  max-width: 100% !important;
-}
-
 #main-outlet {
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  padding: 8px 10px !important;
+  padding: 8px;
 }
 
 .list-container,
@@ -140,93 +112,12 @@ html {
 
 // --- Mobile topic cards: single-column masonry strip ---
 .topic-list tbody {
-  column-count: 1 !important;
-  column-gap: 0 !important;
+  column-count: 1;
+  column-gap: 0;
 }
 
 .topic-list .topic-list-item {
-  width: 100% !important;
-  margin: 0 0 14px !important;
-}
-
-// Keep native mobile topic structure, only add light visual polish.
-.topic-list tr.topic-list-item td.topic-thumbnails {
-  padding: 0 !important;
-}
-
-.topic-list tr.topic-list-item td.topic-thumbnails :is(a, .topic-thumbnail) {
-  display: block;
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  overflow: hidden;
-}
-
-.topic-list tr.topic-list-item td.topic-thumbnails img {
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: cover !important;
-  display: block;
-}
-
-.topic-list tr.topic-list-item td.topic-list-data {
-  padding-top: 10px !important;
-}
-
-// Fallback mobile topic card when custom columns are unavailable on this route.
-.topic-list .topic-list-item.robotime-mobile-fallback-row {
-  display: block !important;
-  width: 100% !important;
-  margin: 0 0 14px !important;
-}
-
-.topic-list .topic-list-item.robotime-mobile-fallback-row > td {
-  display: block !important;
-  width: 100% !important;
-  box-sizing: border-box;
-}
-
-.topic-list .topic-list-item.robotime-mobile-fallback-row .robotime-mobile-fallback-cover {
-  display: block;
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  background-color: #eceff3;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  text-decoration: none;
-  margin-bottom: 10px;
-}
-
-.topic-list .topic-list-item.robotime-mobile-fallback-row .robotime-mobile-fallback-cover.is-placeholder {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 12px;
-  box-sizing: border-box;
-  background: var(--robotime-mobile-cover-bg, #eceff3);
-}
-
-.topic-list .topic-list-item.robotime-mobile-fallback-row .robotime-mobile-fallback-cover.is-placeholder::before {
-  content: attr(data-robotime-topic-title);
-  font-family: "Google Sans Flex-Regular", "Google Sans Flex", "Google Sans", "Noto Sans", "Helvetica Neue", Arial, sans-serif;
-  font-size: 24px;
-  line-height: 1.2;
-  font-weight: 500;
-  color: var(--robotime-mobile-cover-fg, #333333);
-  text-align: center;
-}
-
-// JS masonry fallback on mobile: keep normal single-column flow.
-.topic-list tbody.robotime-topic-list--js-masonry {
-  position: static !important;
-  height: auto !important;
-}
-
-.topic-list tbody.robotime-topic-list--js-masonry > tr.topic-list-item {
-  position: static !important;
-  width: 100% !important;
-  transform: none !important;
-  margin: 0 0 14px !important;
+  margin-bottom: 16px;
 }
 
 .robotime-topic-card {
