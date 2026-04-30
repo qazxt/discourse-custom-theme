@@ -1186,8 +1186,8 @@ export default apiInitializer((api) => {
     const w = window.innerWidth || document.documentElement.clientWidth || 0;
     const isMobile = w < 768;
 
-    document.querySelectorAll("tr.topic-list-item").forEach((row) => {
-      const existingCover = row.querySelector(".robotime-mobile-fallback-cover");
+    document.querySelectorAll(".topic-list-item").forEach((row) => {
+      const existingCover = row.querySelector(":scope .robotime-mobile-fallback-cover");
       if (!isMobile) {
         row.classList.remove("robotime-mobile-fallback-row");
         if (existingCover) {
@@ -1209,7 +1209,9 @@ export default apiInitializer((api) => {
         return;
       }
 
-      const mainCell = row.querySelector("td.main-link, td.topic-list-data");
+      const mainCell =
+        row.querySelector("td.main-link, td.topic-list-data") ||
+        row.querySelector(".main-link, .topic-list-data, .topic-item-stats, .topic-item");
       if (!mainCell) {
         row.classList.remove("robotime-mobile-fallback-row");
         if (existingCover) {
@@ -1231,12 +1233,14 @@ export default apiInitializer((api) => {
       const title = (titleEl?.textContent || "").trim();
       const topicId = row.getAttribute("data-topic-id");
       const img =
-        mainCell.querySelector("img.topic-thumbnail, .topic-thumbnail img, .cooked img") ||
-        row.querySelector("img.topic-thumbnail, .topic-thumbnail img");
+        mainCell.querySelector(
+          "img.topic-thumbnail, .topic-thumbnail img, .cooked img, img[data-original], img[data-src]"
+        ) || row.querySelector("img.topic-thumbnail, .topic-thumbnail img, img[data-original], img[data-src]");
       const src = (
         img?.getAttribute("src") ||
         img?.getAttribute("data-src") ||
         img?.getAttribute("data-original") ||
+        img?.currentSrc ||
         ""
       ).trim();
 

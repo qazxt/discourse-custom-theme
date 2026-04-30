@@ -173,19 +173,19 @@ html {
 }
 
 // Fallback mobile topic card when custom columns are unavailable on this route.
-.topic-list tr.topic-list-item.robotime-mobile-fallback-row {
+.topic-list .topic-list-item.robotime-mobile-fallback-row {
   display: block !important;
   width: 100% !important;
   margin: 0 0 14px !important;
 }
 
-.topic-list tr.topic-list-item.robotime-mobile-fallback-row > td {
+.topic-list .topic-list-item.robotime-mobile-fallback-row > td {
   display: block !important;
   width: 100% !important;
   box-sizing: border-box;
 }
 
-.topic-list tr.topic-list-item.robotime-mobile-fallback-row .robotime-mobile-fallback-cover {
+.topic-list .topic-list-item.robotime-mobile-fallback-row .robotime-mobile-fallback-cover {
   display: block;
   width: 100%;
   aspect-ratio: 1 / 1;
@@ -197,7 +197,7 @@ html {
   margin-bottom: 10px;
 }
 
-.topic-list tr.topic-list-item.robotime-mobile-fallback-row .robotime-mobile-fallback-cover.is-placeholder {
+.topic-list .topic-list-item.robotime-mobile-fallback-row .robotime-mobile-fallback-cover.is-placeholder {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -206,7 +206,7 @@ html {
   background: var(--robotime-mobile-cover-bg, #eceff3);
 }
 
-.topic-list tr.topic-list-item.robotime-mobile-fallback-row .robotime-mobile-fallback-cover.is-placeholder::before {
+.topic-list .topic-list-item.robotime-mobile-fallback-row .robotime-mobile-fallback-cover.is-placeholder::before {
   content: attr(data-robotime-topic-title);
   font-family: "Google Sans Flex-Regular", "Google Sans Flex", "Google Sans", "Noto Sans", "Helvetica Neue", Arial, sans-serif;
   font-size: 24px;
