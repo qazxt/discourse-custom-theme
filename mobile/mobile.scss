@@ -7,6 +7,25 @@ html {
 }
 
 .d-header {
+  .contents {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "logo icons"
+      "nav nav";
+    row-gap: 6px;
+    align-items: center;
+  }
+
+  .title {
+    grid-area: logo;
+    min-width: 0;
+  }
+
+  .panel {
+    grid-area: icons;
+  }
+
   .wrap {
     padding: 0 12px;
   }
@@ -35,7 +54,9 @@ html {
   }
 
   .before-header-panel-outlet {
-    flex: 1 1 100%;
+    grid-area: nav;
+    flex: 0 0 auto;
+    width: 100%;
     justify-content: flex-start;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
@@ -50,40 +71,68 @@ html {
     flex-wrap: nowrap;
     justify-content: flex-start;
     gap: 14px;
-    padding: 4px 0;
+    padding: 2px 0 0;
+    width: max-content;
   }
 
   .robotime-header__nav-link {
     font-size: 14px;
+    white-space: nowrap;
   }
 }
 
 // --- Mobile carousel ---
 .robotime-carousel {
-  padding: 10px 0;
+  padding: 8px 0;
+
+  &__container {
+    padding: 0 12px;
+  }
+
+  &__track-wrapper {
+    overflow: hidden;
+  }
+
+  &__track {
+    gap: 0 !important;
+    padding: 0 !important;
+  }
 
   &__card {
-    width: 120px;
+    flex: 0 0 calc(100vw - 24px) !important;
+    width: calc(100vw - 24px) !important;
+    height: 180px !important;
   }
 
   &__arrow {
-    width: 28px;
-    height: 28px;
+    width: 34px;
+    height: 34px;
+    opacity: 1 !important;
+    pointer-events: auto !important;
 
     svg {
-      width: 12px;
-      height: 12px;
+      width: 16px;
+      height: 16px;
     }
+  }
+
+  &__arrow--left {
+    left: 6px;
+  }
+
+  &__arrow--right {
+    right: 6px;
   }
 
   &--collapsed {
     .robotime-carousel__card {
-      width: 100px;
-      height: 40px;
+      flex: 0 0 calc(100vw - 24px) !important;
+      width: calc(100vw - 24px) !important;
+      height: 88px !important;
     }
 
     .robotime-carousel__track {
-      gap: 10px;
+      gap: 0 !important;
     }
 
   }
