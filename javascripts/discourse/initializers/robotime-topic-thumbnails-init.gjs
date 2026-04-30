@@ -41,4 +41,13 @@ export default apiInitializer((api) => {
 
     return columns;
   });
+
+  api.registerValueTransformer("topic-list-item-mobile-layout", ({ value }) => {
+    // Force mobile topic items to use the desktop row layout so
+    // topic-list-columns custom cells are rendered consistently.
+    if (enabled) {
+      return false;
+    }
+    return value;
+  });
 });
