@@ -86,17 +86,28 @@ export default apiInitializer((api) => {
 
   function applyRobotimeHeaderLogo() {
     const url = String(getThemeSettings().robotime_logo_url || "").trim();
-    if (!url) {
-      return;
-    }
     document.querySelectorAll(".d-header .title > a").forEach((a) => {
-      a.replaceChildren();
-      const img = document.createElement("img");
-      img.className = "robotime-header__logo-img";
-      img.src = url;
-      img.alt = "";
-      img.decoding = "async";
-      a.appendChild(img);
+      const existing = a.querySelector(".robotime-header__logo-img");
+      if (!url) {
+        if (existing) {
+          existing.remove();
+        }
+        a.classList.remove("robotime-has-custom-logo");
+        return;
+      }
+
+      let img = existing;
+      if (!img) {
+        img = document.createElement("img");
+        img.className = "robotime-header__logo-img";
+        img.alt = "";
+        img.decoding = "async";
+        a.appendChild(img);
+      }
+      if (img.getAttribute("src") !== url) {
+        img.setAttribute("src", url);
+      }
+      a.classList.add("robotime-has-custom-logo");
     });
   }
 

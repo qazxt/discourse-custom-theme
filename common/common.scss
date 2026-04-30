@@ -130,6 +130,10 @@ body {
     text-decoration: none;
   }
 
+  .title a.robotime-has-custom-logo > :not(.robotime-header__logo-img) {
+    display: none !important;
+  }
+
   .title .logo-big,
   .title .logo-small,
   .title .robotime-header__logo-img {

@@ -19,9 +19,15 @@ export default apiInitializer((api) => {
   }
 
   function applyRobotimeTopicColumns(columns) {
+    if (!columns || typeof columns.has !== "function") {
+      return columns;
+    }
     const topicKey =
       ["topic", "main_link", "mainLink", "title"].find((k) => columns.has(k)) ||
-      "topic";
+      null;
+    if (!topicKey) {
+      return columns;
+    }
     const repliesKey =
       ["replies", "activity", "views", "posts"].find((k) => columns.has(k)) ||
       null;
@@ -51,6 +57,10 @@ export default apiInitializer((api) => {
   }
 
   api.registerValueTransformer("topic-list-columns", ({ value: columns }) => {
+    return applyRobotimeTopicColumns(columns);
+  });
+
+  api.registerValueTransformer("mobile-topic-list-columns", ({ value: columns }) => {
     return applyRobotimeTopicColumns(columns);
   });
 
