@@ -49,7 +49,8 @@ body {
     position: sticky !important;
     top: calc(var(--robotime-header-offset) + 12px) !important;
     align-self: flex-start;
-    z-index: 800;
+    /* Below admin / select-kit menus; raise if timeline sinks under post chrome. */
+    z-index: 200;
   }
 
   .container.posts .topic-navigation.with-timeline .timeline-container.timeline-docked {
