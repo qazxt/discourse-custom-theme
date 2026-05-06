@@ -15,10 +15,10 @@ $robotime-hover-white: #cccccc;
 $robotime-header-user-bg: rgba(255, 255, 255, 0.1);
 $robotime-sidebar-canvas: #f5f5f5; // design mockup: column behind menu + widget
 
-$font-primary: "Google Sans Flex-Regular", "Google Sans Flex", "Google Sans", "Noto Sans", "Helvetica Neue",
-  Arial, sans-serif;
+// Google Fonts registers this family as "Google Sans Flex" (not "…-Regular"). Weight 400 = regular.
+@import url("https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@8..144,400&display=swap");
 
-@import url("https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap");
+$font-primary: "Google Sans Flex";
 
 // Reserve scrollbar gutter so layout width does not flip when overflow toggles at ~100vh.
 html {
@@ -31,6 +31,8 @@ html {
 
 body {
   font-family: $font-primary;
+  font-weight: 400;
+  font-optical-sizing: auto;
   background-color: $robotime-white;
 }
 
@@ -117,6 +119,14 @@ body {
     min-width: 0;
   }
 
+  // Logo block + theme nav share one vertical midline (match logo graphic 30px band).
+  .title {
+    display: flex;
+    align-items: center;
+    align-self: center;
+    line-height: 1;
+  }
+
   .title a {
     display: inline-flex;
     align-items: center;
@@ -128,6 +138,10 @@ body {
     background: transparent;
     color: $robotime-white;
     text-decoration: none;
+  }
+
+  .title a.robotime-has-custom-logo > :not(.robotime-header__logo-img) {
+    display: none !important;
   }
 
   .title .logo-big,
@@ -157,7 +171,14 @@ body {
 
   .d-header-icons .icon:hover,
   .d-header-icons .header-dropdown-toggle:hover {
-    color: #7a7a7a;
+    color: #1a1a1a;
+  }
+
+  .d-header-icons .icon:hover .d-icon,
+  .d-header-icons .header-dropdown-toggle:hover .d-icon,
+  .d-header-icons .icon:hover svg,
+  .d-header-icons .header-dropdown-toggle:hover svg {
+    color: inherit !important;
   }
 
   .d-header-icons .d-icon {
@@ -227,7 +248,11 @@ body {
     position: relative;
     display: inline-flex;
     align-items: center;
-    padding-bottom: 4px;
+    justify-content: center;
+    min-height: 30px;
+    line-height: 1.15;
+    padding: 0;
+    margin: 0;
     font-family: $font-primary;
     font-size: 16px;
     font-weight: 500;
@@ -406,8 +431,7 @@ body {
     align-items: flex-end;
     justify-content: center;
     padding: 8px 10px 10px;
-    font-family: "Google Sans Flex-Regular", "Google Sans Flex", "Google Sans", "Noto Sans", "Helvetica Neue",
-      Arial, sans-serif;
+    font-family: $font-primary;
     font-size: 24px;
     font-weight: 400;
     color: $robotime-white;
@@ -480,8 +504,7 @@ body {
     }
 
     .robotime-carousel__card-label {
-      font-family: "Google Sans Flex-Regular", "Google Sans Flex", "Google Sans", "Noto Sans", "Helvetica Neue",
-        Arial, sans-serif;
+      font-family: $font-primary;
       font-size: 24px;
       position: relative;
       left: auto;
@@ -811,8 +834,7 @@ body {
   box-sizing: border-box;
 
   &__section-title {
-    font-family: "Google Sans Flex-Regular", "Google Sans Flex", "Google Sans", "Noto Sans", "Helvetica Neue",
-      Arial, sans-serif;
+    font-family: $font-primary;
     font-size: 16px;
     font-weight: 500;
     color: $robotime-white;
@@ -876,8 +898,7 @@ body {
     position: static;
     margin-top: 10px;
     padding: 0;
-    font-family: "Google Sans Flex-Regular", "Google Sans Flex", "Google Sans", "Noto Sans", "Helvetica Neue",
-      Arial, sans-serif;
+    font-family: $font-primary;
     font-size: 14px;
     font-weight: 500;
     color: #6a6a6a;
@@ -912,8 +933,7 @@ body {
     box-sizing: border-box;
     margin-top: 10px;
     padding: 10px 0 0;
-    font-family: "Google Sans Flex-Regular", "Google Sans Flex", "Google Sans", "Noto Sans", "Helvetica Neue",
-      Arial, sans-serif;
+    font-family: $font-primary;
     font-size: 16px;
     font-weight: 400;
     color: #000000;
@@ -1062,8 +1082,7 @@ body {
   border: 1px solid $robotime-gray !important;
   border-radius: 10px !important;
   color: $robotime-gray !important;
-  font-family: "Google Sans Flex-Regular", "Google Sans Flex", "Google Sans", "Noto Sans", "Helvetica Neue",
-    Arial, sans-serif;
+  font-family: $font-primary;
   font-size: 24px;
   font-weight: 400;
   min-height: 51px;
@@ -1354,8 +1373,7 @@ body {
 
 .navigation-container .nav-pills > li {
   > a {
-    font-family: "Google Sans Flex-Regular", "Google Sans Flex", "Google Sans", "Noto Sans", "Helvetica Neue",
-      Arial, sans-serif;
+    font-family: $font-primary;
     font-size: 24px;
     font-weight: 400;
     color: $robotime-gray;
@@ -1415,8 +1433,7 @@ body {
   color: #777777 !important;
   border: none !important;
   border-radius: 10px !important;
-  font-family: "Google Sans Flex-Regular", "Google Sans Flex", "Google Sans", "Noto Sans", "Helvetica Neue",
-    Arial, sans-serif;
+  font-family: $font-primary;
   font-size: 24px;
   font-weight: 400;
   min-height: 51px;
@@ -2207,8 +2224,7 @@ $robotime-cover-palette: (
         margin-top: 0;
         margin-bottom: 0;
         padding: 0;
-        font-family: "Google Sans Flex-Regular", "Google Sans Flex", "Google Sans", "Noto Sans", "Helvetica Neue",
-          Arial, sans-serif;
+        font-family: $font-primary;
         font-size: 24px;
         font-weight: 400;
         color: #000000;
@@ -2243,8 +2259,7 @@ $robotime-cover-palette: (
 
       .main-link .link-top-line .title,
       .main-link a.title {
-        font-family: "Google Sans Flex-Regular", "Google Sans Flex", "Google Sans", "Noto Sans", "Helvetica Neue",
-          Arial, sans-serif;
+        font-family: $font-primary;
         font-size: 24px !important;
         font-weight: 400 !important;
         line-height: 1.2 !important;
@@ -2348,8 +2363,7 @@ $robotime-cover-palette: (
       .main-link .robotime-topic-meta {
         align-items: center;
         gap: 10px 20px;
-        font-family: "Google Sans Flex-Regular", "Google Sans Flex", "Google Sans", "Noto Sans", "Helvetica Neue",
-          Arial, sans-serif;
+        font-family: $font-primary;
         font-size: 24px;
         font-weight: 400;
         line-height: 1.2;
