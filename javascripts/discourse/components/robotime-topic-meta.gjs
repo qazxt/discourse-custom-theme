@@ -14,7 +14,8 @@ export default class RobotimeTopicMeta extends Component {
   }
 
   get replies() {
-    return Number(this.topic?.posts_count || 0);
+    const n = Number(this.topic?.posts_count || 0);
+    return Math.max(0, n - 1);
   }
 
   get hasAnyStat() {
